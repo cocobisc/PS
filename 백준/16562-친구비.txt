@@ -1,0 +1,51 @@
+#include <iostream>
+#include <string>
+#include <map>
+using namespace std;
+const int MAX = 1e4;
+int fee[MAX], arr[MAX];
+int visited[MAX];
+
+int find(int n) {
+	if (n == arr[n]) return n;
+	else return arr[n] = find(arr[n]);
+}
+void merge(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a == b) return;
+	if (fee[a] < fee[b]) 
+		arr[b] = a;
+	else 
+		arr[a] = b;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n, m, k; cin >> n >> m >> k;
+	for (int i = 0; i < n; i++) {
+		cin >> fee[i];
+		arr[i] = i;
+	}
+	for (int i = 0; i < m; i++) {
+		int a, b; cin >> a >> b;
+		merge(a - 1, b - 1);
+	}
+	
+	int sum = 0;
+	for (int i = 0; i < n; i++) {
+		int a = find(arr[i]);
+		if (!visited[a]) {
+			visited[a] = 1;
+			sum += fee[a];
+			k -= fee[a];
+		}
+		if (k < 0) {
+			cout << "Oh no";
+			return 0;
+		}
+	}
+	cout << sum;
+}

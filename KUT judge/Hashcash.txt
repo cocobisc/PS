@@ -1,0 +1,38 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <cstdio>
+#include <string>
+#include <vector>
+#define MAX 501
+#define MIN 1000001
+#define swap(a,b) {char temp = a; a = b; b = temp;}
+typedef unsigned long long ull;
+using namespace std;
+vector<pair<int, int>> v;
+
+int main() {
+	int n;
+	cin >> n;
+	for (; n--;) {
+		string str;
+		cin >> str;
+		str += " ";
+		int cnt = 0;
+		string save = str;
+		while (true) {
+			str += to_string(cnt);
+			unsigned long hash = 5381;
+			int c, idx = 0;
+			while (c = str[idx++])
+				hash = ((hash << 5) + hash) + c;
+			if ((hash & 0x7FFFFFFF) % 10000 == 0) {
+				cout << cnt << endl;
+				break;
+			}
+			cnt++;
+			str = save;
+		}
+	}
+}

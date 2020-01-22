@@ -1,0 +1,43 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+#include <string.h>
+#include <queue>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n, m;
+bool isvisited[10001];
+int com[10001];
+vector<vector<int>> v;
+int cnt = 0;
+
+int main() {
+	cin >> n >> m;
+	v.resize(10001);
+	for (int i = 0; i < m; i++) {
+		int a, b;
+		cin >> a >> b;
+		v[b].push_back(a);
+	}
+	int max = 0;
+	for (int i = 1; i <= n; i++) {
+		memset(isvisited, false, sizeof(isvisited));
+		int cnt = 0;
+		if (v[i].empty()) continue;
+		queue<int> q;
+		q.push(i);
+		while (!q.empty()) {
+			int c = q.front();
+			q.pop();
+			if (isvisited[c]) continue;
+			isvisited[c] = true;
+			cnt++;
+			for (int i = 0; i < v[c].size(); i++) q.push(v[c][i]);
+		}
+		com[i] = cnt;
+		if (max < com[i]) max = com[i];
+	}
+	for (int i = 1; i <= n; i++) {
+		if (com[i] == max) cout << i << " ";
+	}
+}

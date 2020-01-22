@@ -1,0 +1,25 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int v1[6], v2[6], h1[8], h2[8];
+int arr[24];
+
+int main() {
+	for (int i = 0; i < 24; i++) cin >> arr[i];
+	for (int i = 0; i < 12; i++) {
+		if (i % 2) v1[i] = arr[i];
+		else v2[i] = arr[i];
+	}
+	h1[0] = arr[12];
+	h1[1] = arr[13];
+	h1[2] = arr[4];
+	h1[3] = arr[5];
+	h2[0] = arr[14];
+	h2[1] = arr[15];
+	h2[2] = arr[6];
+	h2[3] = arr[7];
+	for (int i = 16; i < 24; i++) {
+		if (i < 23) h1[i-11] = arr[i];
+		else h2[i - 11] = arr[i];
+	}
+}

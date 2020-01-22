@@ -1,0 +1,16 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main() {
+	int a1, a2, k1, k2, n;
+	int mi, ma;
+	cin >> a1 >> a2 >> k1 >> k2 >> n;
+	if (k1 > k2) {
+		swap(k1, k2);
+		swap(a1, a2);
+	}
+	mi = max(0, n - (a1 * (k1 - 1) + a2 * (k2 - 1)));
+	if (n <= a1 * k1) ma = n / k1;
+	else ma = a1 + (n - (k1 * a1)) / k2;
+	cout << mi << " " << ma;
+}

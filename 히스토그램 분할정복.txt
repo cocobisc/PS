@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int arr[100000];
+int dnc(int s, int e) {
+	if (s == e) return 0;
+	if (s + 1 == e) return arr[s];
+
+	int mid = (s + e) / 2;
+	int result = max(dnc(s, mid), dnc(mid, e));
+
+	int w = 1, r = mid, l = mid, h = arr[mid];
+	while (r - l + 1 < e - s) {
+		int q = (s < l ? min(h, arr[l - 1]) : -1);
+		int p = (r < e ? min(h, arr[r + 1]) : -1);
+		if (q >= p) {
+			h = q; l--;
+		}
+		else {
+			h = p; r++;
+		}
+		result = max(result, ++w * h);
+	}
+	return result;
+}
+int main() {
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) cin >> arr[i];
+	cout << dnc(0, n);
+}

@@ -1,0 +1,21 @@
+#include <cstdio>
+#include <cmath>
+#include <algorithm>
+const int MAX = 1e5;
+int arr[MAX], dp[MAX];
+int main() {
+	int n; scanf("%d", &n);
+	for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+	int ans = 2e9, left = 0, right = n - 1;
+	while (left < right) {
+		int t = arr[left] + arr[right];
+		if (t < 0) left++;
+		else if (t > 0) right--;
+		else {
+			ans = 0;
+			break;
+		}
+		if (abs(t) < abs(ans)) ans = t;
+	}
+	printf("%d\n", ans);
+}

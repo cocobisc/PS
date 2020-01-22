@@ -1,0 +1,25 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+int arr[200000];
+int main() {
+	int n, c; cin >> n >> c;
+	for (int i = 0; i < n; i++)cin >> arr[i];
+	sort(arr, arr + n);
+	int mi = 1, ma = arr[n-1] - arr[0];
+	while (mi + 1 < ma) {
+		int mid = (mi + ma) / 2;
+		int start = arr[0], cnt = 1;
+		for (int i = 1; i < n; i++) {
+			int sub = arr[i] - start;
+			if (sub >= mid) {
+				start = arr[i];
+				cnt++;
+			}
+		}
+		if (cnt >= c) mi = mid;
+		else ma = mid;
+	}
+	cout << mi;
+}

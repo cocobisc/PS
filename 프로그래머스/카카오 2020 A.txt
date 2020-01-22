@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+int solution(string s) {
+	int result = 2e9;
+	for (int i = 1; i <= s.size() / 2; i++) {
+		int cnt = 1, start = 0, sum = 0;
+		while (start <= s.size() - i) {
+			if (s.substr(start, i) == s.substr(start + i, i)) cnt++;
+			else {
+				if (cnt > 1) sum += to_string(cnt).size() + i;
+				else sum += i;
+				cnt = 1;
+			}
+			start += i;
+		}
+		sum += s.size() % i;
+		if (sum < result) result = sum;
+	}
+	return result;
+}
+
+void main() {
+	string s; cin >> s;
+	cout << solution(s);
+}

@@ -1,0 +1,29 @@
+#include<algorithm>
+#include<iostream>
+
+#define INT 0x7fff0000
+#define MAX_ 1000000001
+
+using namespace std;
+
+typedef long long ll;
+ll x, y, z; ll lft, rgt;
+
+int main() {
+
+	while (cin >> x >> y) {
+		z = y * 100 / x;
+		lft = 0;  rgt = MAX_;
+		int ans = z;
+		while (lft <= rgt) {
+			ll mid = (lft + rgt) >> 1;  // 추가 게임횟수 
+			ll per = (y + mid) * 100 / (x + mid);
+			if (per > z) rgt = mid - 1;
+			else lft = mid + 1;
+			cout << "mid : " << mid << " per : " << per << endl;
+		}
+		if (lft >= MAX_) cout << -1 << '\n';
+		else cout << lft << "\n";
+	}
+	return 0;
+}c

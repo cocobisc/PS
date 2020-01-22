@@ -1,0 +1,36 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#define MOD 123456789
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+vector<pair<int, int>> v;
+int n, l, k;
+
+bool cmp(pair<int, int>a, pair<int, int>b) { return a.second < b.second; }
+int main() {
+	cin >> n >> l >> k;
+	for (int i = 0; i < n; i++) {
+		int a, b;
+		cin >> a >> b;
+		v.push_back({ a, b });
+	}
+	sort(v.begin(), v.end(), cmp);
+	int result = 0, cnt = 0;
+	for (int i = 0; i < n; i++) {
+		if (v[i].second <= l) {
+			result += 140;
+			cnt++;
+		}
+		else if (v[i].first <= l) {
+			result += 100;
+			cnt++;
+		}
+		if (cnt == k) break;
+	}
+	cout << result << endl;
+	return 0;
+}

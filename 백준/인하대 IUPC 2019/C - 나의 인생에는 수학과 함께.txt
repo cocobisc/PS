@@ -1,0 +1,38 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+const int MAX = 2e5;
+using namespace std;
+char mapp[5][5];
+int visited[5][5];
+int mi = 1e9, ma = 1e9 * -1, result;
+int n;
+
+void dfs(int j, int i, int result, int c) {
+	if (isdigit(mapp[i][j])) {
+		int num = mapp[i][j] - '0';
+		if (c == '+') result += num;
+		else if (c == '-') result -= num;
+		else if(c == '*') result *= num;
+	}
+	else c = mapp[i][j];
+
+	if (j == n - 1 && i == n - 1) {
+		if (result < mi) mi = result;
+		if (result > ma) ma = result;
+		return;
+	}
+
+	if(j + 1 < n) dfs(j + 1, i, result, c);
+	if(i + 1 < n) dfs(j, i + 1, result, c);
+}
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) cin >> mapp[i][j];
+	}
+	dfs(0, 0, mapp[0][0] - '0', -1);
+	cout << ma << " " << mi;
+}

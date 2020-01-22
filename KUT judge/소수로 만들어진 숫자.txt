@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#define MAX 10000
+using namespace std;
+int tt, p[10001], dp[10001];
+vector<int> v;
+
+void era() {
+	for (int i = 2; i * i <= 10000; i++) {
+		if(!p[i])
+			for (int j = i * i; j <= 10000; j += i) p[j] = 1;
+	}
+	for (int i = 2; i <= 10000; i++) {
+		if (!p[i]) v.push_back(i);
+	}
+	dp[0] = 1;
+	int sum = 0;
+	for (int i = 0; i < v.size(); i++) {
+		for (int j = MAX; j >= v[i]; j--) {
+			dp[j] += dp[j - v[i]];
+			dp[j] %= 123456789;
+		}
+	}
+}
+
+int main() {
+	era();
+	cin >> tt;
+	while (tt--) {
+		int n;
+		cin >> n;
+		cout << dp[n] << endl;
+	}
+	return 0;
+}

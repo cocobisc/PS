@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <queue>
+const int MAX = 2e5;
+using namespace std;
+
+int n, m;
+int card[2];
+
+int main() {
+	cin >> n >> m;
+	cin >> card[0] >> card[1];
+	int cnt = 0, ans = card[0];
+	for (int i = 0; i < m; i++) {
+		int a; cin >> a;
+		if (card[cnt % 2] <= a) ans = card[++cnt % 2];
+	}
+	cout << ans;
+}

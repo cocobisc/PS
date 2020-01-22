@@ -1,0 +1,30 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <cstring>
+#include <vector>
+#define MAX 501
+#define swap(a,b) {char temp = a; a = b; b = temp;}
+typedef unsigned long long ull;
+using namespace std;
+int alpha[26];
+
+int main() {
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		string s;
+		cin >> s;
+		int result = 0;
+		bool hasone = false;
+		memset(alpha, 0, sizeof(alpha));
+		for (int j = 0; j < s.size(); j++) alpha[tolower(s.at(j)) - 'a']++;
+		
+		for (int j = 0; j < 26; j++) {
+			if (alpha[j] > 1) result += alpha[j] - alpha[j] % 2;
+			if (alpha[j] % 2) hasone = true;
+		}
+		if (hasone) result += 1;
+		cout << result << endl;
+	}
+}

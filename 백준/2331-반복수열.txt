@@ -1,0 +1,26 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cmath>
+using namespace std;
+int p, c[500000], i = 1;
+
+void dfs(int a) {
+	int s = 0;
+	while (a > 0) {
+		s += (int)pow(a % 10, p);
+		a /= 10;
+	}
+	c[s]++;
+	if (c[s] == 1) i++;
+	else if (c[s] == 2) i--;
+	if (c[s] == 3)return;
+
+	dfs(s);
+}
+
+int main() {
+	int a; cin >> a >> p;
+	c[a]++;
+	dfs(a);
+	cout << i;
+}

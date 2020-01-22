@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+const int INF = 2e9;
+const int MAX_V = 2e4 + 1;
+typedef pair<int, int> P;
+int main() {
+	int V, E, K; //노드,간선,시작 지점
+	vector<P> adj[MAX_V];
+	cin >> V >> E >> K;
+	for (int i = 1; i <= E; i++) {
+		int u, v, w;
+		cin >> u >> v >> w;
+		adj[u].push_back(P(v, w));
+	}
+	int dist[MAX_V];
+	fill(dist, dist + MAX_V, INF);
+	bool visited[MAX_V] = { 0, };
+	priority_queue<P, vector<P>, greater<P>> PQ;
+
+	dist[K] = 0;
+	PQ.push(P(0, K));
+	while (!PQ.empty()) {
+		int curr;
+		do {
+			curr = PQ.top().second;
+			PQ.pop();
+		} while (!PQ.empty() && visited[curr]);
+		if (visited[curr]) break;
+
+		visited[curr] = 1;
+		for (auto &p : adj[curr]) {
+			int next = p.first, d = p.second;
+			if (dist[next] > dist[curr] + d) {
+				dist[next] = dist[curr] + d;
+				PQ.push(P(dist[next], next));
+			}
+		}
+	}
+	for (int i = 1; i <= V; i++) {
+		if (dist[i] == INF) cout << "INF";
+		else cout << dist[i];
+		cout << '\n';
+	}
+}

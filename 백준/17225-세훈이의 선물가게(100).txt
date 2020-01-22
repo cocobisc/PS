@@ -1,0 +1,34 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#define MOD 123456789
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+vector<int> se;
+vector<int> ji;
+int a, b, n;
+
+int main() {
+	scanf("%d %d %d", &a, &b, &n);
+	int cnt = 0;
+	for (int i = 0; i < n; i++) {
+		int t, m;
+		char c;
+		scanf("%d %c %d", &t, &c, &m);
+		if (c == 'B') {
+			for (int j = 0; j < m; j++) se.push_back(++cnt);
+		}
+		else {
+			for (int j = 0; j < m; j++) ji.push_back(++cnt);
+		}
+	}
+	printf("%d\n", se.size());
+	for (int i = 0; i < se.size(); i++) printf("%d ", se[i]);
+	printf("\n");
+	printf("%d\n", ji.size());
+	for (int i = 0; i < ji.size(); i++) printf("%d ", ji[i]);
+	return 0;
+}

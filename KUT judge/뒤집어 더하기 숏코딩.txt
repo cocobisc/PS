@@ -1,0 +1,9 @@
+#include <cstdio>
+int main(t){
+	scanf("%d",&t);
+	while(t--){int r=0,n,t;scanf("%d",&n);t = n;
+	while (t>0){r=r*10+t%10;t/=10;}
+	n+=r;r=0;t=n;
+	while(n>r){r=r*10+t%10;t/=10;}
+	printf("%s\n",(n==0||(n==r||n==r/10)&&n%10!=0 ?"yes":"no"));}
+}

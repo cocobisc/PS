@@ -1,0 +1,23 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int main() {
+	int t; scanf("%d",&t);
+	while (t--) {
+		int n, arr[100002], k[100002] = { 0, };
+		cin >> n;
+		for (int i = 0; i < n; i++) {
+			cin >> arr[i];
+			if (arr[i] == 0) k[0]++;
+			else if (arr[i] < 0) k[-arr[i]]++;
+			else k[arr[i] + 50000]++;
+		}
+		for (int i = 50000; i >= 0; i--) {
+			if (k[i] % 2) cout << -i << " ";
+		}
+		for (int i = 50001; i < 100001; i++) {
+			if (k[i] % 2) cout << i - 50000 << " ";
+		}
+		cout << '\n';
+	}
+}

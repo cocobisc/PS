@@ -1,0 +1,20 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+
+int main() {
+	int n, k;
+	cin >> n >> k;
+	int arr[31][31] = { 0, };
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= i; j++) {
+			if (j == 1) arr[i][j] = 1;
+			else arr[i][j] = arr[i - 1][j] + arr[i - 1][j - 1];
+			if (i == n && j == k) break;
+		}
+	}
+	cout << arr[n][k] << endl;
+}

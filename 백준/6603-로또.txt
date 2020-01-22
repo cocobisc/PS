@@ -1,0 +1,30 @@
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <vector>
+using namespace std;
+
+int k[13], n;
+vector<int> v;
+
+void dfs(int start, int cnt) {
+	if (cnt == 6) {
+		for (int i = 0; i < 5; i++) printf("%d ", v[i]);
+		printf("%d\n", v[5]);
+	}
+	for (int i = start + 1; i <= n; i++) {
+		v.push_back(k[i - 1]);
+		dfs(i, cnt + 1);
+		v.pop_back();
+	}
+}
+int main() {
+	while (true) {
+		v.clear();
+		cin >> n;
+		if (n == 0) break;
+		for (int i = 0; i < n; i++) cin >> k[i];
+		dfs(0, 0);
+		cout << endl;
+	}
+}

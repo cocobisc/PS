@@ -1,0 +1,34 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#define MOD 123456789
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n;
+int dp[40001];
+bool isprime[40001];
+vector<int> prime;
+void era() {
+	for (int i = 2; i <= 40000; i++) {
+		if (isprime[i]) continue;
+		for (int j = i * i; j <= 40000; j += i) isprime[j] = true;
+	}
+	for (int i = 2; i <= 40000; i++) {
+		if (!isprime[i]) prime.push_back(i);
+	}
+}
+int main() {
+	era();
+	cin >> n;
+	dp[0] = 1;
+	for (int i = 0; i < prime.size(); i++) {
+		for (int j = prime[i]; j <= n; j++) {
+			dp[j] = (dp[j] + dp[j - prime[i]]) % MOD;
+		}
+	}
+	cout << dp[n] << endl;
+
+	return 0;
+}

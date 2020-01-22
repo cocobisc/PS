@@ -1,0 +1,51 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+bool visited[100000];
+
+int nsize(int n) {
+	int cnt = 0;
+	if (n < 10) return 0;
+	while (n) {
+		n /= 10;
+		cnt++;
+	}
+	return cnt - 1;
+}
+
+int main() {
+	int n, t, g;
+	cin >> n >> t >> g;
+	visited[n] = true;
+	queue<pair<int, int>> q;
+	q.push({ n, 0 });
+	while (!q.empty()) {
+		int num = q.front().first;
+		int cnt = q.front().second;
+		q.pop();
+		if (cnt > t) {
+			cout << "ANG" << endl;
+			return 0;
+		}
+		if (num == g) {
+			cout << cnt << endl;
+			return 0;
+		}
+		if (num + 1 <= 99999 && !visited[num + 1]) {
+			q.push({ num + 1, cnt + 1 });
+			visited[num + 1] = true;
+		}
+		num *= 2;
+		int temp = num - pow(10, nsize(num));
+		if (temp >= 0 && num <= 99999 && !visited[temp]) {
+			q.push({ temp, cnt + 1 });
+			visited[temp] = true;
+		}
+	}
+	cout << "ANG" << endl;
+	return 0;
+}

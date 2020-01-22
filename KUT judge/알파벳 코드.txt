@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+#include <set>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+typedef pair<string, int> P;
+set<char>c = { 'A','E','I','O','U' };
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		map<char, int> m;
+		set<int> se;
+		vector<P> v;
+		vector<char> setV;
+		int n; cin >> n;
+		string s;
+		while (n--) {
+			int a;
+			cin >> s >> a;
+			for (int i = 0; i < s.size(); i++) se.insert(s[i]);
+			v.push_back({ s, a });
+		}
+		cin >> s;
+		for (int i = 0; i < s.size(); i++) se.insert(s[i]);
+		for (auto it = se.begin(); it != se.end(); it++) setV.push_back(*it);
+		do {
+			m.clear();
+			for (int i = 0; i < setV.size(); i++) m[setV[i]] = i + 1;
+			int f = 1;
+			for (int i = 0; i < v.size(); i++) {
+				int sum = 0;
+				for (int j = 0; j < v[i].first.size(); j++) sum += m[v[i].first[j]];
+				if (sum != v[i].second) { f = 0; break; }
+			}
+			if (f) break;
+		} while (next_permutation(setV.begin(), setV.end()));
+		int ans = 0;
+		for (int i = 0; i < s.size(); i++) ans += m[s[i]];
+		cout << ans << '\n';
+	}
+}

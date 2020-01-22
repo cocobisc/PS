@@ -1,0 +1,32 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <cstdio>
+#include <string>
+#include <vector>
+#define MAX 501
+#define MIN 1000001
+#define swap(a,b) {char temp = a; a = b; b = temp;}
+typedef unsigned long long ull;
+using namespace std;
+int n, k;
+vector<pair<int, int>> v;
+int bot[11] = {};
+int main() {
+	cin >> n >> k;
+	for (int i = 0; i < k; i++) {
+		int a, b;
+		cin >> a >> b;
+		v.push_back(pair<int, int>(a, b));
+	}
+	int max = 0;
+	for (int i = 0; i < k; i++) {
+		if (bot[i % n] <= v[i].first) bot[i%n] = v[i].first + v[i].second;
+		else bot[i % n] += v[i].second;
+		if (max < bot[i % n]) max = bot[i % n];
+	}
+	cout << max << endl;
+
+	return 0;
+}

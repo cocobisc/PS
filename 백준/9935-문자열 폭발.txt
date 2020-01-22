@@ -1,0 +1,42 @@
+#include<algorithm>
+#include <string>
+#include<iostream>
+#include <vector>
+
+using namespace std;
+
+bool check(string a, string b) { return a == b; }
+int main() {
+	int idx = 0;
+	string s, bomb;
+	vector<char> v;
+	vector<char> temp;
+	cin >> s >> bomb;
+	for (int i = 0; i < s.size(); i++) {
+		v.push_back(s[i]);
+		if (s[i] == bomb[bomb.size() - 1]) {
+			for (int j = bomb.size() - 1; j >= 0; j--) {
+				char t = v.back();
+				if (bomb[j] == t) {
+					temp.push_back(t);
+					v.pop_back();
+				}
+				else {
+					while (!temp.empty()) {
+						char p = temp.back();
+						v.push_back(p);
+						temp.pop_back();
+					}
+					break;
+				}
+			}
+			temp.clear();
+		}
+	}
+	if (v.empty()) cout << "FRULA" << endl;
+	else {
+		for (int i = 0; i < v.size() - 1; i++) printf("%c", v[i]);
+		printf("%c\n", v.back());
+	}
+	return 0;
+}

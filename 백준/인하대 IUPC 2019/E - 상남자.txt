@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <queue>
+const int MAX = 2e5;
+using namespace std;
+
+int mapp[1000][1000];
+int n, m, l, r;
+int ans;
+int visited[1000][1000];
+
+
+struct Node {
+	int i, j, l, r;
+};
+void bfs(int i, int j) {
+	queue<Node> q;
+	q.push({ i,j,l,r });
+	while (!q.empty()) {
+		Node cur = q.front();
+		q.pop();
+		i = cur.i; j = cur.j;
+		l = cur.l; r = cur.r;
+		if (visited[i][j]) continue;
+		ans++;
+		visited[i][j] = 1;
+
+		int ti = i;
+		while (true) {
+			if (ti < n - 1 && !mapp[ti + 1][j]) q.push({ ++ti, j, l, r });
+			else break;
+		}
+		ti = i;
+		while (true) {
+			if (ti > 0 && !mapp[ti - 1][j]) q.push({ --ti, j, l, r });
+			else break;
+		}
+
+		if (r && j < m - 1 && !mapp[i][j + 1]) q.push({ i, j + 1, l, r - 1 });
+		if (l && j > 0 && !mapp[i][j - 1]) q.push({ i, j - 1, l - 1, r });	
+	}
+}
+int main() {
+	int si, sj;
+
+	cin >> n >> m;
+	cin >> l >> r;
+	for (int i = 0; i < n; i++) {
+		string s; cin >> s;
+		for (int j = 0; j < m; j++) {
+			mapp[i][j] = s[j] - '0';
+			if (mapp[i][j] == 2) {
+				si = i; sj = j;
+			}
+		}
+	}
+	bfs(si, sj);
+	cout << ans << endl;
+}

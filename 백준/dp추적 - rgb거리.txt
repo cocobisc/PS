@@ -1,0 +1,40 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+const int INF = 1e9;
+int cost[1000][3], dp[1001][4], n;
+
+int rgb(int pos, int prev = 3) {
+	int& ret = dp[pos][prev];
+	if (ret != -1) return ret;
+	if (pos == n) return 0;
+	ret = INF;
+	for (int i = 0; i < 3; i++) {
+		if (i != prev)
+			ret = min(ret, rgb(pos + 1, i) + cost[pos][i]);
+	}
+	return ret;
+}
+
+void printpos(int pos, int prev = 3) {
+	if (pos == n) return;
+	for (int i = 0; i < 3; i++) {
+		if (i != prev && rgb(pos + 1, i) + cost[pos][i] == rgb(pos, prev)) {
+			cout << i << endl;
+			printpos(pos + 1, i);
+		}
+	}
+	
+}
+
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < 3; j++) cin >> cost[i][j];
+	}
+	memset(dp, -1, sizeof(dp));
+	rgb(0);
+	printpos(0);
+}

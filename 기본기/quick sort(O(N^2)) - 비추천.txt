@@ -1,0 +1,30 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstdio>
+using namespace std;
+//Quick Sort
+int n, arr[1000000];
+
+void swap(int &a, int &b) {
+	int t = a;
+	a = b;
+	b = t;
+}
+void sorting(int left, int right) {
+	int pivot = left;
+	int i = left + 1, j = right;
+	while (i <= j) {
+		while (i <= right && arr[pivot] >= arr[i]) i++;
+		while (left < j && arr[pivot] <= arr[j]) j--;
+		if (i <= j) swap(arr[i], arr[j]);
+	}
+	swap(arr[pivot], arr[j]);
+	if(left < j - 1) sorting(left, j - 1);
+	if(j + 1 < right) sorting(j + 1, right);
+}
+
+int main() {
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+	sorting(0, n - 1);
+	for (int i = 0; i < n; i++) printf("%d\n", arr[i]);
+}

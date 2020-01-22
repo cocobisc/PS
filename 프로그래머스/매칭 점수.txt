@@ -1,0 +1,47 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <map>
+using namespace std;
+
+class constraint {
+public:
+	int a, b, type, v;
+
+	void init(string & s, map<char, int> & mapping)
+	{
+		a = mapping[s[0]];
+		b = mapping[s[2]];
+		if (s[3] == '=') type = 0;
+		else if (s[3] == '<') type = 1;
+		else if (s[3] == '>') type = 2;
+		v = s[4] - '0' + 1;
+	}
+};
+
+int solution(int n, vector<string> data) {
+	string ss = "ACFJMNRT";
+	map<char, int> mapping;
+	for (int i = 0; i < ss.size(); i++) mapping[ss[i]] = i;
+	int answer = 0;
+	vector<constraint> cont;
+	for (auto & s : data) {
+		constraint now; now.init(s, mapping);
+		cont.push_back(now);
+	}
+	vector<int> a(ss.size()); for (int i = 0; i < ss.size(); i++) a[i] = i;
+	do {
+		bool isSat = true;
+		for (auto & c : cont) {
+			int diff = abs(a[c.a] - a[c.b]);
+			if (c.type == 0 && diff != c.v) isSat = false;
+			if (c.type == 1 && diff >= c.v) isSat = false;
+			if (c.type == 2 && diff <= c.v) isSat = false;
+			if (!isSat) break;
+		}
+		if (isSat) answer++;
+	} while (next_permutation(a.begin(), a.end()));
+	return answer;
+}

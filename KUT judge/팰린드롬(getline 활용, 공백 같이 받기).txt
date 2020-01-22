@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <string>
+#include <cmath>
+
+using namespace std;
+string t;
+
+int main() {
+	getline(cin, t);
+	int n = atoi(t.c_str());
+	while(n--) {
+		string s, rs;
+		string a, b;
+		bool flag = false;
+		getline(cin, s);
+		rs = s;
+		reverse(rs.begin(), rs.end());
+		for (int i = 0; i < s.size(); i++) {
+			if (isalpha(s[i])) a.push_back(tolower(s[i]));
+			if (isalpha(rs[i])) b.push_back(tolower(rs[i]));
+		}
+		for (int i = 0; i < a.size(); i++) {
+			if (a[i] != b[i]) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag) cout << "false" << endl;
+		else cout << "true" << endl;
+	}
+
+	
+	return 0;
+}

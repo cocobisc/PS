@@ -1,0 +1,44 @@
+#include <iostream>
+#include <cmath>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+int solution(string str1, string str2) {
+	vector<string> s1, s2;
+	string str1_t, str2_t;
+	transform(str1.begin(), str1.end(), str1.begin(), ::tolower);
+	transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
+	int gyo = 0, hap = 0;
+	set<string> se;
+	for (int i = 0; i < str1.size() - 1; i++) {
+		if (!isalpha(str1[i]) || !isalpha(str1[i + 1])) continue;
+		string t;
+		t += str1[i];
+		t += str1[i + 1];
+		s1.push_back(t);
+		se.insert(t);
+	}
+	for (int i = 0; i < str2.size() - 1; i++) {
+		if (!isalpha(str2[i]) || !isalpha(str2[i + 1])) continue;
+		string t;
+		t += str2[i];
+		t += str2[i + 1];
+		s2.push_back(t);
+		se.insert(t);
+	}
+	
+	for (auto &it : se) {
+		int a = count(s1.begin(), s1.end(), it);
+		int b = count(s2.begin(), s2.end(), it);
+		gyo += min(a, b);
+		hap += max(a, b);
+	}
+	int ans;
+	if (hap == 0) ans = 65536;
+	else ans = (double)gyo / hap * 65536;
+	
+	return ans;
+}

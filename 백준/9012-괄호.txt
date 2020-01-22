@@ -1,0 +1,18 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int n, k;
+string s;
+int main() {
+	for (cin >> n; n--;) {
+		cin >> s;
+		k = 0;
+		for (auto &c : s) {
+			if (c == '(') k++;
+			else k--;
+			if (k < 0) break;
+		}
+		if (k) cout << "NO\n";
+		else cout << "YES\n";
+	}
+}

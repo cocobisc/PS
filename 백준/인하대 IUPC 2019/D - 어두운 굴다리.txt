@@ -1,0 +1,26 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>
+const int MAX = 2e5;
+using namespace std;
+char mapp[5][5];
+int visited[5][5];
+int mi = 1e9, ma = 1e9 * -1, result;
+int n, m;
+int loc[100000];
+vector<int> v;
+int main() {
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) cin >> loc[i];
+	v.push_back(loc[0]);
+	for (int i = 1; i < m; i++) {
+		int n = loc[i] - loc[i - 1];
+		if(n%2) v.push_back(n / 2 + 1);
+		else v.push_back(n / 2);
+	}
+	v.push_back(n - loc[m - 1]);
+	sort(v.begin(), v.end(), greater<int>());
+	cout << v[0] << endl;
+}

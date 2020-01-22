@@ -1,0 +1,45 @@
+// 함수 호출 되기 전에 끊는것이 매우 중요!!
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+#include <string.h>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n, m;
+int hack[10001];
+int isvisited[10001];
+int com[10001];
+vector<vector<int>> v;
+int cnt = 0;
+void find(int num) {
+	cnt++;
+	isvisited[num] = 1;
+	for (int i = 0; i < v[num].size(); i++) {
+		if (!isvisited[v[num][i]]) {
+			isvisited[v[num][i]] = 1;
+			find(v[num][i]);
+		}
+	}
+}
+int main() {
+	scanf("%d %d", &n, &m);
+	v.resize(10001);
+	for (int i = 0; i < m; i++) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		v[b].push_back(a);
+	}
+	int max = 0;
+	for (int i = 1; i <= n; i++) {
+		memset(isvisited, false, sizeof(isvisited));
+		find(i);
+		com[i] = cnt;
+		if (com[i] != 0 && max < com[i]) max = com[i];
+		cnt = 0;
+	}
+	for (int i = 1; i <= n; i++) {
+		if (com[i] == max) printf("%d ", i);
+	}
+}

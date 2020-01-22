@@ -1,0 +1,43 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstdio>
+#include <queue>
+using namespace std;
+int dir[4][2] = { {0,1}, {0,-1}, {1,0}, {-1,0} };
+int main() {
+	int T; scanf("%d", &T);
+	while (T--) {
+		int bachu[51][51] = { 0, };
+		int visited[51][51] = { 0, };
+		int r, c; scanf("%d %d", &c, &r);
+		int k; scanf("%d", &k);
+		int ans = 0;
+		for (int i = 0; i < k; i++) {
+			int a, b; scanf("%d %d", &a, &b);
+			bachu[b][a] = 1;
+		}
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) {
+				if (bachu[i][j] && !visited[i][j]) {
+					queue<pair<int, int>> q;
+					q.push({ j,i });
+					visited[i][j] = true;
+					while (!q.empty()) {
+						pair<int, int> check = q.front();
+						int x = check.first, y = check.second;
+						q.pop();
+						for (int l = 0; l < 4; l++) {
+							int _x = x + dir[l][0];
+							int _y = y + dir[l][1];
+							if (_x >= 0 && _y >= 0 && _y < r && _x < c && !visited[_y][_x] && bachu[_y][_x]) {
+								visited[_y][_x] = true;
+								q.push({ _x, _y });
+							}
+						}
+					}
+					ans += 1;
+				}
+			}
+		}
+		printf("%d\n", ans);
+	}
+}

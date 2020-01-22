@@ -1,0 +1,39 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <cstring>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int main() {
+	int n, m;
+	cin >> n;
+	for (; n--;) {
+		cin >> m;
+		int base, acc = 0;
+		char res[10];
+		int i = 0;
+		int idx;
+		int k;
+
+		for (; acc < m && i < 8; i++) {
+			base = acc;
+			acc += (i + 1) * 9 * (int)pow(10, i);
+		}
+		if (i == 8 && acc < m) {
+			base = acc;
+			i++;
+		}
+
+		
+
+		idx = (m - (base + 1)) % i;
+		k = (m - (base + 1)) / i + (int)pow(10, i - 1);
+
+		sprintf_s(res, "%d", k);
+		cout << res[idx] << endl;
+	}
+	return 0;
+}

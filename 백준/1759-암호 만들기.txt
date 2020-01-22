@@ -1,0 +1,44 @@
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <vector>
+using namespace std;
+
+char k[17];
+int l, c;
+char a[5] = { 'a', 'e', 'i', 'o', 'u' };
+vector<char> v;
+
+bool checka() {
+	int cnt = 0;
+	for (int i = 0; i < v.size(); i++) {
+		for (int j = 0; j < 5; j++) {
+			if (v[i] == a[j]) {
+				cnt++;
+				break;
+			}
+		}
+	}
+	if (cnt < 1 || cnt > l - 2) return false;
+	return true;
+}
+void dfs(int start, int cnt) {
+	if (cnt == l) {
+		if (checka()) {
+			for (int i = 0; i < l; i++) printf("%c", v[i]);
+			cout << endl;
+		}
+		return;
+	}
+	for (int i = start + 1; i <= c; i++) {
+		v.push_back(k[i - 1]);
+		dfs(i, cnt + 1);
+		v.pop_back();
+	}
+}
+int main() {
+	cin >> l >> c;
+	for (int i = 0; i < c; i++) cin >> k[i];
+	sort(k, k + c);
+	dfs(0, 0);
+}

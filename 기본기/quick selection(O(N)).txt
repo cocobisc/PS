@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+//Quick Selection
+int n, k, arr[5000000];
+
+void swap(int &a, int &b) {
+	int t = a;
+	a = b;
+	b = t;
+}
+int quickSelect(int left, int right) {
+	int pivot = left;
+	int i = left + 1, j = right;
+	while (i <= j) {
+		while (i <= right && arr[pivot] >= arr[i]) i++;
+		while (left < j && arr[pivot] <= arr[j]) j--;
+		if (i <= j) swap(arr[i], arr[j]);
+	}
+	swap(arr[pivot], arr[j]);
+	if (j == k) return arr[k];
+	else if(j > k) quickSelect(left, j - 1);
+	else if(j < k) quickSelect(j + 1, right);
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	cin >> n >> k;
+	for (int i = 0; i < n; i++) cin >> arr[i];
+	k--;
+	int ans = quickSelect(0, n - 1);
+	cout << ans;
+}

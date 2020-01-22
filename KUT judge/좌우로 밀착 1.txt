@@ -1,0 +1,36 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+using namespace std;
+int arr[100][100];
+int main() {
+	int t; cin >> t;
+	while (t--) {
+		int r, c;
+		cin >> r >> c;
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) cin >> arr[i][j];
+		}
+		vector<vector<int>>vr(r), vc(r);
+		for (int i = 0; i < r; i++) {
+			vr[i].resize(c);
+			vc[i].resize(c);
+		}
+		for (int i = 0; i < r; i++) {
+			int idx = 0;
+			for (int j = 0; j < c; j++) {
+				if (arr[i][j]) vr[i][idx++] = arr[i][j];
+			}
+		}
+		for (int i = 0; i < c; i++) {
+			int idx = 0;
+			for (int j = 0; j < r; j++) {
+				if (vr[j][i]) vc[idx++][i] = vr[j][i];
+			}
+		}
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) cout << vc[i][j] << " ";
+			cout << "\n";
+		}
+	}
+}

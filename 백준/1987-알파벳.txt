@@ -1,0 +1,28 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int visited[26], r, c;
+int ans = 0;
+string str[20];
+
+void dfs(int x, int y, int cnt) {
+	int alpha = str[y][x] -'A';
+	if (visited[alpha]) {
+		if (ans < cnt) ans = cnt;
+		return;
+	}
+	visited[alpha] = true;
+	cnt++;
+	if(x < c - 1) dfs(x + 1, y, cnt);
+	if (x > 0) dfs(x - 1, y, cnt);
+	if(y < r - 1) dfs(x, y + 1, cnt);
+	if (y > 0) dfs(x, y - 1, cnt);
+	visited[alpha] = false;
+	cnt--;
+}
+int main() {
+	cin >> r >> c;
+	for (int i = 0; i < r; i++) cin >> str[i];
+	dfs(0, 0, 0);
+	cout << ans;
+}

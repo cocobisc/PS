@@ -1,0 +1,21 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<cstdio>
+int main() {
+	int t; scanf("%d",&t);
+	while (t--) {
+		int b[32];
+		int a;  scanf("%d", &a);
+		if (a == 0) {
+			printf("-1\n");
+			continue;
+		}
+		int cnt=0, idx=0, i=0;
+		while (a > 0) {
+			if (a % 2) b[idx++] = cnt;
+			a /= 2;
+			cnt++;
+		}
+		for (; i < idx - 1; i++) printf("%d ", b[i]);
+		printf("%d\n", b[i]);
+	}
+}

@@ -1,0 +1,20 @@
+python itertools
+
+    product() => 중복 순열
+itertools.product('ABCD', repeat=2)
+# 결과: AA AB AC AD BA BB BC BD CA CB CC CD DA DB DC DD
+
+    permutations() => 순열
+itertoolspermutations('ABCD', 2)
+# 결과: AB AC AD BA BC BD CA CB CD DA DB DC
+
+
+
+    combinations() => 조합
+itertools.combinations('ABCD', 2)
+# 결과: AB AC AD BC BD CD
+
+
+    combinations_with_replacement() => 중복 조합
+itertools.combinations_with_replacement('ABCD', 2)
+# 결과: AA AB AC AD BB BC BD CC CD DD

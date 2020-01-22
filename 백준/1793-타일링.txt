@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+string dp[251] = { "1", "1" };
+int n;
+
+string strplus(string a, string b) {
+	int sum = 0;
+	string ret;
+	while (!a.empty() || !b.empty() || sum) { //sum은 마지막 시행 후 추가될 때
+		if (!a.empty()) sum += a.back() - '0', a.pop_back();
+		if (!b.empty()) sum += b.back() - '0', b.pop_back();
+		ret.push_back(sum % 10 + '0');
+		sum /= 10;
+		
+	}
+	reverse(ret.begin(), ret.end());
+	return ret;
+}
+int main() {
+	for (int i = 2; i < 251; i++) dp[i] = strplus(strplus(dp[i - 2], dp[i - 2]), dp[i - 1]);
+	
+	return 0;
+}

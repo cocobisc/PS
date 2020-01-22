@@ -1,0 +1,18 @@
+#include <cstdio>
+#include <cmath>
+int n;
+bool flag;
+int main() {
+	scanf("%d", &n);
+	if (n < 2) flag = true;
+	else {
+		for (int i = 2; i <= sqrt(n); i++) {
+			if (n%i == 0) {
+				flag = true;
+				break;
+			}
+		}
+	}
+	if (flag) printf("not prime");
+	else printf("prime");
+}

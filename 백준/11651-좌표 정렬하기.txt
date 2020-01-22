@@ -1,0 +1,28 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int n;
+
+typedef struct point {
+	int x, y;
+}p;
+bool cmp(p a, p b) {
+	if (a.y != b.y) return a.y < b.y;
+	else return a.x < b.x;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	cin >> n;
+	p pa[100000];
+	for (int i = 0; i < n; i++) {
+		int x, y;
+		cin >> pa[i].x >> pa[i].y;
+	}
+	sort(pa, pa + n, cmp);
+	for (int i = 0; i < n; i++) cout << pa[i].x << " " << pa[i].y << '\n';
+}

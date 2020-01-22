@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+#define MAX 501
+typedef unsigned long long ull;
+using namespace std;
+void print(vector<int>& v) {
+	for (auto i : v) cout << i << " ";
+	cout << endl;
+}
+void combination(int n, vector<int>& v, int toN, int N) {
+	if (!toN) print(v);
+	int biggest = v.empty() ? N : v.back() - 1;
+	for (int i = biggest; i >= 0; i--) {
+		v.push_back(i);
+		combination(n, v, toN - 1, N);
+		v.pop_back();
+	}
+}
+int main() {
+	vector<int> v;
+	int n, toN, N;
+	cin >> n >> toN;
+	N = n;
+	combination(n, v, toN, N);
+}

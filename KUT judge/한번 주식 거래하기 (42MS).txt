@@ -1,0 +1,26 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <string>
+#include <vector>
+#define MAX 501
+#define MIN 1000001
+#define swap(a,b) {char temp = a; a = b; b = temp;}
+typedef unsigned long long ull;
+using namespace std;
+int n, i;
+int main() {
+	cin >> n;
+	int arr[10001], max = 0;
+	for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+	for (int i = 0; i < n - 1; i++) {
+		int tmax = 0;
+		for (int j = n - 1; j > i; j--) {
+			if (arr[j] > tmax) tmax = arr[j];
+		}
+		if (tmax - arr[i] > max) max = tmax - arr[i];
+	}
+	cout << max << endl;
+	return 0;
+}

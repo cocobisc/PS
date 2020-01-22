@@ -1,0 +1,48 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int num;
+int main() {
+	cin >> num;
+	for (; num--;) {
+		int n, max = 0, min = 9999999999, minidx, maxidx;
+		int arr[201], start;
+		bool flag1 = false, flag2 = false;
+		cin >> n;
+		for (int i = 1; i <= n; i++) {
+			cin >> arr[i];
+			if (arr[i] == 1) start = i;
+		}
+		if (n == 1) {
+			cout << "YES" << endl;
+			continue;
+		}
+		for (int i = 1; i < n; i++) {
+			int next;
+			if (start == n) next = 1;
+			else next = start + 1;
+			if (arr[start] + 1 != arr[next]) {
+				flag1 = true;
+				break;
+			}
+			start = next;
+		}
+		for (int i = 1; i < n; i++) {
+			int next;
+			if (start == 1) next = n;
+			else next = start - 1;
+			if (arr[start] + 1 != arr[next]) {
+				flag2 = true;
+				break;
+			}
+			start = next;
+		}
+		
+		if(flag1 && flag2) cout << "NO" << endl;
+		else cout << "YES" << endl;
+	}
+
+
+	return 0;
+}

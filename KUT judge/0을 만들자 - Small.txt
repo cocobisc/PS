@@ -1,0 +1,40 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <cstring>
+#include <vector>
+#include <cmath>
+#include <cstdio>
+using namespace std;
+int main() {
+	int n, cnt = 0;
+	cin >> n;
+	vector<int> v;
+	for (int i = 0; i < n; i++) {
+		int t;
+		cin >> t;
+		v.push_back(t);
+	}
+	if (v.size() < 3) {
+		cout << 0 << endl;
+		return 0;
+	}
+	int comp1 = v[0];
+	for (int i = 0; i < n; i++) {
+		int comp2 = v[i + 1];
+		if (i != 0 && comp1 == v[i]) continue;
+		if (v[i] > 0) break;
+		for (int j = i + 1; j < n; j++) {
+			if (j != i + 1 && comp2 == v[j]) continue;
+			int r = (v[i] + v[j]) * -1;
+			int idx = lower_bound(v.begin() + j + 1, v.end(), r) - v.begin();
+			if (idx == n) continue;
+			if (v[idx] == r) cnt++;
+			comp2 = v[j];
+		}
+		comp1 = v[i];
+	}
+	cout << cnt << endl;
+	return 0;
+}

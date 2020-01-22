@@ -1,0 +1,41 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n;
+vector<pair<int, int>> v;
+vector<pair<int, int>> answer;
+
+bool cmp(pair<int, int>a, pair<int, int>b) { return a.first < b.first; }
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		pair<int, int>m (a, b);
+		v.push_back(m);
+	}
+	sort(v.begin(), v.end(), cmp);
+	answer.push_back(v[0]);
+	int idx = 0;
+	for (int i = 1; i < v.size(); i++) {
+		if (answer[idx].second > v[i].first) {
+			int f = answer[idx].first < v[i].first ? answer[idx].first : v[i].first;
+			int s = answer[idx].second > v[i].second ? answer[idx].second : v[i].second;
+			answer.pop_back();
+			answer.push_back(make_pair(f, s));
+		}
+		else {
+			answer.push_back(v[i]);
+			idx++;
+		}
+	}
+	int sum = 0;
+	for (int i = 0; i < answer.size(); i++) {
+		sum += answer[i].second - answer[i].first;
+	}
+	cout << sum << endl;
+
+}

@@ -1,0 +1,30 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+#define MAX 501
+#define swap(a,b) {char temp = a; a = b; b = temp;}
+typedef unsigned long long ull;
+using namespace std;
+int n;
+
+void permutation(char* s, int start) {
+	if (start == n) {
+		cout << s << endl;
+		return;
+	}
+	for (int i = start; i < n; i++) {
+		swap(s[start], s[i]);
+		permutation(s, start + 1);
+		swap(s[start], s[i]);
+	}
+}
+int main() {
+	int to;
+	cin >> n >> to;
+	char *s = new char[n+1];
+	cin >> s;
+	permutation(s, 0);
+	delete(s);
+	return 0;
+}

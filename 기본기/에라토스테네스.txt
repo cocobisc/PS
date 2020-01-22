@@ -1,0 +1,6 @@
+void era() {
+	for (int i = 2; i * i <= 123456*2; i++) {
+		if (!p[i])
+			for (int j = i * i; j <= 123456*2; j += i) p[j] = 1;
+	}
+}

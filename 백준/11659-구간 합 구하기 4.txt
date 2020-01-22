@@ -1,0 +1,15 @@
+#include <cstdio>
+const int MAX = 1e5+2;
+int arr[MAX], dp[MAX];
+int main() {
+	int n, m; scanf("%d %d", &n, &m);
+	scanf("%d", &arr[1]); dp[1] = arr[1];
+	for (int i = 2; i <= n; i++) {
+		scanf("%d", &arr[i]);
+		dp[i] = dp[i - 1] + arr[i];
+	}
+	for (int i = 0; i < m; i++) {
+		int a, b; scanf("%d %d", &a, &b);
+		printf("%d\n", dp[b] - dp[a - 1]);
+	}
+}

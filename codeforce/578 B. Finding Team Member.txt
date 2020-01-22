@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define SIZE 1000
+using namespace std;
+
+struct p {
+	int x, y, data;
+}arr[SIZE*SIZE];
+
+bool cmp(p a, p b) { return a.data > b.data; }
+
+int main() {
+	int n, k = 0;
+	bool flag[SIZE];
+	int ret[SIZE];
+	cin >> n;
+	memset(flag, false, sizeof(flag));
+	for (int i = 2; i <= 2 * n; i++) {
+		for (int j = 1; j < i; j++) {
+			arr[k].x = i;
+			arr[k].y = j;
+			cin >> arr[k].data;
+			k++;
+		}
+	}
+	sort(arr, arr + k, cmp);
+	for (int i = 0; i < k; i++) {
+		if (!flag[arr[i].x] && !flag[arr[i].y]) {
+			flag[arr[i].x] = true;
+			flag[arr[i].y] = true;
+			ret[arr[i].x] = arr[i].y;
+			ret[arr[i].y] = arr[i].x;
+		}
+	}
+	for (int i = 1; i < 2 * n; i++) cout << ret[i] << " ";
+	cout << ret[2 * n] << endl;
+}

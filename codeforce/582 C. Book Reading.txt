@@ -1,0 +1,23 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#define min(a,b) (a<b?a:b)
+typedef unsigned long long ull;
+using namespace std;
+
+int main() {
+	int t; cin >> t;
+	while (t--) {
+		ull n, m;
+		ull arr[10] = { 0, }, s = 0;
+		cin >> n >> m;
+		for (int i = 0; i < 10; i++) {
+			arr[i] = ((m % 100) * (i + 1)) % 10;
+			s += arr[i];
+		}
+		
+		ull sum = s * (n / m / 10);
+		for (int i = 0; i < (n / m) % 10; i++) sum += arr[i];
+		cout << sum << '\n';
+	}
+	
+}

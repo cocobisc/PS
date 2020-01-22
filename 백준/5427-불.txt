@@ -1,0 +1,50 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+using namespace std;
+const int MAX = 2e9;
+char m[1002][1002];
+int v[1002][1002];
+int dir[4][2] = { {0,1},{0,-1},{1,0},{-1,0} };
+struct N { int x, y, a; };
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int r, c; cin >> c >> r;
+		int sx, sy;
+		queue<N>q;
+		for (int i = 0; i <= r + 1; i++) for (int j = 0; j <= c + 1; j++) v[i][j] = 0;
+		for (int i = 1; i <= r; i++) {
+			for (int j = 1; j <= c; j++) {
+				cin >> m[i][j];
+				if (m[i][j] == '@') {
+					sx = j, sy = i;
+				}
+				else if (m[i][j] == '*') {
+					q.push({ j,i,0 }); v[i][j] = 1;
+				}
+			}
+		}
+		q.push({ sx,sy,1 });
+		v[sy][sx] = 1;
+
+		int f = 0;
+		while (!q.empty()) {
+			int x = q.front().x, y = q.front().y, a = q.front().a;
+			q.pop();
+			for (int i = 0; i < 4; i++) {
+				int nx = x + dir[i][0];
+				int ny = y + dir[i][1];
+				if (a && (nx == 0 || nx == c + 1 || ny == 0 || ny == r + 1)) {
+					cout << a << '\n'; f = 1; break;
+				}
+				if (nx > 0 && nx <= c && ny > 0 && ny <= r && !v[ny][nx] && m[ny][nx] == '.') {
+					q.push({ nx,ny,(a ? a + 1 : 0) });
+					v[ny][nx] = 1;
+				}
+			}
+			if (f) break;
+		}
+		if (!f) cout << "IMPOSSIBLE" << '\n';
+	}
+}

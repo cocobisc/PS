@@ -1,0 +1,41 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#define MOD 123456789
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int m, n;
+vector<int> v;
+
+int possible(int div) {
+	int cnt = 0;
+	for (int i = 0; i < n; i++) {
+		cnt += v[i] / div;
+	}
+	if (cnt >= m) return true;
+	return false;
+}
+int main() {
+	cin >> m >> n;
+	for (int i = 0; i < n; i++) {
+		int a;
+		cin >> a;
+		v.push_back(a);
+	}
+	sort(v.begin(), v.end());
+	int left = 1, right = v[v.size() - 1];
+	int answer = 0;
+	while (left <= right) {
+		int mid = (left + right) / 2;
+		if (possible(mid)) {
+			answer = mid;
+			left = mid + 1;
+		}
+		else right = mid - 1;
+	}
+	cout << answer << endl;
+	return 0;
+}

@@ -1,0 +1,26 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#include <string>
+#define MOD 123456789
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int dp[4001][4001];
+int ans;
+
+int main() {
+	string a, b;
+	cin >> a >> b;
+	for (int i = 1; i <= a.size(); i++) {
+		for (int j = 1; j <= b.size(); j++) {
+			if (a[i - 1] == b[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
+			if (dp[i][j] > ans) ans = dp[i][j];
+		}
+	}
+	cout << ans << endl;
+	
+	return 0;
+}

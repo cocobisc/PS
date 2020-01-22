@@ -1,0 +1,65 @@
+#define _CRT_SECURE_NO_WARNINGS
+// #include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#include <string>
+#define MOD 123456789
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n, m;
+vector<pair<int, int>> me;
+vector<pair<int, int>> enemy;
+vector<string> logg;
+
+bool checkmodok() {
+	int state[9] = { 0, };
+	for (int i = 0; i < n; i++) state[me[i].second] = 1;
+	for (int i = 0; i < m; i++) state[enemy[i].second] = 1;
+	bool zerostate = false;
+
+	if (state[1] == 0) return false;
+	for (int i = 2; i < 8; i++) {
+		if (zerostate && state[i] == 1) return false;
+		if (state[i] == false) zerostate = true;
+	}
+	return true;
+}
+
+int main() {
+	cin >> n >> m;
+	int a, b;
+	for (int i = 0; i < n; i++) {
+		cin >> a >> b;
+		me.push_back({ a, b });
+	}
+	for (int i = 0; i < m; i++) {
+		cin >> a >> b;
+		enemy.push_back({ a, b });
+	}
+	if (n == 0 || m == 0) {
+		cout << 0 << endl;
+		return 0;
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			enemy[j].second -= me[i].first;
+			me[i].second -= me[i].first;
+			logg.push_back("attack " + to_string(i + 1) + " " + to_string(j + 1));
+			if (checkmodok()) {
+				logg.push_back("use modok");
+				cout << 2 << endl;
+				cout << logg[0] << endl;
+				cout << logg[1] << endl;
+				return 0;
+			}
+			enemy[j].second += me[i].first;
+			me[i].second += me[i].first;
+			logg.pop_back();
+		}
+	}
+	cout << -1 << endl;
+
+	return 0;
+}

@@ -1,0 +1,28 @@
+int main() {
+	int N, M, i, j;
+	scanf("%d %d", &N, &M);
+	for (i = 0; i < N; i++) scanf("%s", in[i]);
+
+	int ans = 0;
+	for (i = 0; i < N; i++) {
+		for (j = 0; j < M; j++) {
+			int x = N - 1 - i, y = M - 1 - j;
+			if (pii(i, j) > pii(x, y)) break;
+
+			char c1 = in[i][j], c2 = in[x][y];
+			if (c1 == '6' && c2 == '9');
+			else if (c1 == '9' && c2 == '6');
+			else if (c1 == '8' && c2 == '8');
+			else if (c1 == '6' && c2 == '6') ans++;
+			else if (c1 == '9' && c2 == '9') ans++;
+			else if (c1 == '7' && c2 == '7') ans++;
+			else return !printf("-1\n");
+		}
+		if (j < M) break;
+	}
+
+	if (N % 2 == 1 && M % 2 == 1) {
+		if (in[N / 2][M / 2] != '8') return !printf("-1\n");
+	}
+	return !printf("%d\n", ans);
+}

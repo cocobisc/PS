@@ -1,0 +1,36 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+int node[501][501];
+int main() {
+	int T;cin>>T;
+	while (T--){
+		int n; cin >> n;
+		for (int i = 0; i <= n; i++) {
+			memset(node[i], 0, sizeof(node[i]));
+		}
+		string s[501];
+		s[0] = "0000";
+		int ans = 0;
+		for (int i = 1; i <= n; i++) cin >> s[i];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i == j) continue;
+				int sum = 0;
+				for (int k = 0; k < 4; k++) {
+					int sub1 = s[i][k] - s[j][k];
+					int sub2 = s[j][k] - s[i][k];
+					if (sub1 < 0) sub1 += 10;
+					else sub2 += 10;
+					sum += sub1 < sub2 ? sub1 : sub2;
+				}
+				node[i][j] = sum;
+			}
+			sort(node[i], node[i] + n);
+			ans += node[i][1];
+		}
+		cout << ans << '\n';
+	}
+}

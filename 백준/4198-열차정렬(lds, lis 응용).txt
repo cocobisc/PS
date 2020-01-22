@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n, arr[2000];
+
+vector<int> lis, lds;
+int lds_fx(int x) {
+	if (lds.empty()) return 0;
+	int le = 0, ri = lds.size() - 1;
+	while (le <= ri) {
+		int mid = le + ri >> 1;
+		if (lds[mid] > x) le = mid + 1;
+		else ri = mid - 1;
+	}
+	return le;
+}
+int main() {
+	int n; cin >> n;
+	int ans = 0;
+	for (int i = 0; i < n; i++) cin >> arr[i];
+	for (int i = 0; i < n; i++) {
+		lis.clear(), lds.clear();
+		lis.push_back(arr[i]);
+		lds.push_back(arr[i]);
+		for (int j = i + 1; j < n; j++) {
+			int idx = lower_bound(lis.begin(), lis.end(), arr[j]) - lis.begin();
+			if (idx == 0) continue;
+			if (idx == lis.size()) lis.push_back(arr[j]);
+			else lis[idx] = arr[j];
+		}
+		for (int j = i + 1; j < n; j++) {
+			int idx = lds_fx(arr[j]);
+			if (idx == 0) continue;
+			if (idx == lds.size()) lds.push_back(arr[j]);
+			else lds[idx] = arr[j];
+		}
+		ans = max(ans, (int)lis.size() + (int)lds.size() - 1);
+	}
+	cout << ans;
+}

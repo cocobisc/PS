@@ -1,0 +1,22 @@
+#include <iostream>
+__inline int max(int a, int b) {return a > b ? a : b;}
+using namespace std;
+int sum, n;
+int day[16];
+int fee[16];
+
+void dfs(int d, int r) {
+	if (d > n) {
+		sum = max(sum, r);
+		return;
+	}
+	else 
+		if (d + day[d] <= n + 1) dfs(d + day[d], r + fee[d]);
+	dfs(d + 1, r);
+}
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) cin >> day[i + 1] >> fee[i + 1];
+	dfs(1, 0);
+	cout << sum << endl;
+}

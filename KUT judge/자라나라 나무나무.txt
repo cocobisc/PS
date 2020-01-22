@@ -1,0 +1,22 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstdio>
+#include <vector>
+using namespace std;
+int n;
+vector<int> v;
+int main() {
+	scanf("%d", &n);
+	
+	while (n > 0) {
+		int k = 1, day = 2;
+		do {
+			day++;
+			k <<= 1;
+		} while (k <= n);
+		v.push_back(day - 1);
+		n -= k / 2;
+	}
+	printf("%d\n", v.size());
+	for (int i = 0; i < v.size(); i++) printf("%d\n", v[0] - v[i] + 1);
+	printf("%d\n", v[0]);
+}

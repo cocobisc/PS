@@ -1,0 +1,28 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+#define MAX 501
+typedef unsigned long long ull;
+using namespace std;
+void print(vector<int>& v) {
+	for (auto i : v) cout << i << " ";
+	cout << endl;
+}
+void permutation(int n, vector<int>& v, int toN) {
+	if (!toN) {
+		print(v);
+		return;
+	}
+	for (int i = 0; i < n; i++) {
+		v.push_back(i);
+		permutation(n, v, toN - 1);
+		v.pop_back();
+	}
+}
+int main() {
+	vector<int> v;
+	int n, toN;
+	cin >> n >> toN;
+	permutation(n, v, toN);
+}

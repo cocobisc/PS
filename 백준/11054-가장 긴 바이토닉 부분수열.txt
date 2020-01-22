@@ -1,0 +1,35 @@
+//11054 가장 긴 바이토닉 부분 수열
+//LIS X 2 => DP
+#include <cstdio>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int n, dp1[1000], dp2[1000];
+vector<int> arr;
+int main(void) {
+	cin >> n;
+	arr.resize(n);
+	vector<int> v;
+	for (int i = 0; i < n; i++) cin >> arr[i];
+	for (int i = 0; i < n; i++) {
+		int idx = lower_bound(v.begin(), v.end(), arr[i]) - v.begin();
+		if (idx == v.size()) v.push_back(arr[i]);
+		else v[idx] = arr[i];
+		dp1[i] = v.size();
+	}
+	v.clear();
+	reverse(arr.begin(), arr.end());
+	for (int i = 0; i < n; i++) {
+		int idx = lower_bound(v.begin(), v.end(), arr[i]) - v.begin();
+		if (idx == v.size()) v.push_back(arr[i]);
+		else v[idx] = arr[i];
+		dp2[i] = v.size();
+	}
+	int ret = 0;
+	for (int i = 0; i < n - 1; i++) {
+		ret = max(ret, dp1[i] + dp2[n - i - 1]);
+	}
+	cout << max(dp1[n - 1], ret - 1) << endl;
+	return 0;
+}

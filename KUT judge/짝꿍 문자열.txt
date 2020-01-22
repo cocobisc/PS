@@ -1,0 +1,31 @@
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
+
+__inline void swap(char& a, char& b) { char temp = a; a = b; b = temp; }
+__inline bool cmp(string a, string b) { return a == b; }
+
+int main() {
+	int n;
+	string a, b;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		bool flag = false;
+		cin >> a >> b;
+		if (a.size() != b.size()) {
+			cout << "no" << endl;
+			continue;
+		}
+		for (int i = 0; i < b.size() - 1; i++) {
+			string temp = b;
+			swap(temp.at(i), temp.at(i + 1));
+			if (cmp(a, temp) == true) {
+				cout << "yes" << endl;
+				flag = true;
+				break;
+			}
+		}
+		if (!flag) cout << "no" << endl;
+	}
+}

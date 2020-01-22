@@ -1,0 +1,19 @@
+#define	_CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int dp[1001], arr[1001], n;
+int main() {
+	int max = 0;
+	cin >> n;
+	for (int i = 1; i <= n; i++) cin >> arr[i];
+	for (int i = 1; i <= n; i++) {
+		dp[i] = arr[i];
+		for (int j = 1; j < i; j++) {
+			if (arr[j] < arr[i] && dp[i] < dp[j] + arr[i]) dp[i] = dp[j] + arr[i];
+		}
+		if(max < dp[i]) max = dp[i];
+	}
+	cout << max << endl;
+}

@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+int arr[201];
+int find(int n) {
+	if (n == arr[n]) return n;
+	else return arr[n] = find(arr[n]);
+}
+void merge(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a == b) return;
+	arr[a] = b;
+}
+int main() {
+	int n, m; cin >> n >> m;
+	for (int i = 1; i <= n; i++) arr[i] = i;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			int a; cin >> a;
+			if (a) merge(i, j);
+		}
+	}
+	int i = 1;
+	int a; cin >> a;
+	int result = find(a);
+	for (; i < m; i++) {
+		cin >> a;
+		if (find(arr[a]) != result) {
+			cout << "NO";
+			return 0;
+		}
+	}
+	cout << "YES";
+}

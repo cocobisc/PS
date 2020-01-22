@@ -1,0 +1,26 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n;
+
+int gcd(int a, int b) {
+	if (b > a) { swap(a, b); }
+	while (b > 0) {
+		int temp = a;
+		a = b;
+		b = temp % b;
+	}
+	return a;
+}
+
+int main() {
+	cin >> n;
+	for (; n--;) {
+		int a, b;
+		cin >> a >> b;
+		unsigned long long result;
+		result = (unsigned long long)a * b / gcd(a, b);
+		cout << result << endl;
+	}
+}

@@ -1,0 +1,36 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <vector>
+#define swap(a,b) {int t = a; a = b; b = t;}
+using namespace std;
+int n, m;
+int hack[10001];
+int isvisited[10001];
+int com[10001];
+vector<vector<int>> v;
+int cnt = 0;
+void find(int num) {
+	if (v[num].empty() || isvisited[num]) return;
+	cnt++; isvisited[num] = 1;
+	for (int i = 0; i < v[num].size(); i++) find(v[num][i]);
+	isvisited[num] = 0;
+}
+int main() {
+	cin >> n >> m;
+	v.resize(10001);
+	for (int i = 0; i < m; i++) {
+		int a, b;
+		cin >> a >> b;
+		v[b].push_back(a);
+	}
+	int max = 0;
+	for (int i = 1; i <= n; i++) {
+		find(i);
+		com[i] = cnt;
+		if (com[i] != 0 && max < com[i]) max = com[i];
+		cnt = 0;
+	}
+	for (int i = 1; i <= n; i++) {
+		if (com[i] == max) cout << i << " ";
+	}
+}

@@ -1,0 +1,34 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <string>
+#include <vector>
+#define MAX 501
+#define swap(a,b) {char temp = a; a = b; b = temp;}
+typedef unsigned long long ull;
+using namespace std;
+int n, i;
+
+int main() {
+	cin >> n;
+	for (; n--;) {
+		string s;
+		cin >> s;
+		int size = s.size();
+		int cnt = 1, less = 9999999;
+		char cmp = s[0];
+		for (int i = 1; i < s.size(); i++) {
+			if (cmp == s[i]) cnt++;
+			else {
+				if (size - cnt < less) less = size - cnt;
+				cnt = 1;
+				cmp = s[i];
+			}
+		}
+		if (size - cnt < less) less = size - cnt;
+		if (less == 9999999) less = 0;
+		cout << less << endl;
+	}
+	return 0;
+}
