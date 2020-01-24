@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n;
+string ans;
+
+void BT(int level, char c) {
+	if (level == n + 1) {
+		cout << ans; exit(0);
+	}
+	ans += c;
+	for (int i = 1; i <= (int)ans.size() / 2; i++) {
+		int start = ans.size() - i * 2;
+		string a = ans.substr(start , i);
+		string b = ans.substr(start + i, i);
+		if (a == b) {
+			ans.pop_back(); return;
+		}
+	}
+	for (char i = '1'; i <= '3'; i++) {
+		if (ans.back() == i) continue;
+		BT(level + 1, i);
+	}
+	ans.pop_back();
+}
+
+int main() {
+	cin >> n;
+	BT(1, '1');
+}
