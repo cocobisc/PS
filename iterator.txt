@@ -1,20 +1,20 @@
 python itertools
 
-    product() => Áßº¹ ¼ø¿­
+    product() => ì¤‘ë³µ ìˆœì—´
 itertools.product('ABCD', repeat=2)
-# °á°ú: AA AB AC AD BA BB BC BD CA CB CC CD DA DB DC DD
+# ê²°ê³¼: AA AB AC AD BA BB BC BD CA CB CC CD DA DB DC DD
 
-    permutations() => ¼ø¿­
-itertoolspermutations('ABCD', 2)
-# °á°ú: AB AC AD BA BC BD CA CB CD DA DB DC
+    permutations() => ìˆœì—´
+itertools.permutations('ABCD', 2)
+# ê²°ê³¼: AB AC AD BA BC BD CA CB CD DA DB DC
 
 
 
-    combinations() => Á¶ÇÕ
+    combinations() => ì¡°í•©
 itertools.combinations('ABCD', 2)
-# °á°ú: AB AC AD BC BD CD
+# ê²°ê³¼: AB AC AD BC BD CD
 
 
-    combinations_with_replacement() => Áßº¹ Á¶ÇÕ
+    combinations_with_replacement() => ì¤‘ë³µ ì¡°í•©
 itertools.combinations_with_replacement('ABCD', 2)
-# °á°ú: AA AB AC AD BB BC BD CC CD DD
+# ê²°ê³¼: AA AB AC AD BB BC BD CC CD DD
