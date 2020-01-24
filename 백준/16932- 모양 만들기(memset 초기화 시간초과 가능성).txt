@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[1000][1000], visited[1000][1000], siz[1000001];
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
+typedef struct {
+	int x, y;
+}loc;
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int r, c; cin >> r >> c;
+	int idx = 1, ans = 0;
+	for (int i = 0; i < r; i++) for (int j = 0; j < c; j++) cin >> arr[i][j];
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (!visited[i][j] && arr[i][j]) {
+				int cnt = 0;
+				queue<loc> q;
+				q.push({ j,i });
+				visited[i][j] = idx;
+				while (q.size()) {
+					loc cur = q.front();
+					q.pop();
+					cnt++;
+					for (int i = 0; i < 4; i++) {
+						int nx = cur.x + dx[i], ny = cur.y + dy[i];
+						if (nx >= 0 && ny >= 0 && nx < c && ny < r && !visited[ny][nx] && arr[ny][nx]) {
+							q.push({ nx, ny });
+							visited[ny][nx] = idx;
+						}
+					}
+				}
+				siz[idx] = cnt;
+				ans = max(cnt, ans);
+				idx++;
+			}
+		}
+	}
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (!arr[i][j]) {
+				int sum = 0;
+				set<int> se;
+				for (int k = 0; k < 4; k++) {
+					int nx = j + dx[k], ny = i + dy[k];
+					int area = visited[ny][nx];
+					if (nx >= 0 && ny >= 0 && nx < c && ny < r && arr[ny][nx]) {
+						if(se.find(area) == se.end())
+						sum += siz[area];
+						se.insert(area);
+					}
+				}
+				sum++;
+				ans = max(ans, sum);
+			}
+		}
+	}
+	cout << ans;
+}
