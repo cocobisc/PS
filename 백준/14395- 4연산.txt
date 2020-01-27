@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+bool one;
+
+struct loc {
+	int n;
+	string st;
+};
+
+int main() {
+	int s, t; cin >> s >> t;
+	if (s == t) return cout << 0, 0;
+	if (t == 0) return cout << "-", 0;
+
+	queue<loc> q;
+	q.push({ s,"" });
+	while (q.size()) {
+		loc cur = q.front();
+		int n = cur.n;
+		string st = cur.st;
+		q.pop();
+
+		if (n == t) return cout << st, 0;
+
+		if (n != 1 && n <= sqrt(t)) q.push({ n * n,st + "*" });
+		if (n != 2 && n + n <= t) q.push({ n + n, st + "+" });
+		if (!one) q.push({ 1,"/" }); one = 1;
+	}
+	cout << -1;
+}

@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1e6;
+int d[MAX + 1];
+vector<int> ans;
+int n;
+
+void dfs(int x, int cnt) {
+	if (cnt == d[n]) {
+		if (x == 1) {
+			for (auto i:ans) cout << i << " ";
+			exit(0);
+		}
+		else return;
+	}
+	if (x % 3 == 0) {
+		ans.push_back(x / 3); dfs(x / 3, cnt + 1);
+		ans.pop_back();
+	}
+	if (x % 2 == 0) {
+		ans.push_back(x / 2); dfs(x / 2, cnt + 1);
+		ans.pop_back();
+	}
+	ans.push_back(x - 1); dfs(x - 1, cnt + 1);
+	ans.pop_back();
+}
+int main() {
+	cin >> n;
+	memset(d, 0x3f3f3f3f, sizeof(d));
+	d[1] = 0;
+
+	for (int i = 2; i <= n; i++) {
+		d[i] = min(d[i], d[i - 1] + 1);
+		if (i % 3 == 0) d[i] = min(d[i], d[i / 3] + 1);
+		if (i % 2 == 0) d[i] = min(d[i], d[i / 2] + 1);
+	}
+	cout << d[n] << '\n';
+	ans.push_back(n);
+	dfs(n, 0);
+}
