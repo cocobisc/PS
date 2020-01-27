@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+int g[101][101];
+const int INF = 1e9;
+int main() {
+	int n, m; scanf("%d %d", &n, &m);
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++) g[i][j] = i == j ? 0 : INF;
+	for (int i = 0; i < m; i++) {
+		int a, b, c; scanf("%d %d %d", &a, &b, &c);
+		g[a][b] = min(g[a][b], c);
+	}
+
+	for (int k = 1; k <= n; k++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				g[i][j] = min(g[i][j], g[i][k] + g[k][j]);
+			}
+		}
+	}
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) printf("%d ", g[i][j] == INF ? 0 : g[i][j]);
+		puts("");
+	}
+}
