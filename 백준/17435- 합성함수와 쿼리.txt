@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 5e5;
+int d[MAX + 1][20];
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int t, n, q; cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> t;
+		d[i][0] = t;
+	}
+	for (int j = 1; j < 20; j++) {
+		for (int i = 1; i <= MAX; i++) {
+			d[i][j] = d[d[i][j - 1]][j - 1];
+		}
+	}
+	cin >> q;
+	for (int i = 0; i < q; i++) {
+		int x, a, b; cin >> a >> b;
+		x = b;
+		for (int j = 19; j >= 0; j--) {
+			if (a & (1 << j)) {
+				a -= (1 << j);
+				x = d[x][j];
+			}
+		}
+		cout << x << '\n';
+	}
+}
