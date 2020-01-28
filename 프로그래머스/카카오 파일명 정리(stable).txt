@@ -1,0 +1,32 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+vector<string> head;
+vector<int> number, idx;
+
+bool cmp(int a, int b) {
+    if(head[a] == head[b]) return number[a] < number[b];
+    return head[a] < head[b];
+}
+vector<string> solution(vector<string> files) {
+    for(int i=0;i<files.size();i++) {
+        idx.push_back(i);
+        string a, b;
+        for(int j=0;j<files[i].size();j++) {
+            if ((b.size() && !isdigit(files[i][j])) || (int)b.size() == 5) break;
+            if(!isdigit(files[i][j])) a += tolower(files[i][j]); 
+            else b += files[i][j];
+        }
+        head.push_back(a);
+        number.push_back(atoi(b.c_str()));
+    }
+    stable_sort(idx.begin(), idx.end(), cmp);
+    vector<string> ans;
+
+    for(int i=0;i<idx.size();i++) {
+        ans.push_back(files[idx[i]]);
+    }
+    return ans;
+}
