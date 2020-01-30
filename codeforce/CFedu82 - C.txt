@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		vector<int> v[26];
+		string a, b; cin >> a >> b;
+		for (int i = 0; i < a.size(); i++) {
+			v[a[i] - 'a'].push_back(i);
+		}
+		int ans = 1, f = 0, t = 0;
+		for (int i = 0; i < b.size(); i++) {
+			int k = b[i] - 'a';
+			if (v[k].empty()) {
+				cout << -1 << '\n';
+				f = 1;
+				break;
+			}
+			int idx = lower_bound(v[k].begin(), v[k].end(), t) - v[k].begin();
+			if (idx == v[k].size()) t = v[k][0] + 1, ans++;
+			else t = v[k][idx] + 1;
+		}
+		if (!f) cout << ans << '\n';
+	}
+}
