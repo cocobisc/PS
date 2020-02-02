@@ -1,0 +1,12 @@
+#include <bits/stdc++.h>
+using namespace std;
+int a[400001], k;
+int main() {
+	int q, x; cin >> q >> x;
+	while (q--) {
+		int n; cin >> n;
+		a[n%x]++;
+		while (a[k%x] > k / x) k++;
+		cout << k << '\n';
+	}
+}

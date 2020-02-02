@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+const int MAX = 3e6;
+const int MOD = 1e9 + 7;
+ll arr[MAX];
+int siz;
+
+ll sum(int L, int R, int nodeNum, int nodeL, int nodeR) {
+	if (nodeR < L || nodeL > R) return 1;
+	if (L <= nodeL && nodeR <= R) return arr[nodeNum];
+	int mid = nodeL + nodeR >> 1;
+	return sum(L, R, nodeNum * 2, nodeL, mid) * sum(L, R, nodeNum * 2 + 1, mid + 1, nodeR) % MOD;
+}
+
+void update(ll i, ll val) {
+	i += siz;
+	arr[i] = val;
+	while (i > 0) {
+		i /= 2;
+		arr[i] = arr[i * 2] * arr[i * 2 + 1] % MOD;
+	}
+}
+
+void construct(int n) {
+	for (int i = n - 1; i > 0; i--) {
+		arr[i] = arr[i * 2] * arr[i * 2 + 1] % MOD;
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	fill(arr, arr + MAX, 1);
+	int n, m, k; cin >> n >> m >> k;
+	int st = 1;
+	while (st < n) st *= 2;
+	siz = st - 1;
+	for (int i = st; i < st + n; i++) cin >> arr[i];
+	construct(st);
+	for (int i = 0; i < m + k; i++) {
+		ll a, b, c; cin >> a >> b >> c;
+		if (a == 1) update(b, c);
+		else cout << sum(b, c, 1, 1, st) << '\n';
+	}
+}

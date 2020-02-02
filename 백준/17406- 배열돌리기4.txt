@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<pair<int, int>> v;
+int arr[51][51], arr_copy[51][51];
+int n, m, k;
+
+struct Cmd {
+	int r, c, s;
+}cmd[6];
+
+int findMin() {
+	int mi = 2e9;
+	for (int i = 1; i <= n; i++) {
+		int sum = 0;
+		for (int j = 1; j <= m; j++) {
+			sum += arr[i][j];
+		}
+		mi = min(mi, sum);
+	}
+	return mi;
+}
+void Origin() {
+	for (int i = 1; i <= n; i++) 
+		for (int j = 1; j <= m; j++) 
+			arr[i][j] = arr_copy[i][j];
+}
+void Rotate(int idx) {
+	
+	int r = cmd[idx].r;
+	int c = cmd[idx].c;
+	int s = cmd[idx].s;
+
+	while (s) {
+		int temp = arr[r - s][c - s];
+		for (int i = r - s; i < r + s; i++) arr[i][c - s] = arr[i + 1][c - s];
+		for (int j = c - s; j < c + s; j++) arr[r + s][j] = arr[r + s][j + 1];
+		for (int i = r + s; i > r - s; i--) arr[i][c + s] = arr[i - 1][c + s];
+		for (int j = c + s; j > c - s; j--) arr[r - s][j] = arr[r - s][j - 1];
+		arr[r - s][c - s + 1] = temp;
+		s--;
+	}
+}
+
+int main() {
+	int ans = 2e9;
+	cin >> n >> m >> k;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> arr[i][j];
+			arr_copy[i][j] = arr[i][j];
+		}
+	}
+	vector<int> list;
+	for (int i = 0; i < k; i++) {
+		list.push_back(i);
+		cin >> cmd[i].r >> cmd[i].c >> cmd[i].s;
+	}
+
+	do {
+		Origin();
+		for (int i = 0; i < k; i++) 
+			Rotate(list[i]);
+		ans = min(ans, findMin());
+	} while (next_permutation(list.begin(), list.end()));
+	cout << ans;
+}
