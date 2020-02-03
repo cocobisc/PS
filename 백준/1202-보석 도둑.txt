@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+	int n, k; cin >> n >> k;
+	vector<pair<int, int>> jew;
+	vector<int> pack(k);
+	for (int i = 0; i < n; i++) {
+		int a, b; cin >> a >> b;
+		jew.push_back({ a,b });
+	}
+	for (int i = 0; i < k; i++) cin >> pack[i];
+	sort(jew.begin(), jew.end());
+	sort(pack.begin(), pack.end());
+	priority_queue<int> pq;
+	long long ans = 0;
+	for (int i = 0, idx = 0; i < k; i++) {
+		while (idx < n && pack[i] >= jew[idx].first) pq.push(jew[idx++].second);
+		if(pq.size()) ans += pq.top(), pq.pop();
+	}
+	cout << ans;
+}
