@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+vector<string> words;
+int ans, alpha[26], num[10];
+
+void BT(int widx, int idx, int wsum, int sum) {
+	if (widx == words.size()) {
+		ans = max(ans, sum + wsum);
+		return;
+	}
+	if (idx == words[widx].size()) {
+		BT(widx + 1, 0, 0, sum + wsum);
+		return;
+	}
+
+	int c = words[widx][idx] - 'A';
+
+	if(alpha[c] != -1) {
+		BT(widx, idx + 1, wsum * 10 + alpha[c], sum);
+	}
+	else {
+		for (int i = 9; i >= 0; i--) {
+			if (num[i]) continue;
+			num[i] = 1;
+			alpha[c] = i;
+			BT(widx, idx + 1, wsum * 10 + i, sum);
+			alpha[c] = -1;
+			num[i] = 0;
+		}
+	}
+}
+int main() {
+	int n; cin >> n;
+	words.resize(n);
+	memset(alpha, -1, sizeof(alpha));
+	for (int i = 0; i < n; i++) cin >> words[i];
+	BT(0, 0, 0, 0);
+	cout << ans;
+}
