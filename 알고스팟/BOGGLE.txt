@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+int dp[10][5][5];
+int dx[] = { 0,1,0,-1,1,1,-1,-1 };
+int dy[] = { 1,0,-1,0,1,-1,1,-1 };
+char arr[5][5];
+
+int dfs(int x, int y, int idx, string s) {
+	if (idx == s.size() - 1) {
+		if (s[idx] == arr[y][x]) return 1;
+		else return 0;
+	}
+	if (dp[idx][y][x]) return 0;
+	dp[idx][y][x] = 1;
+	if (s[idx] != arr[y][x]) return 0;
+
+	for (int i = 0; i < 8; i++) {
+		int nx = x + dx[i], ny = y + dy[i];
+		if (nx >= 0 && ny >= 0 && nx < 5 && ny < 5) {
+			if (dfs(nx, ny, idx + 1, s)) return 1;
+		}
+	}
+	return 0;
+}
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) cin >> arr[i][j];
+		}
+		int n; cin >> n;
+		vector<string> list(n);
+		for (int i = 0; i < n; i++) cin >> list[i];
+
+		for (auto s : list) {
+			cout << s;
+			int f = 0;
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 5; j++) {
+					memset(dp, 0, sizeof(dp));
+					if (dfs(j, i, 0, s)) {
+						f = 1; break;
+					}
+				}
+				if (f) break;
+			}
+			if(f) cout << " YES\n";
+			else cout << " NO\n";
+		}
+	}
+}

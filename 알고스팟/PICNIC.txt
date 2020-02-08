@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int dfs(int cnt, int n, int bits, vector<vector<int>> list) {
+	int ans = 0;
+	if (cnt == n) return 1;
+	int i = 0;
+	for (; i < n; i++) if (!(bits & (1 << i))) break;
+	bits |= (1 << i);
+	for (int j = 0; j < list[i].size(); j++) {
+		if(!(bits & (1 << list[i][j])))
+			ans += dfs(cnt + 2, n, bits | (1 << list[i][j]), list);
+	}
+	return ans;
+}
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int n, m; cin >> n >> m;
+		vector<vector<int>> list(n);
+		for (int i = 0; i < m; i++) {
+			int a, b; cin >> a >> b;
+			if (a > b) swap(a, b);
+			list[a].push_back(b);
+		}
+		cout << dfs(0, n, 0, list) << '\n';
+	}
+}

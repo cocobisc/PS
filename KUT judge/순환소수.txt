@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int a, b; cin >> a >> b;
+		string ans;
+
+		ans += to_string(a/b);
+		a = a % b * 10;
+		ans += '.';
+
+		string t;
+		map<int, int> ma;
+		int idx = 0;
+		while (a) {
+			if (ma.find(a) != ma.end()) {
+				ans += t.substr(0, ma[a]) + "(" + t.substr(ma[a]) + ")";
+				cout << ans << '\n';
+				break;
+			}
+			ma[a] = idx++;
+			t += to_string(a/b);
+			a = a % b * 10;
+		}
+		if (!a) cout << ans + t + "(0)" << '\n';
+	}
+}
