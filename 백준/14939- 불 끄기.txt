@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+char arr[18][18], arr_temp[18][18];
+int ans = 2e9;
+
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
+map<char, char> ma;
+
+void toOrigin() {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) arr[i][j] = arr_temp[i][j];
+	}
+}
+void press(int x, int y) {
+	arr[y][x] = ma[arr[y][x]];
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i], ny = y + dy[i];
+		if (nx >= 0 && ny >= 0 && nx < 10 && ny < 10) arr[ny][nx] = ma[arr[ny][nx]];
+	}
+}
+bool check() {
+	for (int i = 0; i < 10; i++) for (int j = 0; j < 10; j++) if (arr[i][j] == 'O') return 0;
+	return 1;
+}
+void dfs(int count) {
+	if (count == 11) return;
+
+	vector<int> v;
+	for (int i = 0; i < count; i++) v.push_back(1);
+	for (int i = count; i < 10; i++) v.push_back(0);
+	do {
+		toOrigin();
+		vector<int> list;
+		for (int i = 0; i < v.size(); i++) {
+			if (v[i]) list.push_back(i);
+		}
+		for (int i = 0; i < list.size(); i++) press(list[i], 0);
+
+		int k = count;
+		for (int i = 1; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (arr[i - 1][j] == 'O') {
+					press(j, i); k++;
+				}
+			}
+		}
+		if (check()) ans = min(ans, k);
+	} while (prev_permutation(v.begin(), v.end()));
+
+	dfs(count + 1);
+}
+int main() {
+	ma['#'] = 'O';
+	ma['O'] = '#';
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			cin >> arr[i][j];
+			arr_temp[i][j] = arr[i][j];
+		}
+	}
+	dfs(0);
+	if (ans == (int)2e9) cout << -1;
+	else cout << ans;
+}
