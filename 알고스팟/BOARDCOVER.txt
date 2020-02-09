@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+int check[20][20];
+int da[][2] = { {0,1},{1,1},{0,1},{1,0} };
+int db[][2] = { {1,0},{0,1},{-1,1},{1,1} };
+char arr[20][20];
+int r, c, ans;
+
+bool check_array() {
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++)
+			if (arr[i][j] == '.' && !check[i][j]) return 0;
+	}
+	return 1;
+}
+void dfs() {
+	int x = -1, y;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (arr[i][j] == '.' && !check[i][j]) {
+				x = j, y = i; break;
+			}
+		}
+		if (x != -1) break;
+	}
+	if (x == -1) {
+		ans += check_array();
+		return;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		int ax = x + da[i][0], ay = y + da[i][1];
+		int bx = x + db[i][0], by = y + db[i][1];
+		if (ay < 0 || ax < 0 || by < 0 || bx < 0) continue;
+		if (ay == r || ax == c || by == r || bx == c) continue;
+		if (!check[y][x] && !check[ay][ax] && !check[by][bx] && arr[y][x] == '.' && arr[ay][ax] == '.' && arr[by][bx] == '.') {
+			check[y][x] = check[ay][ax] = check[by][bx] = 1;
+			dfs();
+			check[y][x] = check[ay][ax] = check[by][bx] = 0;
+		}
+	}
+}
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		memset(check, 0, sizeof(check));
+		ans = 0;
+		cin >> r >> c;
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) cin >> arr[i][j];
+		}
+		dfs();
+		cout << ans << '\n';
+	}
+}
