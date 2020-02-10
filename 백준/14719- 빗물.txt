@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+const int MAX = 1e5 + 1;
+int arr[500];
+int main() {
+	int n, m; cin >> n >> m;
+	for (int i = 0; i < m; i++) cin >> arr[i];
+	
+	vector<int> v;
+	int ma = arr[0], ans = 0;
+	for (int i = 1; i < m; i++) {
+		if (ma <= arr[i]) {
+			if (v.empty()) {
+				ma = arr[i]; continue;
+			}
+
+			while (v.size()) {
+				ans += ma - v.back();
+				v.pop_back();
+			}
+			ma = arr[i];
+		}
+		else v.push_back(arr[i]);
+	}
+	if (v.size()) {
+		ma = v.back();
+		v.pop_back();
+		while (v.size()) {
+			if (ma < v.back()) ma = v.back();
+			else ans += ma - v.back();
+			v.pop_back();
+		}
+	}
+	cout << ans;
+}

@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[10][10], visited[10][10];
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
+int n, m;
+int uf[10];
+
+int find(int x) {
+	if (uf[x] == -1) return x;
+	return uf[x] = find(uf[x]);
+}
+
+int uni(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a == b) return 0;
+	uf[b] = a;
+	return 1;
+}
+
+bool check_bound(int x, int y) {
+	return x >= 0 && y >= 0 && x < m && y < n;
+}
+
+void bfs(int x, int y, int idx) {
+	queue<pair<int, int>> q;
+	q.push({ x,y });
+	visited[y][x] = 1;
+	while (q.size()) {
+		pair<int, int> cur = q.front();
+		q.pop();
+		arr[cur.second][cur.first] = idx;
+		for (int i = 0; i < 4; i++) {
+			int nx = cur.first + dx[i], ny = cur.second + dy[i];
+			if(check_bound(nx,ny) && !visited[ny][nx] && arr[ny][nx] == 1) {
+				q.push({ nx,ny });
+				visited[ny][nx] = 1;
+			}
+		}
+	}
+}
+
+void init() {
+	memset(uf, -1, sizeof(uf));
+}
+int main() {
+	vector<pair<int, pair<int, int>>> kruskal;
+	init();
+
+	cin >> n >> m;
+	int idx = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) cin >> arr[i][j];
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (!visited[i][j] && arr[i][j] == 1)
+				bfs(j, i, ++idx);
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (arr[i][j]) {
+				for (int k = 0; k < 4; k++) {
+					int nx = j + dx[k], ny = i + dy[k];
+					if (check_bound(nx, ny) && arr[ny][nx] == 0) {
+						int cnt = 0;
+						while (check_bound(nx, ny)) {
+							if (arr[ny][nx]) {
+								if (arr[ny][nx] <= arr[i][j]) break;
+								else {
+									if (cnt == 1) break;
+									kruskal.push_back({ cnt,{arr[i][j], arr[ny][nx]} });
+									break;
+								}
+							}
+							nx += dx[k], ny += dy[k];
+							cnt++;
+						}
+					}
+				}
+			}
+		}
+	}
+	sort(kruskal.begin(), kruskal.end());
+
+	int ans = 0;
+	for (int i = 0; i < kruskal.size(); i++) {
+		int a = kruskal[i].second.first;
+		int b = kruskal[i].second.second;
+		int judge = uni(a, b);
+		if (judge) ans += kruskal[i].first;
+	}
+	int f = 1, comp = find(1);
+	for (int i = 2; i <= idx; i++) {
+		if (find(i) != comp) {
+			f = 0; break;
+		}
+	}
+	cout << (f ? ans : -1);
+}

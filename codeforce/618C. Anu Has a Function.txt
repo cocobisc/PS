@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+const int MAX = 1e5 + 1;
+int arr[MAX], dp[31];
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+		for (int j = 0; j < 31; j++) {
+			if (arr[i] & (1 << j)) dp[j]++;
+		}
+	}
+	int k = 0;
+	for (int i = 30; i >= 0; i--) {
+		if (dp[i] == 1) {
+			k = i; break;
+		}
+	}
+	int ansi = 0;
+	for (int i = 0; i < n; i++) {
+		if (arr[i] & (1 << k)) {
+			ansi = i; break;
+		}
+	}
+	cout << arr[ansi] << " ";
+	for (int i = 0; i < n; i++) {
+		if (i == ansi) continue;
+		cout << arr[i] << " ";
+	}
+}
