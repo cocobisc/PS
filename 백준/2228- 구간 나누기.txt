@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MIN = -2e9;
+int arr[101], dp[101][51];
+
+int TD(int n, int m) {
+	if (!m) return 0;
+	if (n <= 0) return MIN;
+	if (dp[n][m] != -1) return dp[n][m];
+	dp[n][m] = TD(n - 1, m);
+
+	int sum = 0;
+	for (int i = n; i > 0; i--) {
+		sum += arr[i];
+		dp[n][m] = max(dp[n][m], TD(i - 2, m - 1) + sum);
+	}
+	return dp[n][m];
+}
+int main() {
+	int n, m; cin >> n >> m;
+	for (int i = 1; i <= n; i++) cin >> arr[i];
+	memset(dp, -1, sizeof(dp));
+	
+	cout << TD(n, m);
+}

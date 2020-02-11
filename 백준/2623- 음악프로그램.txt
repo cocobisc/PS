@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> v[1001];
+int indegree[1001];
+
+int main() {
+	int n, m; cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int k; cin >> k;
+		int sp, ep; cin >> sp;
+		for (int i = 1; i < k; i++) {
+			cin >> ep;
+			indegree[ep]++;
+			v[sp].push_back(ep);
+			sp = ep;
+		}
+	}
+	queue<int> q;
+	for (int i = 1; i <= n; i++) {
+		if (!indegree[i]) q.push(i);
+	}
+
+	vector<int> ans;
+	for (int k = 1; k <= n; k++) {
+		if (q.empty()) return cout << 0, 0;
+
+		int cur = q.front();
+		q.pop();
+		ans.push_back(cur);
+		for (int i = 0; i < v[cur].size(); i++) {
+			if (--indegree[v[cur][i]] == 0) q.push(v[cur][i]);
+		}
+	}
+	for (auto i : ans) cout << i << '\n';
+}

@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+char m[50][50];
+int visited[50][50]; 
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
+
+int main() {
+	int r, c; cin >> r >> c;
+	int sx, sy;
+	queue<pair<int, int>> q;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			cin >> m[i][j];
+			if (m[i][j] == 'S') {
+				sx = j, sy = i;
+			}
+			if (m[i][j] == '*') {
+				q.push({ j,i });
+				visited[i][j] = 2;
+			}
+		}
+	}
+	q.push({ sx,sy });
+	visited[sy][sx] = 1;
+
+	int ret = 0;
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			pair<int, int> cur = q.front();
+			q.pop();
+			int type = visited[cur.second][cur.first];
+			for (int i = 0; i < 4; i++) {
+				int nx = cur.first + dx[i], ny = cur.second + dy[i];
+				if (nx >= 0 && ny >= 0 && nx < c && ny < r && !visited[ny][nx]) {
+					if (m[ny][nx] == '.') {
+						q.push({ nx,ny });
+						visited[ny][nx] = type;
+					}
+					else if (m[ny][nx] == 'D' && type == 1) return cout << ++ret, 0;
+				}
+
+			}
+		}
+		ret++;
+	}
+	cout << "KAKTUS";
+	return 0;
+}
