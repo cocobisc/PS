@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> ans, adj[32001];
+int indegree[32001];
+
+int main() {
+	int n, m; cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int a, b; cin >> a >> b;
+		adj[a].push_back(b);
+		indegree[b]++;
+	}
+	priority_queue<int, vector<int>, greater<int>> pq;
+	for (int i = 1; i <= n; i++) if (indegree[i] == 0) pq.push(i);
+	for (int i = 1; i <= n; i++) {
+		int cur = pq.top();
+		cout << cur << " ";
+		pq.pop();
+
+		for (auto k : adj[cur]) {
+			if (--indegree[k] == 0) pq.push(k);
+		}
+	}
+}

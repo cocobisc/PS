@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string a, b, ans, ans2, a2, b2;
+void ba(int s, int e);
+string temp;
+
+string rest(string ans) {
+	b = ans;
+	ans = "";
+	for (int i = 0; i < b.size(); i++) {
+		ans += b[i];
+		if (ans.size() >= a.size() && ans.back() == a.back()) {
+			string t;
+			int j;
+			for (j = a.size() - 1; j >= 0; j--) {
+				if (ans.back() == a[j]) {
+					t += ans.back();
+					ans.pop_back();
+				}
+				else break;
+			}
+			if (j != -1) {
+				while (t.size()) {
+					ans += t.back();
+					t.pop_back();
+				}
+			}
+			t.clear();
+		}
+	}
+	return ans;
+}
+void fr(int s, int e) {
+	if (s == e) return;
+
+	for (int i = s; i < e; i++) {
+		ans += b[i];
+		if (ans.size() >= a.size() && ans.back() == a.back()) {
+			string t;
+			int j;
+			for (j = a.size() - 1; j >= 0; j--) {
+				if (ans.back() == a[j]) {
+					t += ans.back();
+					ans.pop_back();
+				}
+				else break;
+			}
+			if (j != -1) {
+				while (t.size()) {
+					ans += t.back();
+					t.pop_back();
+				}
+			}
+			else {
+				ba(i + 1, e);
+				return;
+			}
+			t.clear();
+		}
+	}
+}
+void ba(int s, int e) {
+	if (s == e) return;
+
+	e = b.size() - e, s = b.size() - s;
+	for (int i = e; i < s; i++) {
+		ans2 += b2[i];
+		if (ans2.size() >= a2.size() && ans2.back() == a2.back()) {
+			string t;
+			int j;
+			for (j = a2.size() - 1; j >= 0; j--) {
+				if (ans2.back() == a2[j]) {
+					t += ans2.back();
+					ans2.pop_back();
+				}
+				else break;
+			}
+			if (j != -1) {
+				while (t.size()) {
+					ans2 += t.back();
+					t.pop_back();
+				}
+			}
+			else {
+				fr(b.size() - s, b.size() - i - 1);
+				return;
+			}
+			t.clear();
+		}
+	}
+}
+int main() {
+	cin >> a >> b;
+	a2 = a, b2 = b;
+	reverse(a2.begin(), a2.end());
+	reverse(b2.begin(), b2.end());
+	fr(0, b.size());
+
+	reverse(ans2.begin(), ans2.end());
+	cout << rest(ans + ans2);
+}

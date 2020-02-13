@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+#define pii pair<int,int>
+using namespace std;
+vector<pii> adj[801];
+const int INF = 0x3f3f3f3f;
+
+int dijk(int s, int e) {
+	int cost[801];
+	memset(cost, INF, sizeof(cost));
+	cost[s] = 0;
+	priority_queue<pii, vector<pii>, greater<pii>> pq;
+	pq.push({ 0,s });
+	while (pq.size()) {
+		int cur = pq.top().second;
+		pq.pop();
+		for (auto &p : adj[cur]) {
+			int next = p.first, d = p.second;
+			if (cost[next] > cost[cur] + d) {
+				cost[next] = cost[cur] + d;
+				pq.push({ cost[next],next });
+			}
+		}
+	}
+	return cost[e];
+}
+
+int main() {
+	int n, k; cin >> n >> k;
+	for (int i = 0; i < k; i++) {
+		int a, b, c; cin >> a >> b >> c;
+		adj[a].push_back({ b,c });
+		adj[b].push_back({ a,c });
+	}
+	int a, b; cin >> a >> b;
+	int f, m, e;
+	
+	m = dijk(a, b);
+
+	int q = dijk(1, a), w = dijk(b, n);
+	if (q != INF && w != INF) f = q + w;
+	else f = INF;
+	q = dijk(1, b), w = dijk(a, n);
+	if (q != INF && w != INF) e = q + w;
+	else e = INF;
+
+	if (m == INF || (f == INF && e == INF)) cout << -1;
+	else cout << m + min(f, e);
+}

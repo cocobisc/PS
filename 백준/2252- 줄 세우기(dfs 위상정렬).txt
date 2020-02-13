@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> ans, adj[32001];
+int visited[32001];
+
+void dfs(int x) {
+	if (visited[x]) return;
+	visited[x] = 1;
+	for (auto i : adj[x]) {
+		dfs(i);
+	}
+	ans.push_back(x);
+}
+int main() {
+	int n, m; cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int a, b; cin >> a >> b;
+		adj[a].push_back(b);
+	}
+	for (int i = 1; i <= n; i++) {
+		dfs(i);
+	}
+	while (ans.size()) {
+		cout << ans.back() << " ";
+		ans.pop_back();
+	}
+}
