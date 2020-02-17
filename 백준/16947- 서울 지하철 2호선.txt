@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> adj[3001];
+int visited[3001], ans[3001];
+
+int dfs(int curr, int prev = -1) {
+	if (visited[curr]) return curr;
+	visited[curr] = 1;
+	for (int next : adj[curr]) {
+		if (next == prev) continue;
+		int k = dfs(next, curr);
+		if (k == -1) continue;
+		if (k == curr) return 0;
+		return visited[curr] = k;
+	}
+	visited[curr] = 0;
+	return -1;
+}
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) {
+		int a, b; cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	dfs(1);
+	queue<int> q;
+	for (int i = 1; i <= n; i++) {
+		if (visited[i]) 
+			q.push(i);
+	}
+	while (q.size()) {
+		int curr = q.front();
+		q.pop();
+		for (int next : adj[curr]) {
+			if (visited[next]) continue;
+			visited[next] = 1;
+			ans[next] = ans[curr] + 1;
+			q.push(next);
+		}
+	}
+	for (int i = 1; i <= n; i++) cout << ans[i] << " ";
+}
