@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+
+ll getParent(long long a, int k) {
+	return (a + k - 2) / k;
+}
+
+int main() {
+	ll n;
+	int k, q;
+	scanf("%lld %d %d", &n, &k, &q);
+
+	while (q--) {
+		ll left, right;
+		scanf("%lld %lld", &left, &right);
+
+		int len = 0;
+		if (k == 1) {
+			printf("%lld\n", abs(left - right));
+			continue;
+		}
+		while (left != right) {
+			while (left > right) {
+				len++;
+				left = getParent(left, k);
+			}
+			while (right > left) {
+				len++;
+				right = getParent(right, k);
+			}
+		}
+		printf("%d\n", len);
+	}
+	return 0;
+}
