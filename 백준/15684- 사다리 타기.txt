@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n, m, h;
+int radder[31][11], temp[31][11], visited[31][11];
+int ans = -1;
+
+bool checkRadder() {
+	for (int i = 1; i <= n; i++) {
+		int idx = i;
+		for (int j = 1; j <= h; j++) {
+			if (radder[j][idx - 1]) idx--;
+			else if (radder[j][idx]) idx++;
+		}
+		if (idx != i) return false;
+	}
+	return true;
+}
+
+void BT(int goal, int cnt, int j) {
+	if (goal == cnt) {
+		if(checkRadder()) ans = cnt;
+		return;
+	}
+
+	for (; j < n; j++) {
+		for (int i = 1; i <= h; i++) {
+			if (!radder[i][j] && !radder[i][j - 1] && !radder[i][j + 1]) {
+				radder[i][j] = 1;
+				BT(goal, cnt + 1, j);
+				
+				radder[i][j] = 0;
+			}
+		}
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+
+	cin >> n >> m >> h;
+	for (int i = 0; i < m; i++) {
+		int a, b; cin >> a >> b;
+		radder[a][b] = 1;
+	}
+	for (int i = 0; i < 4; i++) {
+		BT(i, 0, 1);
+		if (ans != -1) break;
+	}
+	cout << ans;
+	return 0;
+}
