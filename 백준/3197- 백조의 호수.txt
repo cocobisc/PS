@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+using namespace std;
+char arr[1500][1500];
+int area[1500][1500], parent[1502*1502];
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
+int lx1 = -1, ly1, lx2, ly2, idx = 1;
+int r, c;
+queue<pair<int,int>> ex1, ex2;
+
+int find(int x) {
+	if (parent[x] == x) return x;
+	return parent[x] = find(parent[x]);
+}
+void uni(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a == b) return;
+	parent[a] = b;
+}
+
+void melting() {
+	while (ex2.size()) {
+		pair<int, int> cur = ex2.front();
+		ex2.pop();
+		int x = cur.first, y = cur.second;
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i], ny = y + dy[i];
+			if (nx >= 0 && nx < c && ny >= 0 && ny < r && !area[ny][nx]) {
+				area[ny][nx] = area[y][x];
+				ex1.push({ nx,ny });
+			}
+		}
+	}
+}
+
+void link() {
+	while (ex1.size()) {
+		pair<int, int> cur = ex1.front();
+		ex1.pop();
+		int x = cur.first, y = cur.second;
+		ex2.push({ x,y });
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i], ny = y + dy[i];
+			if (nx >= 0 && nx < c && ny >= 0 && ny < r && area[ny][nx] && area[ny][nx] != area[y][x]) {
+				uni(area[ny][nx], area[y][x]);
+			}
+		}
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+	
+
+	cin >> r >> c;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			cin >> arr[i][j];
+			if (arr[i][j] != 'X') {
+				if (arr[i][j] == 'L') {
+					if (lx1 == -1) lx1 = j, ly1 = i;
+					else lx2 = j, ly2 = i;
+				}
+				ex1.push({ j,i });
+				parent[idx] = idx;
+				area[i][j] = idx++;
+			}
+		}
+	}
+
+	int ans = 0;
+	while (true) {
+		link();
+		if (find(area[ly1][lx1]) == find(area[ly2][lx2])) break;
+		melting();
+		ans++;
+	}
+	cout << ans;
+}
