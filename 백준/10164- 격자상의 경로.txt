@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+int dp[16][16];
+
+void solve(int k, int sx, int sy, int ex, int ey) {
+	if (sy > ey) return;
+	if (sx > ex) {
+		solve(k, k, sy + 1, ex, ey);
+		return;
+	}
+	dp[sy][sx] = dp[sy - 1][sx] + dp[sy][sx - 1];
+	solve(k, sx + 1, sy, ex, ey);
+}
+
+int main() {
+	int n, m, k; cin >> n >> m >> k;
+	dp[0][1] = 1;
+	if (k) {
+		int x = k % m;
+		int y = k / m + 1;
+		if (!x) {
+			x = m;
+			y--;
+		}
+		solve(1, 1, 1, x, y);
+		solve(x, x, y, m, n);
+	}
+	else solve(1, 1, 1, m, n);
+
+	cout << dp[n][m];
+	return 0;
+}
