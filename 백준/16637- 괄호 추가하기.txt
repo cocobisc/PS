@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+int ans = -2e9, n;
+string s;
+
+int cal(int a, int op, int b) {
+	switch (op) {
+	case '+': a += b; break;
+	case '-': a -= b; break;
+	case '*': a *= b; break;
+	}
+	return a;
+}
+
+void dfs(int idx,int cur) {
+	if (idx > n - 1) {
+		ans = max(ans, cur);
+		return;
+	}
+	char op = (idx == 0) ? '+' : s[idx - 1];
+	if (idx < n - 2) {
+		int k = cal(s[idx] - '0', s[idx + 1], s[idx + 2] - '0');
+		dfs(idx + 4, cal(cur, op, k));
+	}
+	dfs(idx + 2, cal(cur, op, s[idx] - '0'));
+}
+
+int main() {
+	cin >> n >> s;
+	dfs(0, 0);
+	cout << ans;
+}
