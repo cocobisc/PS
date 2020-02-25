@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+vector<int> adj[101];
+int team[101], cnt[3];
+
+void dfs(int x, int idx) {
+	if (team[x]) return;
+	team[x] = idx;
+	cnt[idx]++;
+	for (auto next : adj[x]) {
+		dfs(next, 3 - idx);
+	}
+}
+
+int main() {
+	int n; cin >> n;
+	for (int i = 1; i <= n; i++) {
+		int k; cin >> k;
+		while (k--) {
+			int a; cin >> a;
+			adj[i].push_back(a);
+			adj[a].push_back(i);
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		if (!team[i]) dfs(i, 1);
+	}
+
+	for (int i = 1; i < 3; i++) {
+		
+		cout << cnt[i] << '\n';
+		for (int j = 1; j <= n;j++) 
+			if(team[j] == i) cout << j << " ";
+		cout << '\n';
+	}
+}
