@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN = 75e3;
+int h = (int)ceil(log2(MAXN));
+int tree_size = 1 << (h + 1);
+typedef pair<int, int> pii;
+
+int sum(vector<int> &tree, int s, int e, int node, int ns, int ne) {
+	if (s >= ne || e < ns) return 0;
+	if (s <= ns && ne <= e) return tree[node];
+	int mid = ns + ne >> 1;
+	return sum(tree, s, e, node * 2, ns, mid) + sum(tree, s, e, node * 2 + 1, mid, ne);
+}
+
+void increase(vector<int> &tree, int n) {
+	n += tree_size / 2;
+	while (n) {
+		tree[n]++;
+		n /= 2;
+	}
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		vector<int> tree(tree_size, 0);
+		vector<pii> p;
+		int newY[MAXN];
+
+		int n; cin >> n;
+		for (int i = 0; i < n; i++) {
+			int x, y; cin >> x >> y;
+			p.push_back({ x,y });
+		}
+		sort(p.begin(), p.end(), [](const pii &a, const pii &b) {
+			return a.second < b.second;
+		});
+
+		int y = 0;
+		for (int i = 0; i < n; i++) {
+			if (i > 0 && p[i].second != p[i - 1].second) y++;
+			newY[i] = y;
+		}
+		for (int i = 0; i < n; i++) p[i].second = newY[i];
+
+		sort(p.begin(), p.end(), [](const pii &a, const pii &b) {
+			if (a.first == b.first) return a.second > b.second;
+			return a.first < b.first;
+		});
+
+		long long result = 0;
+		for (int i = 0; i < n; i++) {
+			result += sum(tree, p[i].second, tree_size / 2, 1, 0, tree_size / 2);
+			increase(tree, p[i].second);
+		}
+		cout << result << '\n';
+	}
+}
