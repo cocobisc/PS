@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+map<string,int> ma;
+
+struct Song {
+    string g;
+    int p, idx;
+};
+
+vector<int> solution(vector<string> genres, vector<int> plays) {
+    vector<string> list;
+    for(auto s:genres) 
+        if(find(list.begin(),list.end(),s) == list.end()) list.push_back(s);
+
+    vector<Song> songs;
+
+    int sz = plays.size();
+    for(int i=0;i<sz;i++) {
+        songs.push_back({genres[i], plays[i], i});
+        ma[genres[i]]+=plays[i];
+    }
+
+    sort(list.begin(),list.end(),[](string &a, string &b) {
+       return ma[a] > ma[b]; 
+    });
+
+    sort(songs.begin(),songs.end(),[](Song &a, Song &b) {
+        if(a.g == b.g) return a.p > b.p;
+        return ma[a.g] > ma[b.g];
+    });
+
+    vector<int> ans;
+    for(auto l:list) {
+        int cnt = 0;
+        for(int i=0;i<sz;i++) {
+            if(songs[i].g == l) {
+                ans.push_back(songs[i].idx);
+                cnt++;
+            }
+            if(cnt == 2) break;
+        }
+    }
+    return ans;
+}

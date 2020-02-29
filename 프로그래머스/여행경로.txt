@@ -1,0 +1,61 @@
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+bool dfs(string start, vector<vector<string>> &tickets, int cnt, vector<string> &ans, vector<int> &visited, vector<string> &list) {
+    list.push_back(start);
+    if(cnt == tickets.size()) {
+        ans = list;
+        return true;
+    }
+    for(int i=0;i<tickets.size();i++) {
+        if(!visited[i] && tickets[i][0] == start) {
+            visited[i] = 1;
+            if(dfs(tickets[i][1], tickets, cnt + 1, ans, visited, list)) return true;
+            visited[i] = 0;
+        }
+    }
+    list.pop_back();
+
+    return false;
+}
+vector<string> solution(vector<vector<string>> tickets) {
+    sort(tickets.begin(),tickets.end());
+    vector<string> ans, list;
+    vector<int> visited(tickets.size(), 0);
+    dfs("ICN", tickets, 0, ans, visited, list);
+    return ans;
+}
