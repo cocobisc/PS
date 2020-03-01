@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+using namespace std;
+int ma[100][100];
+
+int main(void) {
+	int n, k; cin >> n >> k;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) cin >> ma[i][j];
+	}
+
+	int ans = 0;
+	//가로 검사
+	for (int i = 0; i < n; i++) {
+		int flag = 1;
+		int visited[100] = { 0 };
+		for (int j = 1; j < n; j++) {
+			int diff = abs(ma[i][j - 1] - ma[i][j]);
+			if (diff > 1) {
+				flag = 0; break;
+			}
+			if (diff == 1) {
+				int t, cnt = k;
+				int idx;
+				//왼쪽 검사
+				if (ma[i][j - 1] < ma[i][j]) {
+					t = ma[i][j - 1];
+					idx = j - 1;
+					while (cnt) {
+						if (idx < 0 || ma[i][idx] != t || visited[idx]) break;
+						visited[idx--] = 1;
+						cnt--;
+					}
+				}
+				//오른쪽 검사
+				else {
+					t = ma[i][j];
+					idx = j;
+					while (cnt) {
+						if (idx > n - 1 || ma[i][idx] != t || visited[idx]) break;
+						visited[idx++] = 1;
+						cnt--;
+					}
+				}
+				if (cnt) {
+					flag = 0; break;
+				}
+			}
+		}
+		if (flag) ans++;
+	}
+	//세로 검사
+	for (int j = 0; j < n; j++) {
+		int flag = 1;
+		int visited[100] = { 0 };
+		for (int i = 1; i < n; i++) {
+			int diff = abs(ma[i - 1][j] - ma[i][j]);
+			if (diff > 1) {
+				flag = 0; break;
+			}
+			if (diff == 1) {
+				int t, cnt = k;
+				int idx;
+				//위 검사
+				if (ma[i - 1][j] < ma[i][j]) {
+					t = ma[i - 1][j];
+					idx = i - 1;
+					while (cnt) {
+						if (idx < 0 || ma[idx][j] != t || visited[idx]) break;
+						visited[idx--] = 1;
+						cnt--;
+					}
+				}
+				//아래 검사
+				else {
+					t = ma[i][j];
+					idx = i;
+					while (cnt) {
+						if (idx > n - 1 || ma[idx][j] != t || visited[idx]) break;
+						visited[idx++] = 1;
+						cnt--;
+					}
+				}
+				if (cnt) {
+					flag = 0; break;
+				}
+			}
+		}
+		if (flag) ans++;
+	}
+	cout << ans;
+}
