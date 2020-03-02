@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+using namespace std;
+int visited[101][101];
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 };
+int r, c;
+
+struct Loc {
+	int x, y, v;
+}loc[4];
+
+int bfs(int x, int y, int type) {
+	queue<Loc> q;
+	Loc parent[101][101] = { 0 };
+	int ret = 0;
+
+	q.push({ x, y });
+	visited[y][x] = 1;
+
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			Loc cur = q.front();
+			q.pop();
+			if (cur.x == loc[type + 1].x && cur.y == loc[type + 1].y) {
+				do {
+					parent[cur.y][cur.x].v = 1;
+					int temp = cur.x;
+					cur.x = parent[cur.y][cur.x].x;
+					cur.y = parent[cur.y][temp].y;
+				} while (cur.x != loc[type].x || cur.y != loc[type].y);
+				parent[cur.y][cur.x].v = 1;
+
+				for (int i = 0; i <= r; i++) {
+					for (int j = 0; j <= c; j++) {
+						if (parent[i][j].v) visited[i][j] = 1;
+						else visited[i][j] = 0;
+					}
+				}
+				return ret;
+			}
+			for (int i = 0; i < 4; i++) {
+				int nx = cur.x + dx[i], ny = cur.y + dy[i];
+				if (nx >= 0 && ny >= 0 && nx <= c && ny <= r && !visited[ny][nx]) {
+					if ((nx == loc[(type + 2) % 4].x && ny == loc[(type + 2) % 4].y) || (nx == loc[(type + 3) % 4].x && ny == loc[(type + 3) % 4].y)) continue;
+					visited[ny][nx] = 1;
+					q.push({ nx,ny });
+					parent[ny][nx] = { cur.x, cur.y };
+				}
+			}
+		}
+		ret++;
+	}
+	return -1;
+}
+int main(void) {
+	cin >> c >> r;
+	for (int i = 0; i < 4; i++) {
+		cin >> loc[i].x >> loc[i].y;
+	}
+
+	int a, b, temp;
+	a = bfs(loc[0].x, loc[0].y, 0);
+	temp = bfs(loc[2].x, loc[2].y, 2);
+	if (temp == -1) a = -1;
+	else a += temp;
+
+	memset(visited, 0, sizeof(visited));
+
+	b = bfs(loc[2].x, loc[2].y, 2);
+	temp = bfs(loc[0].x, loc[0].y, 0);
+	if (temp == -1) b = -1;
+	else b += temp;
+	
+	if (a == -1 && b != -1) cout << b;
+	else if (a != -1 && b == -1) cout << a;
+	else if (a == -1 && b == -1) cout << "IMPOSSIBLE";
+	else cout << min(a, b);
+
+	return 0;
+}
