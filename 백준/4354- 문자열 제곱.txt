@@ -1,0 +1,19 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1e6;
+int fail[MAX];
+
+int main() {
+	while (1) {
+		string s; cin >> s;
+		int m = s.size();
+		if (s == ".") break;
+		for (int i = 1, j = 0; i < m; i++) {
+			while (j > 0 && s[i] != s[j]) j = fail[j - 1];
+			if (s[i] == s[j]) fail[i] = ++j;
+		}
+		if (m % (m - fail[m - 1])) cout << 1 << '\n';
+		else cout << s.size() / (s.size() - fail[s.size() - 1]) << '\n';
+		memset(fail, 0, sizeof(fail));
+	}
+}

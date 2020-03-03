@@ -1,0 +1,22 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(string s) {
+	int ans = s.size();
+	for (int i = 1; i <= s.size() / 2; i++) {
+		int sum = 0, k = 1, j = 0;
+		for (; j <= s.size() - i; j += i) {
+			if (s.substr(j, i) == s.substr(j + i, i)) k++;
+			else {
+				if (k > 1) sum += to_string(k).size();
+				sum += s.substr(j, i).size();
+				k = 1;
+			}
+		}
+		if (j < s.size()) sum += s.size() - j;
+		ans = min(ans, sum);
+	}
+	return ans;
+}
