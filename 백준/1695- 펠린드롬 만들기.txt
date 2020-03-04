@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[5000], dp[5000][5000];
+
+int solve(int left, int right) {
+	if (left > right) return 0;
+	int &ret = dp[left][right];
+	if (ret != -1) return ret;
+	ret = 0;
+
+	if (arr[left] == arr[right]) ret = solve(left + 1, right - 1);
+	else ret = min(solve(left + 1, right), solve(left, right - 1)) + 1;
+	return ret;
+}
+
+int main() {
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) cin >> arr[i];
+	memset(dp, -1, sizeof(dp));
+	cout << solve(0, n - 1);
+}

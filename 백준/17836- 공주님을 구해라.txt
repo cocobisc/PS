@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 };
+int n, m, k;
+int arr[100][100], visited[100][100];
+
+struct loc {
+	int x, y, type;
+};
+
+int bfs() {
+	queue<loc> q;
+	q.push({ 0,0,1 });
+	visited[0][0] = 1;
+	int ret = 0;
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			loc cur = q.front();
+			q.pop();
+			if (cur.x == m - 1 && cur.y == n - 1) return ret;
+			for (int i = 0; i < 4; i++) {
+				int nx = cur.x + dx[i], ny = cur.y + dy[i];
+				if (nx >= 0 && ny >= 0 && nx < m && ny < n) {
+					if (visited[ny][nx] < cur.type) {
+						if (cur.type == 1) {
+							if (arr[ny][nx] == 0) {
+								visited[ny][nx] = 1;
+								q.push({ nx,ny,1 });
+							}
+							else if (arr[ny][nx] == 2) {
+								visited[ny][nx] = 2;
+								q.push({ nx,ny,2 });
+							}
+						}
+						else if (cur.type == 2) {
+							visited[ny][nx] = 2;
+							q.push({ nx,ny,2 });
+						}
+					}
+				}
+			}
+		}
+		ret++;
+		if (ret > k) return 0;
+	}
+	return 0;
+}
+
+int main() {
+	cin >> n >> m >> k;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) cin >> arr[i][j];
+	}
+	int a = bfs();
+	if (!a) cout << "Fail";
+	else cout << a;
+}
