@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+string S, W;
+int match(int dp[][101], int s, int w) {
+	int &ret = dp[s][w];
+	if (ret != -1) return ret;
+	while (s < S.size() && w < W.size() && (S[s] == '?' || S[s] == W[w])) {
+		s++; w++;
+	}
+	if (s == S.size()) return ret = w == W.size();
+	for (int skip = 0; w + skip <= W.size(); skip++) {
+		if (S[s] == '*')
+			if (match(dp, s + 1, w + skip)) return ret = 1;
+	}
+	return ret = 0;
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		vector<string> ans;
+		cin >> S;
+		int n; cin >> n;
+		while (n--) {
+			int dp[101][101];
+			memset(dp, -1, sizeof(dp));
+			cin >> W;
+			if (match(dp, 0, 0)) ans.push_back(W);
+		}
+		sort(ans.begin(), ans.end());
+		for (auto s : ans) cout << s << '\n';
+	}
+}

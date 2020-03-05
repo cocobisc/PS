@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(int (*arr)[100], int (*dp)[100], int n, int x, int y) {
+	if (x >= n || y >= n) return 0;
+	if (x == n - 1 && y == n - 1) return 1;
+
+	int &ret = dp[y][x];
+	if (ret != -1) return ret;
+	ret = solve(arr, dp, n, x + arr[y][x], y) || solve(arr, dp, n, x, y + arr[y][x]);
+	return ret;
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int arr[100][100], dp[100][100];
+		int n; cin >> n;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) cin >> arr[i][j];
+		}
+		memset(dp, -1, sizeof(dp));
+		
+		if (solve(arr, dp, n, 0, 0)) cout << "YES" << '\n';
+		else cout << "NO" << '\n';
+	}
+}

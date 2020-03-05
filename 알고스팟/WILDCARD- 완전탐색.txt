@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool match(const string &s, const string &w) {
+	int pos = 0;
+	while (pos < s.size() && pos < w.size() && (s[pos] == '?' || s[pos] == w[pos])) pos++;
+	if (pos == s.size()) return pos == w.size();
+	if (s[pos] == '*') {
+		for (int i = 0; pos + i <= w.size(); i++) {
+			if (match(s.substr(pos + 1), w.substr(pos + i))) return true;
+		}
+	}
+	return false;
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		string s; cin >> s;
+		int n; cin >> n;
+		while (n--) {
+			string w; cin >> w;
+			if (match(s, w)) cout << w << '\n';
+		}
+	}
+}
