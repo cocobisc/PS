@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long solve(int ma[][32], long long dp[][32][32], int x, int y, int lim, int type) {
+	long long &ret = dp[type][y][x];
+	if (ret != -1) return ret;
+
+	if (x == lim - 1 && y == lim - 1) return ret = 1;
+
+	ret = 0;
+	if (x + 1 < lim && type != 3 && !ma[y][x + 1])
+		ret += solve(ma, dp, x + 1, y, lim, 1);
+	if (y + 1 < lim && type != 1 && !ma[y + 1][x]) 
+		ret += solve(ma, dp, x, y + 1, lim, 3);
+	if(x + 1 < lim && y + 1 < lim && !ma[y + 1][x + 1] && !ma[y][x + 1] && !ma[y + 1][x])
+		ret += solve(ma, dp, x + 1, y + 1, lim, 2);
+
+	return ret;
+}
+
+int main() {
+	int n; cin >> n;
+	int ma[32][32];
+	long long dp[4][32][32];
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) cin >> ma[i][j];
+	}
+	memset(dp, -1, sizeof(dp));
+	cout << solve(ma, dp, 1, 0, n, 1);
+}

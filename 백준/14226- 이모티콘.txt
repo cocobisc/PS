@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int INF = 2e9;
+int dp[1001][1001], N;
+
+int go(int cur, int bef) {
+	if (cur < 1 || cur > 1000 || bef > 1000) return INF;
+	if (cur == N) return 0;
+	int &ret = dp[cur][bef];
+	if (ret != -1) return ret;
+
+	ret = INF;
+	ret = min(ret, go(cur, cur) + 1);
+	ret = min(ret, go(cur + bef, bef) + 1);
+	ret = min(ret, go(cur - 1, bef) + 1);
+	return ret;
+}
+
+int main() {
+	memset(dp, -1, sizeof(dp));
+	cin >> N;
+	cout << go(1, 0);
+	return 0;
+}
