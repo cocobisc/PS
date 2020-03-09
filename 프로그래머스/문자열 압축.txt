@@ -1,6 +1,4 @@
 #include <string>
-#include <vector>
-
 using namespace std;
 
 int solution(string s) {
@@ -11,7 +9,7 @@ int solution(string s) {
 			if (s.substr(j, i) == s.substr(j + i, i)) k++;
 			else {
 				if (k > 1) sum += to_string(k).size();
-				sum += s.substr(j, i).size();
+				sum += i;
 				k = 1;
 			}
 		}
