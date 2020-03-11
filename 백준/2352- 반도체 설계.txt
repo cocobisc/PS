@@ -1,0 +1,14 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n; cin >> n;
+	vector<int> lis;
+	for (int i = 0; i < n; i++) {
+		int a; cin >> a;
+		int idx = lower_bound(lis.begin(), lis.end(), a) - lis.begin();
+		if (idx == lis.size()) lis.push_back(a);
+		else lis[idx] = a;
+	}
+	cout << lis.size();
+}

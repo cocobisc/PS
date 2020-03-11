@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool cmp(const pair<string, string> &a, const pair<string, string> &b) {
+	return a.first.substr(0, 4) > b.first.substr(0, 4);
+}
+
+string solution(vector<int> numbers) {
+	vector<pair<string,string>> v;
+	for (int n : numbers) {
+		string s = to_string(n), ss;
+		for (int i = 0; i < 4; i++) ss += s;
+		v.push_back({ ss,s });
+	}
+	sort(v.begin(), v.end(), cmp);
+	string ans;
+	for (auto i : v)
+		ans += i.second;
+	return ans[0] == '0' ? "0" : ans;
+}

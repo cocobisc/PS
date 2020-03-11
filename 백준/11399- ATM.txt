@@ -1,0 +1,15 @@
+#include <bits/stdc++.h>
+using namespace std;
+int p[1000];
+long long ans, psum;
+
+int main() {
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) cin >> p[i];
+	sort(p, p + n);
+	for (int i = 0; i < n; i++) {
+		ans += psum + p[i];
+		psum += p[i];
+	}
+	cout << ans;
+}

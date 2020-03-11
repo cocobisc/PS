@@ -1,0 +1,14 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n; cin >> n;
+	for (int i = 1; i <= n; i++) {
+		int sum = i;
+		string x = to_string(i);
+		for (char c : x) sum += c - '0';
+		if (sum == n) return cout << i, 0;
+	}
+	cout << 0;
+	return 0;
+}

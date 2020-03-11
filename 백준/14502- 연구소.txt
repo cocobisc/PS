@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
+int r, c, ans;
+
+int check(int ma[][8]) {
+	int visited[8][8] = { 0 };
+	queue<pii> q;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (ma[i][j] == 2) {
+				q.push({ j,i });
+				visited[i][j] = 1;
+			}
+		}
+	}
+	while (q.size()) {
+		pii cur = q.front();
+		q.pop();
+		for (int i = 0; i < 4; i++) {
+			int nx = cur.first + dx[i], ny = cur.second + dy[i];
+			if (nx >= 0 && ny >= 0 && nx < c && ny < r && !visited[ny][nx] && !ma[ny][nx]) {
+				q.push({ nx,ny });
+				visited[ny][nx] = 1;
+			}
+		}
+	}
+
+	int cnt = 0;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (!visited[i][j] && !ma[i][j]) cnt++;
+		}
+	}
+	return cnt;
+}
+
+void BT(int ma[][8], int cnt, int x, int y) {
+	if (cnt == 3) {
+		ans = max(ans, check(ma));
+		return;
+	}
+	for (int i = 0; i < r; i++) {
+		if (i < y) continue;
+		for (int j = 0; j < c; j++) {
+			if (i == y && j <= x) continue;
+			if (!ma[i][j]) {
+				ma[i][j] = 1;
+				BT(ma, cnt + 1, j, i);
+				ma[i][j] = 0;
+			}
+		}
+	}
+}
+
+int main() {
+	int ma[8][8];
+	cin >> r >> c;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) cin >> ma[i][j];
+	}
+	BT(ma, 0, -1, -1);
+	cout << ans;
+}
