@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+int ma[10][10], ans = 2e9;
+int cnt[6] = { 0,5,5,5,5,5 };
+
+void changeState(int x, int y, int siz, int z) {
+	for (int i = y; i < y + siz; i++) {
+		for (int j = x; j < x + siz; j++) ma[i][j] = z;
+	}
+}
+
+bool possible(int x, int y, int siz) {
+	if (x + siz > 10 || y + siz > 10) return 0;
+	for (int i = y; i < y + siz; i++) {
+		for (int j = x; j < x + siz; j++)
+			if (!ma[i][j]) return 0;
+	}
+	return 1;
+}
+
+void solve(int squareCnt, int vacantCnt) {
+	if (ans <= squareCnt) return;
+	if (!vacantCnt) {
+		ans = min(ans, squareCnt);
+		return;
+	}
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (ma[i][j]) {
+				for (int siz = 5; siz > 0; siz--) {
+					if (possible(j, i, siz) && vacantCnt >= siz * siz && cnt[siz]) {
+						cnt[siz]--;
+						changeState(j, i, siz, 0);
+						solve(squareCnt + 1, vacantCnt - siz * siz);
+						cnt[siz]++;
+						changeState(j, i, siz, 1);
+					}
+				}
+				return;
+			}
+		}
+	}
+}
+
+int main() {
+	int vacantCnt = 0;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			cin >> ma[i][j];
+			if (ma[i][j]) vacantCnt++;
+		}
+	}
+	solve(0, vacantCnt);
+	cout << (ans == (int)2e9 ? -1 : ans);
+}

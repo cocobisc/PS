@@ -1,0 +1,16 @@
+#include<stdio.h>
+long dp[10002];
+const long MOD = 987654321;
+int main() {
+    int n;
+    scanf("%d", &n);
+    dp[0] = dp[2] = 1;
+    for (int i = 4; i <= n; i+=2) {
+        for (int j = 0; j <= i-2; j += 2) {
+            dp[i] += dp[j] * dp[i - j - 2];
+            dp[i] %= MOD;
+        }
+    }
+    printf("%d\n", dp[n]);
+    return 0;
+}

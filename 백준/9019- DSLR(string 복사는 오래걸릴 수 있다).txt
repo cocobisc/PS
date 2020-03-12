@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, string> pis;
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int T; cin >> T;
+	while (T--) {
+		int a, b; cin >> a >> b;
+		int visited[10000] = { 0 };
+		queue<pis> q;
+		q.push({ a,"" });
+		visited[a] = 1;
+		while (q.size()) {
+			pis cur = q.front();
+			int n = cur.first;
+			string s = cur.second;
+
+			if (n == b) {
+				cout << s << '\n';
+				break;
+			}
+			q.pop();
+
+			int nx = n * 2 % 10000;
+			if (!visited[nx]) {
+				visited[nx] = 1;
+				q.push({ nx, s + 'D' });
+			}
+
+			nx = n - 1;
+			if (nx < 0) nx = 9999;
+			if (!visited[nx]) {
+				visited[nx] = 1;
+				q.push({ nx, s + 'S' });
+			}
+
+			nx = (n % 1000) * 10 + (n / 1000);
+			if (!visited[nx]) {
+				visited[nx] = 1;
+				q.push({ nx, s + 'L' });
+			}
+
+			nx = (n % 10) * 1000 + (n / 10);
+			if (!visited[nx]) {
+				visited[nx] = 1;
+				q.push({ nx, cur.second + 'R' });
+			}
+		}
+	}
+}
