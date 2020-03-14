@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+map<char, char> ma;
+
+int main() {
+	ma[')'] = '(';
+	ma[']'] = '[';
+
+	while (1) {
+		string s; getline(cin, s);
+		if (s == ".") break;
+
+		int flag = 1;
+		vector<char> v;
+		for (auto c : s) {
+			if (c == '(' || c == '[') v.push_back(c);
+			else if(c == ')' || c == ']') {
+				if (v.empty() || ma[c] != v.back()) {
+					flag = 0; break;
+				}
+				v.pop_back();
+			}
+		}
+		if (flag && v.empty()) cout << "yes\n";
+		else cout << "no\n";
+	}
+}

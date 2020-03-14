@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+vector<pii> adj[1000];
+map<int, int> ma;
+int ans[101], land[101];
+int visited[101][1 << 15];
+
+int main() {
+	int n, m, k; cin >> n >> m >> k;
+
+	for (int i = 0; i < k; i++) {
+		int a; cin >> a;
+		land[a] = 1;
+		ma[a] = i + 1;
+	}
+	for (int i = 0; i < m; i++) {
+		int a, b, c; cin >> a >> b >> c;
+		adj[a].push_back({ b,c });
+		adj[b].push_back({ a,c });
+	}
+	queue<pii> q;
+	q.push({ 1, 0 });
+	visited[1][0] = 1;
+	while (q.size()) {
+		int cur = q.front().first;
+		int bits = q.front().second;
+		q.pop();
+
+		int cnt = 0;
+		for (int i = 1; i <= 14; i++) {
+			if (bits & (1 << i)) cnt++;
+		}
+		ans[cur] = max(ans[cur], cnt);
+
+		for (auto next : adj[cur]) {
+			int nextp = next.first;
+			int weight = next.second;
+			if (cnt > weight) continue;
+
+			if (land[nextp]) {
+				int nextbits = bits | (1 << ma[nextp]);
+				if (!visited[nextp][nextbits]) {
+					visited[nextp][nextbits] = 1;
+					q.push({ nextp, nextbits });
+				}
+
+			}
+			if (!visited[nextp][bits]) {
+				visited[nextp][bits] = 1;
+				q.push({ nextp, bits });
+			}
+		}
+	}
+	cout << ans[1];
+}
