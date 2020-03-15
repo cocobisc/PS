@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int GO_MAX = 10;
+
+struct Trie {
+	Trie *go[GO_MAX];
+	bool output; //끝 지점인가
+	bool goexist; //자식 유무
+
+	Trie() {
+		fill(go, go + GO_MAX, nullptr);
+		output = goexist = false;
+	}
+	~Trie() {
+		for (int i = 0; i < GO_MAX; i++) {
+			if (go[i]) delete go[i];
+		}
+	}
+	void insert(const char *key) {
+		if (*key == '\0') output = true;
+		else {
+			int next = *key - '0';
+			if (!go[next]) go[next] = new Trie;
+			goexist = true;
+			go[next]->insert(key + 1);
+		}
+	}
+	bool consistent() {
+		if (goexist && output) return false;
+		for (int i = 0; i < GO_MAX; i++) {
+			if (go[i] && !go[i]->consistent()) return false;
+		}
+		return true;
+	}
+};
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int N; cin >> N;
+		Trie *root = new Trie;
+		for (int i = 0; i < N; i++) {
+			char tel[11];
+			cin >> tel;
+			root->insert(tel);
+		}
+		puts(root->consistent() ? "YES" : "NO");
+		delete root;
+	}
+}
