@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX_V = 450;
+int f[MAX_V][MAX_V], c[MAX_V][MAX_V];
+vector<int> adj[MAX_V];
+
+int main() {
+	int N, M; cin >> N >> M;
+	int S = 0, E = N + M + 1;
+
+	for (int u = 1; u <= N; u++) {
+		int num; cin >> num;
+		adj[S].push_back(u);
+		adj[u].push_back(S);
+		c[S][u] = 1;
+		for (int j = 0; j < num; j++) {
+			int v; cin >> v;
+			v += N;
+			adj[u].push_back(v);
+			adj[v].push_back(u);
+			c[u][v] = 1;
+		}
+	}
+	for (int i = 1; i <= M; i++) {
+		adj[i + N].push_back(E);
+		adj[E].push_back(i + N);
+		c[i + N][E] = 1;
+	}
+
+	int total = 0;
+	while (1) {
+		int prev[MAX_V];
+		memset(prev, -1, sizeof(prev));
+		queue<int> q;
+		q.push(S);
+		while (q.size() && prev[E] == -1) {
+			int curr = q.front();
+			q.pop();
+			for (auto next : adj[curr]) {
+				if (prev[next] == -1 && c[curr][next] - f[curr][next] > 0) {
+					prev[next] = curr;
+					if (next == E) break;
+					q.push(next);
+				}
+			}
+		}
+		if (prev[E] == -1) break;
+
+		int flow = 2e9;
+		for (int i = E; i != S; i = prev[i]) {
+			flow = min(flow, c[prev[i]][i] - f[prev[i]][i]);
+		}
+		for (int i = E; i != S; i = prev[i]) {
+			f[i][prev[i]] -= flow;
+			f[prev[i]][i] += flow;
+		}
+		total += flow;
+	}
+	cout << total;
+}

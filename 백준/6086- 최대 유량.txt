@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX_V = 52;
+
+inline int ctoi(char c) {
+	if (c <= 'Z') return c - 'A';
+	return c - 'a' + 26;
+}
+
+int main() {
+	int N; cin >> N;
+	int f[MAX_V][MAX_V], c[MAX_V][MAX_V];
+	vector<int> adj[MAX_V];
+
+	for (int i = 0; i < N; i++) {
+		char a, b;
+		int w; cin >> a >> b >> w;
+		a = ctoi(a), b = ctoi(b);
+		c[a][b] = c[b][a] += w;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+
+	int S = ctoi('A'), E = ctoi('Z');
+	int total = 0;
+	while (1) {
+		int prev[MAX_V];
+		memset(prev, -1, sizeof(prev));
+		queue<int> q;
+		q.push(S);
+		while (q.size() && prev[E] == -1) {
+			int curr = q.front();
+			q.pop();
+			for (auto next : adj[curr]) {
+				if (prev[next] == -1 && c[curr][next] - f[curr][next] > 0) {
+					prev[next] = curr;
+					if (next == E) break;
+					q.push(next);
+				}
+			}
+		}
+		if (prev[E] == -1) break;
+
+		int flow = 2e9;
+		for (int i = E; i != S; i = prev[i]) {
+			flow = min(flow, c[prev[i]][i] - f[prev[i]][i]);
+		}
+		for (int i = E; i != S; i = prev[i]) {
+			f[i][prev[i]] -= flow;
+			f[prev[i]][i] += flow;
+		}
+		total += flow;
+	}
+	cout << total;
+}

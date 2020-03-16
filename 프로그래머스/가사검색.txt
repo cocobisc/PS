@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Trie {
+	Trie *go[26];
+	int cnt;
+
+	Trie() {
+		fill(go, go + 26, nullptr);
+		cnt = 0;
+	}
+
+	void update(string &s, int idx) {
+		cnt++;
+		if (idx == s.size()) return;
+
+		int next = s[idx] - 'a';
+		if (!go[next]) go[next] = new Trie;
+		go[next]->update(s, idx + 1);
+	}
+	int find(string &s, int idx) {
+		if (s[idx] == '?') return cnt; //s[idx] 는 현재에서 '바로 다음 노드'를 가리킴
+		int next = s[idx] - 'a';
+		if (go[next]) return go[next]->find(s, idx + 1);
+		return 0;
+	}
+}root[10001][2];
+
+vector<int> solution(vector<string> words, vector<string> queries) {
+	vector<int> ans;
+
+	for (auto s : words) {
+		root[s.size()][0].update(s, 0);
+		reverse(s.begin(), s.end());
+		root[s.size()][1].update(s, 0);
+	}
+	for (auto s : queries) {
+		int type = 0;
+		if (s[0] == '?') {
+			type = 1;
+			reverse(s.begin(), s.end());
+		}
+		ans.push_back(root[s.size()][type].find(s, 0));
+	}
+	return ans;
+}
