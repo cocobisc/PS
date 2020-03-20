@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+int ans;
+
+int main() {
+	int n; cin >> n;
+	vector<pii> v;
+
+	for (int i = 1; i <= n + 1; i++) {
+		int a = 0;
+		if(i <= n) cin >> a;
+
+		while (v.size() && v.back().first >= a) {
+			int height = v.back().first, len;
+			v.pop_back();
+
+			if (v.empty()) len = i - 1;
+			else len = i - v.back().second - 1;
+			ans = max(ans, height * len);
+		}
+		v.push_back({ a, i });
+	}
+	cout << ans;
+}

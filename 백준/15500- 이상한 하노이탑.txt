@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+vector<pii> ans;
+
+void solve(vector<pii> &v, vector<pii> &v2, int T) {
+	while (v.size()) {
+		pii loc = v.back();
+		int idx, cur, next;
+		idx = loc.first, cur = loc.second;
+		v.pop_back();
+
+		if (idx == T) {
+			ans.push_back({ cur,3 });
+			return;
+		}
+
+		if (cur % 2) next = 2;
+		else next = 1;
+
+		v2.push_back({ idx, next });
+		ans.push_back({ cur,next });
+	}
+}
+
+int main() {
+	int arr[123];
+	int n; cin >> n;
+	vector<pii> v[3];
+	for (int i = 1; i <= n; i++) {
+		int a; cin >> a;
+		v[1].push_back({ a,1 });
+	}
+	int T = n;
+	while (T) {
+		int k = 0, other;
+		for (int i = 1; i < 3; i++) {
+			for (auto x : v[i]) {
+				if (x.first == T) {
+					k = i;
+					break;
+				}
+			}
+			if (k) break;
+		}
+		if (k == 1) other = 2;
+		else other = 1;
+		solve(v[k], v[other], T);
+		T--;
+	}
+
+	cout << ans.size() << '\n';
+	for (auto x : ans) 
+		cout << x.first << " " << x.second << '\n';
+}

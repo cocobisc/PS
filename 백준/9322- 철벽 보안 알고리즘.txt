@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+map<string, int> ma;
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int n; cin >> n;
+		string s[3][1000];
+		vector<int> order;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < n; j++) {
+				cin >> s[i][j];
+				if (i == 1)
+					ma[s[i][j]] = j;
+			}
+		}
+		for (int i = 0; i < n; i++) 
+			cout << s[2][ma[s[0][i]]] << " ";
+		cout << '\n';
+	}
+}
