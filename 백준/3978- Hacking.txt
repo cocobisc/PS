@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int base = 64;
+const int MOD = 1e6;
+map<long long, bool> ma;
+string words, ans;
+
+bool isExist(string s) {
+	long long str = 0, power = 1;
+	for (int i = 0; i < s.size(); i++) {
+		str = (str * base) % MOD;
+		str = (str + s[i]) % MOD;
+		if (i < s.size() - 1) power = (power * base) % MOD;
+	}
+	return !ma[str];
+}
+
+bool BT(int cnt, int m, int k) {
+	if (cnt == m)
+		return isExist(ans);
+
+	for (int i = 0; i < k; i++) {
+		ans.push_back(words[i]);
+		if (BT(cnt + 1, m, k)) return true;
+		ans.pop_back();
+	}
+	return false;
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		ma.clear();
+
+		int n, m, k; cin >> n >> m >> k;
+		string s; cin >> s;
+		int len = s.size();
+		if (k == 1) {
+			cout << string(m, 'a') << '\n';
+			continue;
+		}
+		words.clear();
+		for (int i = 0; i < k; i++) words.push_back(i + 'a');
+
+		long long pattern = 0, str = 0, power = 1;
+		for (int i = 0; i < m; i++) {
+			str = (str * base) % MOD;
+			str = (str + s[i]) % MOD;
+			if (i < m - 1) power = (power * base) % MOD;
+		}
+		ma[str] = true;
+		for (int i = 0; i <= len - m; i++) {
+			str = (((str - (s[i] * power) % MOD + MOD) % MOD * base) % MOD + s[i + m]) % MOD;
+			ma[str] = true;
+		}
+
+		ans = "";
+		BT(0, m, k);
+		cout << ans << '\n';
+	}
+	return 0;
+}

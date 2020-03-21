@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MOD = 1e4 + 3;
+const int base = 26;
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+	int n;
+	string s;
+	cin >> n >> s;
+
+	int le = 1, ri = n;
+	while (le <= ri) {
+		vector<int> ma[MOD];
+		int mid = le + ri >> 1;
+		bool found = false;
+
+		int str = 0, power = 1;
+		for (int i = 0; i < mid; i++) {
+			str = (str * base) % MOD;
+			str = (str + s[i]) % MOD;
+			if (i < mid - 1) power = (power * base) % MOD;
+		}
+		ma[str].push_back(0);
+		for (int i = 1; i <= n - mid; i++) {
+			str = (((str - (s[i - 1] * power) % MOD + MOD) % MOD * base) % MOD + s[i + mid - 1]) % MOD;
+			if (ma[str].size()) {
+				for (int k : ma[str]) {
+					bool same = true;
+					for (int j = 0; j < mid; j++) {
+						if (s[i + j] != s[k + j]) {
+							same = false;
+							break;
+						}
+					}
+					if (same) {
+						found = true;
+						break;
+					}
+				}
+			}
+			if (found) break;
+			ma[str].push_back(i);
+		}
+		if (found) le = mid + 1;
+		else ri = mid - 1;
+	}
+	cout << ri;
+
+	return 0;
+}

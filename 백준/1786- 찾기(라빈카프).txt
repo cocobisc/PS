@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+const long long base = 256;
+const long long MOD = 1e9 + 9;
+string t, p;
+long long tlen, plen;
+int res[1000001];
+int rind;
+int main() {
+	cin.tie(0);
+	ios_base::sync_with_stdio(0);
+	getline(cin, t);
+	getline(cin, p);
+	tlen = t.length(); plen = p.length();
+	long long pattern = 0, str = 0, power = 1;
+	for (int i = 0; i < plen; i++) {
+		pattern = (pattern * base) % MOD;
+		pattern = (pattern + p[i]) % MOD;
+		str = (str * base) % MOD;
+		str = (str + t[i]) % MOD;
+		if (i < plen - 1) power = (power * base) % MOD;
+	}
+	rind = 0;
+	for (int i = 0; i <= tlen - plen; i++) {
+		if (pattern == str) res[rind++] = i + 1;
+		str = (((str - (t[i] * power) % MOD + MOD) % MOD * base) % MOD + t[i + plen]) % MOD;
+	}
+	cout << rind << '\n';
+	for (int i = 0; i < rind; i++)
+		cout << res[i] << " ";
+	return 0;
+}
