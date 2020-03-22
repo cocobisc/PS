@@ -1,0 +1,122 @@
+#include <bits/stdc++.h>
+using namespace std;
+int state[101][101][2];
+int R, C, M;
+int ans;
+
+struct ability {
+	int s, d;
+}ab[10001];
+
+void catchShark(int line) {
+	for (int i = 1; i <= R; i++) {
+		if (state[i][line][0]) {
+			ans += state[i][line][0];
+			state[i][line][0] = 0;
+			break;
+		}
+	}
+}
+
+void calLoc(int &cnt, int &s, int f, int &d, int T) {
+	while (s >= f) {
+		s -= f;
+		cnt++;
+		f = T - 1;
+	}
+	if (cnt % 2) {
+		if (d % 2) d++;
+		else d--;
+	}
+}
+
+void move() {
+	for (int i = 1; i <= R; i++) {
+		for (int j = 1; j <= C; j++) {
+			int siz = state[i][j][0];
+			if (siz) {
+				int s = ab[siz].s;
+				int d = ab[siz].d;
+				int nx, ny, f, cnt = 0;
+
+				if (d == 1) {
+					f = i - 1;
+					calLoc(cnt, s, f, d, R);
+					nx = j;
+					if (d % 2) {
+						if (cnt) ny = R - s;
+						else ny = i - s;
+					}
+					else {
+						if (cnt) ny = 1 + s;
+						else ny = i + s;
+					}
+				}
+				else if (d == 2) {
+					f = R - i;
+					calLoc(cnt, s, f, d, R);
+					nx = j;
+					if (d % 2) {
+						if (cnt) ny = R - s;
+						else ny = i - s;
+					}
+					else {
+						if (cnt) ny = 1 + s;
+						else ny = i + s;
+					}
+				}
+				else if (d == 3) {
+					f = C - j;
+					calLoc(cnt, s, f, d, C);
+					ny = i;
+					if (d % 2) {
+						if (cnt) nx = 1 + s;
+						else nx = j + s;
+					}
+					else {
+						if (cnt) nx = C - s;
+						else nx = j - s;
+					}
+				}
+				else {
+					f = j - 1;
+					calLoc(cnt, s, f, d, C);
+					ny = i;
+					if (d % 2) {
+						if (cnt) nx = 1 + s;
+						else nx = j + s;
+					}
+					else {
+						if (cnt) nx = C - s;
+						else nx = j - s;
+					}
+				}
+				ab[siz].d = d;
+				state[ny][nx][1] = max(siz, state[ny][nx][1]);
+			}
+		}
+	}
+
+	for (int i = 1; i <= R; i++) {
+		for (int j = 1; j <= C; j++) {
+			state[i][j][0] = state[i][j][1];
+			state[i][j][1] = 0;
+		}
+	}
+}
+
+int main() {
+	cin >> R >> C >> M;
+	for (int i = 0; i < M; i++) {
+		int r, c, s, d, z; cin >> r >> c >> s >> d >> z;
+		state[r][c][0] = z;
+		ab[z] = { s,d };
+	}
+	for (int line = 1; line <= C; line++) {
+		catchShark(line);
+		move();
+	}
+	cout << ans;
+
+	return 0;
+}

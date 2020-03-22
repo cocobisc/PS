@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int MAX = 1e5;
+const int MAX = 1e5 + 1;
 int parent[MAX];
 
 int find(int x) {
@@ -17,13 +17,13 @@ int main() {
 	int arr[MAX];
 	memset(parent, -1, sizeof(parent));
 	int ans = 0;
-	for (int i = 0; i < P; i++) cin >> arr[i];
-	for (int i = 0; i < P; i++) {
-		int b = find(arr[i]);
+	for (int i = 1; i <= P; i++) cin >> arr[i];
+	for (int i = 1; i <= P; i++) {
 		int a = find(arr[i] - 1);
+		int b = find(arr[i]);
 		if (a != b) uni(a, b);
 		else {
-			if (!a && !b) break;;
+			if (!a) break;
 			uni(a - 1, a);
 		}
 		ans++;
