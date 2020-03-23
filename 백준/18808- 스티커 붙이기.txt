@@ -1,0 +1,101 @@
+#include <bits/stdc++.h>
+using namespace std;
+int notebook[40][40];
+int sticker[100][10][10];
+int siz[100];
+int R, C, K;
+
+struct stsiz {
+	int r, c;
+}stsiz[100];
+
+bool isFit(int k, int x, int y, int sx, int sy) {
+
+	int m = siz[k];
+	int temp[40][40];
+
+	for (int i = 0; i < R; i++) 
+		for (int j = 0; j < C; j++) 
+			temp[i][j] = notebook[i][j];
+
+	for (int i = sy; i < m; i++) {
+		for (int j = sx; j < m; j++) {
+			if (sticker[k][i][j]) {
+				if (notebook[i - sy + y][j - sx + x]) return false;
+				temp[i - sy + y][j - sx + x] = 1;
+			}
+		}
+	}
+	for (int i = 0; i < R; i++)
+		for (int j = 0; j < C; j++)
+			notebook[i][j] = temp[i][j];
+
+	return true;
+}
+
+bool find(int k) {
+	int m = siz[k];
+	if (stsiz[k].r > R || stsiz[k].c > C) return false;
+
+	int sx = 2e9, sy = 2e9;
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < m; j++) {
+			if (sticker[k][i][j] && sy > i) sy = i;
+			if (sticker[k][i][j] && sx > j) sx = j;
+		}
+	}
+
+	for (int i = 0; i < R; i++) {
+		if (i + stsiz[k].r > R) return false;
+		int flag = false;
+		for (int j = 0; j < C; j++) {
+			if (j + stsiz[k].c <= C && isFit(k, j, i, sx, sy)) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag) return true;
+	}
+	return false;
+}
+
+void rotate(int k) {
+	int temp[10][10];
+	int m = siz[k];
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < m; j++) {
+			temp[j][m - i - 1] = sticker[k][i][j];
+		}
+	}
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < m; j++)
+			sticker[k][i][j] = temp[i][j];
+	}
+}
+
+int main() {
+	cin >> R >> C >> K;
+	for (int k = 0; k < K; k++) {
+		int r, c; cin >> r >> c;
+		siz[k] = max(r, c);
+		stsiz[k].r = r, stsiz[k].c = c;
+
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) cin >> sticker[k][i][j];
+		}
+	}
+	for (int k = 0; k < K; k++) {
+		for (int i = 0; i < 4; i++) {
+			if (find(k)) break;
+			rotate(k);
+			swap(stsiz[k].r, stsiz[k].c);
+		}
+	}
+	int cnt = 0;
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) if (notebook[i][j]) cnt++;
+	}
+	cout << cnt;
+
+	return 0;
+}

@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+int notebook[40][40];
+int R, C, K;
+
+int main() {
+	cin >> R >> C >> K;
+	for (int k = 0; k < K; k++) {
+		int sticker[10][10] = { 0 };
+		int r, c; cin >> r >> c;
+		for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) cin >> sticker[i][j];
+		}
+
+		for (int ro = 0; ro < 4; ro++) {
+			int temp[10][10] = { 0 };
+			for (int i = 0; i <= R - r; i++) {
+				for (int j = 0; j <= C - c; j++) {
+					int flag = true;
+					for (int ii = 0; ii < r; ii++) {
+						for (int jj = 0; jj < c; jj++) {
+							if (notebook[i + ii][j + jj] && sticker[ii][jj]) {
+								flag = false;
+								goto END;
+							}
+						}
+					}
+				END:;
+					if (!flag) continue;
+					for (int ii = 0; ii < r; ii++) {
+						for (int jj = 0; jj < c; jj++) {
+							notebook[i + ii][j + jj] |= sticker[ii][jj];
+						}
+					}
+					goto SKIP;
+				}
+			}
+			for (int i = 0; i < r; i++) {
+				for (int j = 0; j < c; j++) {
+					temp[j][r - i - 1] = sticker[i][j];
+				}
+			}
+			memcpy(sticker, temp, sizeof(sticker));
+			swap(r, c);
+		}
+	SKIP:;
+	}
+
+	int cnt = 0;
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++)
+			if (notebook[i][j]) cnt++;
+	}
+	cout << cnt;
+
+	return 0;
+}
