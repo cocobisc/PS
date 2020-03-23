@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+
+int garden[50][50];
+int N, M, G, R;
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+int ans;
+
+struct seed {
+	int x, y, type;
+};
+vector<seed> pos;
+
+void BFS() {
+	queue<seed> q;
+	pii visited[50][50];
+	int flower[50][50] = { 0 };
+	int cnt = 0, k = 1;
+
+	for (int i = 0; i < pos.size(); i++) {
+		if (pos[i].type) {
+			q.push(pos[i]);
+			visited[pos[i].y][pos[i].x] = { 1, pos[i].type };
+		}
+	}
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			seed curr = q.front();
+			q.pop();
+			if (flower[curr.y][curr.x]) continue;
+			for (int i = 0; i < 4; i++) {
+				int nx = curr.x + dx[i], ny = curr.y + dy[i];
+				if (nx >= 0 && ny >= 0 && nx < M && ny < N && garden[ny][nx]
+					&& (!visited[ny][nx].first || visited[ny][nx].first == k + 1) && !flower[ny][nx]) {
+					if (visited[ny][nx].second && visited[ny][nx].second != 3 && visited[ny][nx].second != curr.type) {
+						flower[ny][nx] = 1;
+						cnt++;
+						visited[ny][nx] = { k + 1, 3 };
+						continue;
+					}
+					if (!visited[ny][nx].second) {
+						visited[ny][nx] = { k + 1, curr.type };
+						q.push({ nx,ny, curr.type });
+					}
+				}
+			}
+		}
+		k++;
+	}
+	ans = max(ans, cnt);
+}
+
+void RBT(int idx, int cnt) {
+	if (cnt == R) {
+		BFS();
+		return;
+	}
+	for (int i = idx; i < pos.size(); i++) {
+		if (pos[i].type) continue;
+		pos[i].type = 2;
+		RBT(i + 1, cnt + 1);
+		pos[i].type = 0;
+	}
+}
+
+void GBT(int idx, int cnt) {
+	if (cnt == G) {
+		RBT(0, 0);
+	}
+	for (int i = idx; i < pos.size(); i++) {
+		if (pos[i].type) continue;
+		pos[i].type = 1;
+		GBT(i + 1, cnt + 1);
+		pos[i].type = 0;
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+	cin >> N >> M >> G >> R;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			cin >> garden[i][j];
+			if (garden[i][j] == 2) pos.push_back({ j,i });
+		}
+	}
+	GBT(0, 0);
+	cout << ans;
+}
