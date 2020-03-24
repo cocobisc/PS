@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int r, c;
+ll ans = -1;
+
+bool isbound(int x, int y) {
+	return x >= 0 && y >= 0 && x < c && y < r;
+}
+
+int main() {
+	int arr[9][9];
+	scanf("%d %d", &r, &c);
+
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) 
+			scanf("%1d", &arr[i][j]);
+	}
+
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			for (int dy = -r; dy < r; dy++) {
+				for (int dx = -c; dx < c; dx++) {
+					if (!dy && !dx) continue;
+
+					ll num = 0;
+					int x = j, y = i;
+					while (isbound(x, y)) {
+						num = num * 10 + arr[y][x];
+						ll t = (ll)sqrt(num);
+						if (t * t == num) ans = max(ans, num);
+						x += dx, y += dy;
+					}
+				}
+			}
+		}
+	}
+	printf("%d", ans);
+}

@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+char arr[50][50];
+int ans;
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 }; 
+int r, c;
+
+void BFS(int x, int y) {
+	int visited[50][50] = { 0 };
+	queue<pii> q;
+	q.push({ x,y });
+	visited[y][x] = 1;
+
+	int ret = 0;
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			pii curr = q.front();
+			q.pop();
+			for (int i = 0; i < 4; i++) {
+				int nx = curr.first + dx[i], ny = curr.second + dy[i];
+				if (nx >= 0 && ny >= 0 && nx < c && ny < r && !visited[ny][nx] && arr[ny][nx] == 'L') {
+					q.push({ nx,ny });
+					visited[ny][nx] = 1;
+				}
+			}
+		}
+		ret++;
+	}
+	ans = max(ans, ret - 1);
+}
+
+int main() {
+	cin >> r >> c;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) cin >> arr[i][j];
+	}
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (arr[i][j] == 'L') BFS(j, i);
+		}
+	}
+	cout << ans;
+}
