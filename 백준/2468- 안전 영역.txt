@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[100][100], visited[100][100], n, ma, ans = 1;
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 };
+
+void dfs(int x, int y, int h) {
+	if (x <0 || y <0 || x >= n || y >= n || arr[y][x] <= h || visited[y][x]) return;
+	visited[y][x] = 1;
+	for (int i = 0; i < 4; i++)
+		dfs(x + dx[i], y + dy[i], h);
+}
+
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> arr[i][j];
+			ma = max(ma, arr[i][j]);
+		}
+	}
+	for (int h = 1; h < ma; h++) {
+		int cnt = 0;
+		memset(visited, 0, sizeof(visited));
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (arr[i][j] > h && !visited[i][j]) 
+					dfs(j, i, h), cnt++;
+			}
+		}
+		ans = max(cnt, ans);
+	}
+	cout << ans;
+
+	return 0;
+}

@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 2e4 + 1;
+
+vector<int> adj[MAX];
+int check[MAX];
+bool flag;
+
+void dfs(int curr, int k) {
+	check[curr] = k;
+	for (int next : adj[curr]) {
+		if (check[next] == k) flag = true;
+		else if (check[next] == -1) dfs(next, k ^ 1);
+	}
+}
+
+void init() {
+	for (int i = 0; i < MAX; i++) adj[i].clear();
+	memset(check, -1, sizeof(check));
+	flag = false;
+}
+
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		init();
+
+		int V, E; cin >> V >> E;
+		for (int i = 0; i < E; i++) {
+			int u, v; cin >> u >> v;
+			adj[u].push_back(v);
+			adj[v].push_back(u);
+		}
+		for (int i = 0; i < V; i++) {
+			if (adj[i].size() && check[i] == -1) dfs(i, 0);
+		}
+
+		cout << (flag ? "NO" : "YES");
+		cout << '\n';
+	}
+	return 0;
+}

@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+
+bool possible(vector<pii> &v, int a, int b) {
+	return abs(v[a].first - v[b].first) 
+		+ abs(v[a].second - v[b].second) <= 1000;
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		vector<pii> v;
+		vector<int> adj[101];
+		int visited[101] = { 0 }, n;
+		cin >> n;
+
+		for (int i = 0; i < n + 2; i++) {
+			int x, y; cin >> x >> y;
+			v.push_back({ x,y });
+		}
+		for (int i = 0; i < n + 2; i++) {
+			for (int j = i + 1; j < n + 2; j++) {
+				if (possible(v, i, j)) {
+					adj[i].push_back(j);
+					adj[j].push_back(i);
+				}
+			}
+		}
+
+		bool flag = false;
+		queue<int> q;
+		visited[0] = 1;
+		q.push(0);
+		while (q.size()) {
+			int curr = q.front();
+			q.pop();
+			if (curr == n + 1) {
+				flag = true; 
+				break;
+			}
+			for (int next : adj[curr]) {
+				if (!visited[next]) {
+					visited[next] = 1;
+					q.push(next);
+				}
+			}
+		}
+		cout << (flag ? "happy" : "sad");
+		cout << '\n';
+	}
+
+	return 0;
+}
