@@ -1,0 +1,9 @@
+1. tree size 잘 구하기 => (int)ceil(log2(n))
+
+2. 구간(ns, ne) 처리 잘 하기
+    => if (e < ns || ne < s) return;
+  
+3. propagate 시기 잘 생각하기 => 뭐 하기전에 일단 propagate 필수
+
+4. (중요!!!) 범위는 1~n이 아닌 1~tree size임을 항상 명시, 풀 때마다 헷갈렸음
+ 

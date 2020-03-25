@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 5e6 + 1;
+int k[2][MAX];
+
+int main() {
+	int T, A, B; cin >> T >> A >> B;
+	k[0][0] = 1;
+
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < T; j++) {
+			if (!k[i][j]) continue;
+
+			if (!i && j) k[1][j / 2] = 1;
+			if (j + A <= T) k[i][j + A] = 1;
+			if (j + B <= T) k[i][j + B] = 1;
+		}
+	}
+	while (!k[0][T] && !k[1][T]) T--;
+	cout << T;
+}
