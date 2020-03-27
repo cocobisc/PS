@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1001;
+
+int A[MAX * 2], B[MAX];
+vector<int> adj[MAX * 2];
+bool visited[MAX * 2];
+
+bool dfs(int a) {
+	visited[a] = true;
+
+	for (int b : adj[a]) {
+		if (B[b] == -1 || !visited[B[b]] && dfs(B[b])) {
+			A[a] = b;
+			B[b] = a;
+			return true;
+		}
+	}
+	return false;
+}
+
+int main() {
+	int N, M; cin >> N >> M;
+	for (int i = 1; i <= N * 2; i+=2) {
+		int n; cin >> n;
+		for (int j = 0; j < n; j++) {
+			int a; cin >> a;
+			adj[i].push_back(a);
+			adj[i + 1].push_back(a);
+		}
+	}
+	fill(A, A + N * 2 + 1, -1);
+	fill(B, B + M + 1, -1);
+
+	int ans = 0;
+	for (int i = 1; i <= N * 2; i++) {
+		if (!visited[i]) {
+			memset(visited, false, sizeof(visited));
+			if (dfs(i)) ans++;
+		}
+	}
+	cout << ans;
+}

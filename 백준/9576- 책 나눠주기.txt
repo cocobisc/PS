@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1001;
+int A[MAX], B[MAX], N, M;
+bool visited[MAX];
+vector<int> adj[MAX];
+
+bool dfs(int a) {
+	visited[a] = true;
+
+	for (int b : adj[a]) {
+		if (B[b] == -1 || !visited[B[b]] && dfs(B[b])) {
+			A[a] = b;
+			B[b] = a;
+			return true;
+		}
+	}
+	return false;
+}
+
+void init() {
+	fill(A, A + M + 1, -1);
+	fill(B, B + N + 1, -1);
+	for (int i = 1; i <= M; i++) 
+		adj[i].clear();
+	memset(visited, false, sizeof(visited));
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		cin >> N >> M;
+		init();
+
+		for (int i = 1; i <= M; i++) {
+			int a, b; cin >> a >> b;
+			for (int j = a; j <= b; j++) adj[i].push_back(j);
+		}
+
+		int ans = 0;
+		for (int i = 1; i <= M; i++) {
+			if (!visited[i]) {
+				memset(visited, false, sizeof(visited));
+				if (dfs(i)) ans++;
+			}
+		}
+		cout << ans << '\n';
+	}
+}
