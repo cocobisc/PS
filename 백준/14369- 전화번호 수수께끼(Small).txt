@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[26], goal;
+string S[10] = { "ZERO","ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE" };
+string ans;
+
+bool check() {
+	for (int i = 0; i < 26; i++)
+		if (arr[i]) return false;
+	return true;
+}
+
+bool BT() {
+	if (check()) return true;
+
+	for (int i = 0; i < 10; i++) {
+		vector<char> temp;
+		int flag = 1;
+
+		for (char c : S[i]) {
+			int k = c - 'A';
+			if (arr[k]) {
+				arr[k]--;
+				temp.push_back(c);
+			}
+			else {
+				while (temp.size()) {
+					arr[temp.back() - 'A']++;
+					temp.pop_back();
+				}
+				flag = 0;
+				break;
+			}
+		}
+		if (flag) {
+			ans += i + '0';
+			if (BT()) return true;
+			while (temp.size()) {
+				arr[temp.back() - 'A']++;
+				temp.pop_back();
+			}
+			ans.pop_back();
+		}
+	}
+	return false;
+}
+
+int main() {
+	int T; cin >> T;
+	for (int i = 1; i <= T; i++) {
+		memset(arr, 0, sizeof(arr));
+		string s; cin >> s;
+		ans = "";
+
+		for (char c : s) arr[c - 'A']++;
+
+		goal = s.size();
+		BT();
+		cout << "Case #" << i << ": " << ans << '\n';
+	}
+	return 0;
+}

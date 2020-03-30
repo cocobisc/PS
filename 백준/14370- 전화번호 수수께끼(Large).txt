@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[26], order[10] = { 0,6,4,5,8,3,2,9,7,1 };
+string S[10] = { "ZERO", "SIX", "FOUR", "FIVE", "EIGHT", "THREE", "TWO", "NINE", "SEVEN", "ONE" }, ans;
+string uniq = "ZXUFGHWISN";
+
+int main() {
+	int T; cin >> T;
+	for (int i = 1; i <= T; i++) {
+		memset(arr, 0, sizeof(arr));
+		string s; cin >> s;
+		ans.clear();
+
+		for (char c : s) arr[c - 'A']++;
+		for (int i = 0; i < 10; i++) {
+			while (arr[uniq[i] - 'A']) {
+				for (char c : S[i]) arr[c - 'A']--;
+				ans += order[i] + '0';
+			}
+		}
+		sort(ans.begin(), ans.end());
+		cout << "Case #" << i << ": " << ans << '\n';
+	}
+	return 0;
+}
