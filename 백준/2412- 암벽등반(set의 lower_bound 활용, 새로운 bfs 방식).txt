@@ -1,3 +1,5 @@
+//대신 메모리 사용량 X5
+
 #include <bits/stdc++.h>
 using namespace std;
 typedef pair<int, int> pii;
