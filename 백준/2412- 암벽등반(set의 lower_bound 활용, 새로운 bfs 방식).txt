@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+const int MAX = 2e5 + 1;
+set<int> se[MAX];
+
+int main() {
+	int N, T, X, Y;
+	cin >> N >> T;
+	
+	for (int i = 0; i < N; i++) {
+		cin >> X >> Y;
+		se[Y].insert(X);
+	}
+	int ans = 0;
+	queue<pii> q;
+	q.push({ 0,0 }); q.push({ -1,-1 });
+	while (1) {
+		tie(X, Y) = q.front(); q.pop();
+		if (Y == -1) {
+			if (q.empty()) { ans = -1; break; }
+			ans++, q.push({ -1,-1 });
+			continue;
+		}
+		if (Y == T) break;
+
+		for (int y = Y - 2; y <= Y + 2; y++) {
+			if (y < 0 || y > T) continue;
+
+			auto it = se[y].lower_bound(X - 2);
+			auto end = se[y].upper_bound(X + 2);
+			while (it != end) {
+				q.push({ *it,y });
+				it = se[y].erase(it);
+			}
+		}
+	}
+	cout << ans;
+
+	return 0;
+}
+
