@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[100000];
+
+int main() {
+	int n; cin >> n;
+
+	priority_queue<int> q;
+	while (n--) {
+		int d; cin >> d;
+		q.push(-d);
+	}
+	int ans = 0;
+	while (q.size() > 1) {
+		int a = q.top(); q.pop();
+		int b = q.top(); q.pop();
+		ans += -(a + b);
+		q.push(a + b);
+	}
+	cout << ans;
+}

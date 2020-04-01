@@ -1,33 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 int main() {
-	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-	priority_queue<int, vector<int>, greater<int>> pq2;
-	priority_queue<int> pq1;
-	int n; cin >> n;
-	for (int i = 0; i < n; i++) {
+	int N; cin >> N;
+	priority_queue<int> minh, maxh;
+
+	for (int i = 0; i < N; i++) {
 		int a; cin >> a;
-		if (pq2.empty()) pq2.push(a);
+
+		if (maxh.empty()) maxh.push(a);
 		else {
-			if (pq2.size() == pq1.size()) {
-				if (pq1.top() > a) {
-					pq2.push(pq1.top());
-					pq1.pop(); pq1.push(a);
+			if (minh.size() == maxh.size()) {
+				if (-minh.top() < a) {
+					maxh.push(-minh.top());
+					minh.pop();
+					minh.push(-a);
 				}
-				else pq2.push(a);
+				else maxh.push(a);
 			}
 			else {
-				if (pq2.top() > a) pq1.push(a);
-				else {
-					pq2.push(a);
-					pq1.push(pq2.top());
-					pq2.pop();
+				if (maxh.top() > a) {
+					minh.push(-maxh.top());
+					maxh.pop();
+					maxh.push(a);
 				}
+				else minh.push(-a);
 			}
 		}
-		if (pq2.size() == pq1.size()) 
-			cout << min(pq1.top(), pq2.top());
-		else cout << pq2.top();
-		cout << "\n";
+
+		if (minh.size() == maxh.size()) cout << min(maxh.top(), -minh.top());
+		else cout << maxh.top();
+		cout << '\n';
 	}
+	return 0;
 }

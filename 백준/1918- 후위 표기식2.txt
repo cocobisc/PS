@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	string op, ans, s; cin >> s;
+
+	for (int i = 0; s[i]; i++) {
+		if ('A' <= s[i] && s[i] <= 'Z') ans += s[i];
+		else {
+			if (s[i] == '(') op.push_back(s[i]);
+			else if (s[i] == ')') {
+				while (op.back() != '(') ans += op.back(), op.pop_back();
+				op.pop_back();
+			}
+			else {
+				if (s[i] == '*' || s[i] == '/') {
+					while (op.size() && (op.back() == '*' || op.back() == '/'))
+						ans += op.back(), op.pop_back();
+				}
+				else {
+					while (op.size() && op.back() != '(')
+						ans += op.back(), op.pop_back();
+				}
+				op.push_back(s[i]);
+			}
+		}
+	}
+	while (op.size()) ans += op.back(), op.pop_back();
+	cout << ans;
+}

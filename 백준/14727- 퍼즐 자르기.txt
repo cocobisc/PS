@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+#define X first
+#define Y second
+using namespace std;
+typedef pair<int, int> pii;
+typedef long long ll;
+
+int main() {
+	vector<pii> v;
+	int a, N; cin >> N;
+	long long ans = 0;
+
+	for (int i = 0; i <= N; i++) {
+		a = 0;
+		if(i != N) cin >> a;
+
+		while (v.size() && v.back().X >= a) {
+			ll h = v.back().X, w;
+			v.pop_back();
+
+			if (v.empty()) w = i;
+			else w = i - v.back().Y - 1;
+
+			ans = max(ans, h * w);
+		}
+		v.push_back({ a, i });
+	}
+	cout << ans;
+
+	return 0;
+}
