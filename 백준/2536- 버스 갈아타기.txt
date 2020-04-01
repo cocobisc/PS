@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 1e5 + 1;
+int sx, sy, ex, ey;
+int check[5001];
+
+struct loc {
+	int s, e, idx;
+};
+vector<loc> verti[MAX], hori[MAX];
+
+struct bus {
+	int x1, y1, x2, y2;
+}b[5001];
+
+int bfs() {
+	queue<int> q;
+
+	for (loc l : verti[sx]) {
+		if (l.s <= sy && sy <= l.e) {
+			q.push(l.idx);
+			check[l.idx] = 1;
+		}
+	}
+	for (loc l : hori[sy]) {
+		if (l.s <= sx && sx <= l.e) {
+			q.push(l.idx);
+			check[l.idx] = 1;
+		}
+	}
+
+	int ret = 1;
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			int curr = q.front(); q.pop();
+			int x1 = b[curr].x1, y1 = b[curr].y1, x2 = b[curr].x2, y2 = b[curr].y2;
+
+			if (x1 == x2) { //수직
+				if (ex == x1 && y1 <= ey && ey <= y2) return ret;
+				for (loc l : verti[x1]) {
+					if (!check[l.idx] && !(y1 > l.e || y2 < l.s)) {
+						q.push(l.idx);
+						check[l.idx] = 1;
+					}
+				}
+				for (int y = y1; y <= y2; y++) {
+					for (loc l : hori[y]) {
+						if (!check[l.idx] && l.s <= x1 && x1 <= l.e) {
+							q.push(l.idx);
+							check[l.idx] = 1;
+						}
+					}
+				}
+
+			}
+			else { //수평
+				if (ey == y1 && x1 <= ex && ex <= x2) return ret;
+				for (loc l : hori[y1]) {
+					if (!check[l.idx] && !(x1 > l.e || x2 < l.s)) {
+						q.push(l.idx);
+						check[l.idx] = 1;
+					}
+				}
+				for (int x = x1; x <= x2; x++) {
+					for (loc l : verti[x]) {
+						if (!check[l.idx] && l.s <= y1 && y1 <= l.e) {
+							q.push(l.idx);
+							check[l.idx] = 1;
+						}
+					}
+				}
+			}
+		}
+		ret++;
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+
+	int R, C, m; cin >> R >> C >> m;
+	for (int i = 0; i < m; i++) {
+		int idx, x1, y1, x2, y2; cin >> idx >> x1 >> y1 >> x2 >> y2;
+
+		if (x1 > x2) swap(x1, x2);
+		if (y1 > y2) swap(y1, y2);
+
+		if (x1 == x2) verti[x1].push_back({ y1,y2,idx });
+		else hori[y1].push_back({ x1,x2,idx });
+
+		b[idx] = { x1,y1,x2,y2 };
+	}
+	cin >> sx >> sy >> ex >> ey;
+
+	cout << bfs();
+
+	return 0;
+}
