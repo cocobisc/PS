@@ -1,0 +1,105 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+
+int R, C, N;
+char arr[100][100];
+int check[100][100];
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 };
+
+void fire(int h, int k) {
+	if (k & 1) {
+		for (int j = C - 1; j >= 0; j--) {
+			if (arr[h][j] == 'x') {
+				arr[h][j] = '.';
+				return;
+			}
+		}
+	}
+	else {
+		for (int j = 0; j < C; j++) {
+			if (arr[h][j] == 'x') {
+				arr[h][j] = '.';
+				return;
+			}
+		}
+	}
+
+}
+
+void bfs(int start) {
+	queue<pii> q;
+	q.push({ start, R - 1 });
+	while (q.size()) {
+		int x, y; tie(x, y) = q.front(); q.pop();
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i], ny = y + dy[i];
+			if (nx >= 0 && ny >= 0 && nx < C && ny < R && !check[ny][nx] && arr[ny][nx] == 'x') {
+				check[ny][nx] = 1;
+				q.push({ nx, ny });
+			}
+		}
+	}
+}
+
+void checkLevi() {
+	int minc = 2e9;
+	set<int> se;
+	int p[100] = { 0 };
+
+	for (int i = R - 1; i >= 0; i--) {
+		for (int j = 0; j < C; j++) {
+			if (arr[i][j] == 'x' && !check[i][j]) {
+				se.insert(j);
+				if (!p[j]) p[j] = i;
+
+				int cnt = 0;
+				for (int ii = i + 1; ii < R; ii++) {
+					if (check[ii][j]) break;
+					if (arr[ii][j] == '.') cnt++;
+				}
+				minc = min(minc, cnt);
+
+			}
+		}
+	}
+	for (auto it = se.begin(); it != se.end(); it++) {
+		for (int i = p[*it]; i >= 0; i--) {
+			if (arr[i][*it] == 'x' && !check[i][*it]) {
+				arr[i + minc][*it] = arr[i][*it];
+				arr[i][*it] = '.';
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> R >> C;
+
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) cin >> arr[i][j];
+	}
+
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		int h; cin >> h;
+		h = R - h;
+		fire(h, i);
+
+		memset(check, 0, sizeof(check));
+		for (int j = 0; j < C; j++) {
+			if (arr[R - 1][j] == 'x' && !check[R - 1][j]) {
+				check[R - 1][j] = 1;
+				bfs(j);
+			}
+		}
+		checkLevi();
+	}
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) cout << arr[i][j];
+		cout << '\n';
+	}
+
+	return 0;
+}
