@@ -20,18 +20,13 @@ void update(vector<ll> &tree, int idx, int val) {
 
 int main() {
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-	int n, m, k; cin >> n >> m >> k;
+	int n, m, k; cin >> n >> m;
 	vector<ll> tree(n + 1);
 	vector<ll> arr(n + 1);
-	for (int i = 1; i <= n; i++) {
-		cin >> arr[i];
-		update(tree, i, arr[i]);
-	}
 
-	m += k;
 	for (int i = 0; i < m; i++) {
 		int q; cin >> q;
-		if (q == 1) {
+		if (q) {
 			int idx;
 			ll val; cin >> idx >> val;
 			ll diff = val - arr[idx];
@@ -40,6 +35,7 @@ int main() {
 		}
 		else {
 			int s, e; cin >> s >> e;
+			if (s > e) swap(s, e);
 			cout << sum(tree, e) - sum(tree, s - 1) << '\n';
 		}
 	}

@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1e4 + 1;
+int arr[100], check[MAX];
+
+int main() {
+	int N, K; cin >> N >> K;
+	for (int i = 0; i < N; i++) cin >> arr[i];
+	check[0] = 1;
+	for (int i = 0; i < N; i++) {
+		for (int j = arr[i]; j <= K; j++) {
+			check[j] += check[j - arr[i]];
+		}
+	}
+	cout << check[K];
+}s

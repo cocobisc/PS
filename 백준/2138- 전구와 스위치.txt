@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+string a, a2, b;
+int N, cnt, cnt2;
+
+void change(string &a, int i, int j) {
+	if (j == N) j--;
+	for (int k = i; k <= j; k++) a[k] ^= 1;
+}
+
+int main() {
+	cin >> N >> a >> b;
+	a2 = a;
+	change(a2, 0, 1), cnt2++;
+
+	for (int i = 1; i < N; i++) {
+		if (a[i - 1] != b[i - 1])
+			change(a, i - 1, i + 1), cnt++;
+		if (a2[i - 1] != b[i - 1])
+			change(a2, i - 1, i + 1), cnt2++;
+	}
+	if (a == b) cout << cnt;
+	else if (a2 == b) cout << cnt2;
+	else cout << -1;
+}

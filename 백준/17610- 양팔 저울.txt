@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[14], S;
+
+int main() {
+	int N; cin >> N;
+	const int MAX = 1 << N;
+	int *d = new int[MAX];
+	fill(d, d + MAX, 0);
+
+	for (int i = 0; i < N; i++) {
+		cin >> arr[i];
+		S += arr[i];
+	}
+	bool *check = new bool[S + 1];
+	fill(check, check + S + 1, false);
+
+	for (int i = 1; i < MAX; i++) {
+		for (int j = 0; j < N; j++) {
+			if (i & (1 << j)) d[i] += arr[j];
+		}
+	}
+	for (int i = 0; i < MAX; i++) {
+		for (int j = 0; j < MAX; j++) {
+			int t = abs(d[i] - d[j]);
+			check[t] = true;
+		}
+	}
+
+	int cnt = 0;
+	for (int i = 1; i <= S; i++) {
+		if (!check[i]) cnt++;
+	}
+	cout << cnt;
+}

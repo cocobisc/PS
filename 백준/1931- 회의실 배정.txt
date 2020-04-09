@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int N, a, b; cin >> N;
+	vector<pair<int, int>> v, ans;
+	for (int i = 0; i < N; i++) {
+		cin >> a >> b;
+		v.push_back({ a,b });
+	}
+	sort(v.begin(), v.end());
+	for (int i = 0; i < N; i++) {
+		tie(a, b) = v[i];
+
+		if (ans.empty()) ans.push_back(v[i]);
+		else {
+			if (ans.back().second <= a) ans.push_back(v[i]);
+			else if (ans.back().second >= b) {
+				ans.pop_back(), ans.push_back(v[i]);
+			}
+		}
+	}
+	cout << ans.size();
+}
