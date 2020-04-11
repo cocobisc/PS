@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int check[31][31][31][440], N, K;
+char c[] = { 'A','B','C' };
+string ans;
+
+bool BT(int n, int a, int b, int k) {
+	if (n == N && k == K) return true;
+	if (n > N || k > K) return false;
+	if (check[n][a][b][k]) return false;
+	check[n][a][b][k] = true;
+
+	for (int i = 0; i < 3; i++) {
+		ans += c[i];
+		if (i == 0 && BT(n + 1, a + 1, b, k)) return true;
+		else if (i == 1 && BT(n + 1, a, b + 1, k + a)) return true;
+		else if (i == 2 && BT(n + 1, a, b, k + a + b)) return true;
+		ans.pop_back();
+	}
+
+	return false;
+}
+
+int main() {
+	cin >> N >> K;
+
+	if (BT(0, 0, 0, 0)) cout << ans;
+	else cout << -1;
+
+	return 0;
+}
