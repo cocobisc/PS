@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[200001];
+
+int main() {
+	int N, C; cin >> N >> C;
+	for (int i = 0; i < N; i++) cin >> arr[i];
+	sort(arr, arr + N);
+
+	int le = 1, ri = 1e9;
+	while (le <= ri) {
+		int mid = le + ri >> 1;
+		int sum = 0, cnt = 1;
+		for (int i = 1; i < N; i++) {
+			sum += arr[i] - arr[i - 1];
+			if (sum >= mid) {
+				sum = 0;
+				cnt++;
+			}
+		}
+		if (cnt < C) ri = mid - 1;
+		else le = mid + 1;
+	}
+	cout << ri;
+}
