@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+int check[2001];
+
+struct package {
+	int u, v, w;
+}p[10000];
+
+bool cmp(const package &p1, const package &p2) {
+	if (p1.v == p2.v) return p1.u < p2.u;
+	return p1.v < p2.v;
+}
+
+int main() {
+	int N, C, M; cin >> N >> C >> M;
+	for (int i = 0; i < M; i++) {
+		cin >> p[i].u >> p[i].v >> p[i].w;
+	}
+	sort(p, p + M, cmp);
+
+	int sum = 0, ans = 0;
+	for (int i = 0; i < M; i++) {
+		int u, v, w;
+		int ma = 0, capacity;
+		u = p[i].u, v = p[i].v, w = p[i].w;
+		for (int j = u; j < v; j++) ma = max(ma, check[j]);
+		capacity = min(C - ma, w);
+		ans += capacity;
+		for (int j = u; j < v; j++) check[j] += capacity;
+	}
+	cout << ans;
+
+	return 0;
+}

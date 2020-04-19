@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[102];
+
+int main() {
+	int N, M, L; cin >> N >> M >> L;
+	for (int i = 1; i <= N; i++) cin >> arr[i];
+	sort(arr, arr + N + 1);
+	arr[N + 1] = L;
+
+	int le = 0, ri = L;
+	while (le <= ri) {
+		int mid = le + ri >> 1;
+		int sum = 0, cnt = 0;
+		for (int i = 1; i < N + 2; i++) {
+			int diff = arr[i] - arr[i - 1] - 1;
+			cnt += diff / mid;
+		}
+		if (cnt <= M) ri = mid - 1;
+		else le = mid + 1;
+	}
+	cout << le;
+
+	return 0;
+}
