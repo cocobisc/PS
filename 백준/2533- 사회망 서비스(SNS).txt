@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1e6 + 1;
+const int INF = 2e9;
+
+vector<int> adj[MAX], tree[MAX];
+int check[MAX], dp[2][MAX];
+
+void make_tree(int curr) {
+	check[curr] = 1;
+	for (int next : adj[curr]) {
+		if (!check[next]) {
+			tree[curr].push_back(next);
+			make_tree(next);
+		}
+	}
+}
+
+int go(int curr, bool parent) {
+	int &ret = dp[parent][curr];
+	if (ret != -1) return ret;
+
+	int ea = 1, nea = INF;
+	if (parent) {
+		nea = 0;
+		for (int next : tree[curr]) nea += go(next, false);
+	}
+	for (int next : tree[curr]) ea += go(next, true);
+
+	return ret = min(ea, nea);
+}
+
+int main() {
+	memset(dp, -1, sizeof(dp));
+	int N; cin >> N;
+
+	for (int i = 0; i < N - 1; i++) {
+		int u, v; cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	make_tree(1);
+	cout << go(1, true);
+
+	return 0;
+}

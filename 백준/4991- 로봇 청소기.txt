@@ -1,0 +1,110 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> pii;
+
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+vector<pii> adj[11];
+int R, C;
+vector<pii> dust, v;
+char arr[20][20];
+int ans;
+
+void init() {
+	ans = 2e9;
+	dust.clear(), v.clear();
+	for (int i = 0; i < 11; i++) adj[i].clear();
+}
+
+void dfs(int *check, int from, int cost) {
+	int flag = 1;
+	for (int i = 1; i < v.size(); i++) {
+		if (!check[i]) {
+			flag = 0; break;
+		}
+	}
+	if(flag) {
+		ans = min(ans, cost);
+		return;
+	}
+
+	for (auto p : adj[from]) {
+		int to = p.first, w = p.second;
+		if (!check[to]) {
+			check[to] = 1;
+			dfs(check, to, cost + w);
+			check[to] = 0;
+		}
+	}
+}
+
+int bfs(int s, int e) {
+	int cnt = 0;
+	int visited[20][20] = { 0 };
+	queue<pii> q;
+	q.push({ v[s].first,v[s].second });
+	visited[v[s].second][v[s].first] = 1;
+
+	while (q.size()) {
+		int t = q.size();
+		while (t--) {
+			int x, y;
+			tie(x, y) = q.front();
+			q.pop();
+			if (x == v[e].first && y == v[e].second) return cnt;
+			for (int i = 0; i < 4; i++) {
+				int nx = x + dx[i], ny = y + dy[i];
+				if (nx >= 0 && ny >= 0 && nx < C && ny < R && !visited[ny][nx] && arr[ny][nx] != 'x') {
+					visited[ny][nx] = 1;
+					q.push({ nx,ny });
+				}
+			}
+		}
+		cnt++;
+	}
+
+	return -1;
+}
+
+int main() {
+	while (1) {
+		cin >> C >> R;
+		if (!R) break;
+
+		init();
+
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				cin >> arr[i][j];
+				if (arr[i][j] == 'o') v.push_back({ j,i });
+				if (arr[i][j] == '*') dust.push_back({ j,i });
+			}
+		}
+		for (auto i : dust) v.push_back(i);
+
+		int flag = 1;
+		for (int i = 0; i < v.size(); i++) {
+			for (int j = i + 1; j < v.size(); j++) {
+				int cnt = bfs(i, j);
+				if (cnt == -1) {
+					flag = 0; break;
+				}
+				adj[i].push_back({ j,cnt });
+				adj[j].push_back({ i,cnt });
+			}
+			if (!flag)  break;
+		}
+		if (!flag) {
+			cout << -1 << '\n';
+			continue;
+		}
+
+		int check[11] = { 0 };
+		check[0] = 1;
+		dfs(check, 0, 0);
+
+		cout << ans << '\n';
+	}
+
+	return 0;
+}

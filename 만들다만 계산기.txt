@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		string s; cin >> s;
+
+		int flag = 1;
+
+		if (s[0] == '-') s = '0' + s;
+		for (int i = 0; i < s.size() - 1; i += 2) {
+			if (s[i] < '0' && s[i] > '9') { flag = 0; break; }
+			if(s[i + 1] >= '0' && s[i + 1] <= '9') { flag = 0; break; }
+		}
+		if (!flag) {
+			cout << "WRONG INPUT\n"; continue;
+		}
+
+		int visited[50] = { 0 };
+		vector<char> op1, op2;
+		vector<int> num1, num2;
+		num1.push_back(s.back() - '0');
+
+		for (int i = 0; i < s.size(); i++) {
+			if (s[i] == '*' || s[i] == '/')
+		}
+
+		for (int i = s.size() - 2; i > 0; i -= 2) {
+			if (s[i] == '*' || s[i] == '/') {
+				op2.push_back(s[i]);
+			}
+			else op1.push_back(s[i]);
+		}
+		if (!flag) cout << "WRONG INPUT\n";
+	}
+}
