@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int cnt;
+
+void print(char c) {
+	cout << c;
+	if (++cnt == 80) cnt = 0, cout << '\n';
+}
+
+int main() {
+	int N; cin >> N;
+	string s; for (int i = 0; i < N; i++) { char c; cin >> c; s += c; }
+	int le = 0, ri = N - 1;
+	while (le <= ri) {
+		if (s[le] < s[ri]) print(s[le++]);
+		else if (s[le] > s[ri]) print(s[ri--]);
+		else {
+			int tl = le, tr = ri;
+			while (tl + 1 < tr && s[tl] == s[tr]) {
+				tl++, tr--;
+			}
+			if (s[tl] < s[tr]) print(s[le++]);
+			else print(s[ri--]);
+		}
+	}
+	return 0;
+}

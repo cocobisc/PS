@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n, l, r;
+int arr[50][50];
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+int check[50][50];
+
+int isbound(int a, int b) {
+	int ab = abs(a - b);
+	return ab >= l && ab <= r;
+}
+
+bool bfs(int x, int y, int idx) {
+	int popu = 0;
+	int cnt = 0;
+
+	queue<pair<int, int>> q;
+	q.push({ x,y });
+	check[y][x] = idx;
+
+	while (q.size()) {
+		tie(x, y) = q.front(), q.pop();
+		popu += arr[y][x];
+		cnt++;
+
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i], ny = y + dy[i];
+			if (nx >= 0 && ny >= 0 && nx < n && ny < n && !check[ny][nx] && isbound(arr[y][x], arr[ny][nx])) {
+				check[ny][nx] = idx;
+				q.push({ nx,ny });
+			}
+		}
+	}
+
+	if (cnt == 1) return 0;
+
+	int avg = popu / cnt;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (check[i][j] == idx) arr[i][j] = avg;
+		}
+	}
+
+	return 1;
+}
+
+int main() {
+	cin >> n >> l >> r;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) cin >> arr[i][j];
+	}
+
+	int ans = 0, idx = 1;
+	while (1) {
+		memset(check, 0, sizeof(check));
+		int cnt = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (!check[i][j]) cnt += bfs(j, i, idx++);
+			}
+		}
+
+		if (!cnt) break;
+		ans++;
+	}
+
+	cout << ans;
+}
