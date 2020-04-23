@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string a, b, ans;
+
+void check() {
+	if (ans.size() < b.size()) return;
+	for (int i = ans.size() - 1, j = b.size() - 1; j >= 0; i--, j--) {
+		if (ans[i] != b[j]) return;
+	}
+	int k = b.size();
+	while (k--) ans.pop_back();
+}
+
+int main() {
+	cin >> a >> b;
+	for (char c : a) {
+		ans += c;
+		if (c == b.back()) check();
+	}
+	if (ans.empty()) cout << "FRULA";
+	else cout << ans;
+
+	return 0;
+}

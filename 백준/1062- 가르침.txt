@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n, k, bits, ans;
+vector<string> words;
+
+void BT(int bits, int cnt, int idx) {
+	if (cnt > k) return;
+	if (cnt == k) {
+		int cnt = 0;
+		for (auto s : words) {
+			bool flag = true;
+			for (char c : s) {
+				if (!(bits & 1 << (c - 'a'))) {
+					flag = false; break;
+				}
+			}
+			if(flag) cnt++;
+		}
+		ans = max(ans, cnt);
+
+		return;
+	}
+	for (int i = idx; i < 26; i++) {
+		if (bits & (1 << i)) continue;
+		BT(bits | (1 << i), cnt + 1, i + 1);
+	}
+}
+
+int main() {
+	cin >> n >> k;
+	words.resize(n);
+
+	char base[] = { 'a','n','t','c','i' };
+	for (auto c : base) bits |= 1 << c - 'a';
+
+	for (int i = 0; i < n; i++) cin >> words[i];
+
+	BT(bits, 5, 0);
+	
+	cout << ans;
+
+	return 0;
+}
