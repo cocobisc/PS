@@ -1,0 +1,7 @@
+T = int(input())
+while(T):
+    T-=1
+    try:
+        print(eval(input().replace('/',"//")))
+    except :
+        print("WRONG INPUT")

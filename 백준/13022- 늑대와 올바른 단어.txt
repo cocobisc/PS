@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+#define GOEND flag = false; goto END
+using namespace std;
+
+char base[] = { 'w','o','l','f' };
+vector<int> v(1);
+
+int main() {
+	string s; cin >> s;
+	for (int i = 1; i < s.size(); i++) {
+		if (s[i] == 'w' && s[i - 1] == 'f') v.push_back(i);
+	}
+	v.push_back(s.size());
+
+	bool flag = true;
+	for (int i = 0; i < v.size() - 1; i++) {
+		int len = (v[i + 1] - v[i]);
+		if (len % 4) { GOEND; }
+		len /= 4;
+
+		int start = v[i], end = v[i] + len;
+		for (int j = 0; j < 4; j++) {
+			for (int k = start; k < end; k++) {
+				if (s[k] != base[j]) { GOEND; }
+			}
+			start = end;
+			end = start + len;
+		}
+
+	}
+END:
+	cout << (flag ? 1 : 0);
+
+	return 0;
+}

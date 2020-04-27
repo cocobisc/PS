@@ -1,0 +1,29 @@
+T = 1
+while True:
+    try:
+        temp = input()
+    
+        temp = temp.split('=')
+        equation = temp[0] + '-' + '(' + temp[1] + ')'
+    
+        print('Equation #%d' % T)
+        T+=1
+    
+        a = eval(equation.replace('x', '1'))
+        b = eval(equation.replace('x', '2'))
+    
+        if(a == b == 0):
+            print('Infinitely many solutions.')
+        elif(a == b):
+            print('No solution.')
+        else :
+            c = eval(equation.replace('x', '0'))
+            ans = 0
+            diff = b - a
+            if c != 0 and diff != 0:
+                    ans = -1 * (float(c) / float(diff))
+            print('x = %.6f' % ans)
+    
+        print()
+    except:
+        break

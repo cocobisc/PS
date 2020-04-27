@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+char arr[1000][1000];
+int ans;
+
+int main() {
+	int r, c; cin >> r >> c;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) cin >> arr[i][j];
+	}
+
+	int cnt = 0;
+	for (int i = 0; i < r - 1; i++) {
+		for (int j = 0; j < c; j++) {
+			if (arr[i][j] == 'X' && arr[i + 1][j] == '.') cnt++;
+			else ans += cnt / 2, cnt = 0;
+		}
+	}
+	for (int i = 1; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (arr[i][j] == 'X' && arr[i - 1][j] == '.') cnt++;
+			else ans += cnt / 2, cnt = 0;
+		}
+	}
+	for (int j = 0; j < c - 1; j++) {
+		for (int i = 0; i < r; i++) {
+			if (arr[i][j] == 'X' && arr[i][j + 1] == '.') cnt++;
+			else ans += cnt / 2, cnt = 0;
+		}
+	}
+	for (int j = 1; j < c; j++) {
+		for (int i = 0; i < r; i++) {
+			if (arr[i][j] == 'X' && arr[i][j - 1] == '.') cnt++;
+			else ans += cnt / 2, cnt = 0;
+		}
+	}
+
+	cout << ans;
+
+	return 0;
+}

@@ -1,0 +1,80 @@
+def decTo36(n):
+    c = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+         'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    ret = ""
+
+    while n:
+        ret += c[n % 36]
+        n //= 36
+
+    return ret[::-1]
+
+N = int(input())
+arr = [0]*36
+
+for _ in range(N):
+  s = input()
+  for i in range(len(s)):
+    arr[int(s[i], 36)] += 36**(len(s)-i-1)
+
+val = [[arr[i]*(35-i), i] for i in range(36)]
+val.sort()
+
+K = int(input())
+ans = 0
+for i in range(36):
+    if i < 36 - K:
+        ans += arr[val[i][1]] * val[i][1]
+    else:
+        ans += arr[val[i][1]] * 35
+
+if ans == 0:
+    print(0)
+else:
+    print(decTo36(ans))
+
+
+
+5
+500
+POINTS
+FOR
+THIS
+PROBLEM
+5
+
+1100TC85
+
+6
+TO
+BE
+OR
+NOT
+TO
+BE
+0
+
+QNO
+
+1
+KEQUALS36
+36
+
+ZZZZZZZZZ
+
+5
+GOOD
+LUCK
+AND
+HAVE
+FUN
+7
+
+31YUB
+
+
+1
+HELLO
+2
+
+ZZLLO

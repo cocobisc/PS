@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+char arr[100][100];
+int visited[100][100], N;
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+
+void bfs(int x, int y, char c) {
+	queue<pair<int, int>> q;
+	q.push({ x,y });
+	visited[y][x] = 1;
+	
+	while (q.size()) {
+		tie(x, y) = q.front(); q.pop();
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i], ny = y + dy[i];
+			if (nx >= 0 && ny >= 0 && nx < N && ny < N) {
+				if (!visited[ny][nx] && arr[ny][nx] == c) {
+					q.push({ nx,ny });
+					visited[ny][nx] = 1;
+				}
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> N;
+	
+	int cnt1 = 0, cnt2 = 0;
+	for (int i = 0; i < N; i++) 
+		for (int j = 0; j < N; j++) cin >> arr[i][j];
+	
+	for (int i = 0; i < N; i++) 
+		for (int j = 0; j < N; j++) 
+			if (!visited[i][j]) 
+				bfs(j, i, arr[i][j]), cnt1++;
+
+
+	memset(visited, 0, sizeof(visited));
+	for (int i = 0; i < N; i++) 
+		for (int j = 0; j < N; j++) 
+			if (arr[i][j] == 'R') arr[i][j] = 'G';
+
+	for (int i = 0; i < N; i++) 
+		for (int j = 0; j < N; j++) 
+			if (!visited[i][j]) 
+				bfs(j, i, arr[i][j]), cnt2++;
+
+
+	cout << cnt1 << " " << cnt2;
+}
