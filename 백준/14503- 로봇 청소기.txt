@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int arr[50][50];
+int dx[] = { 0,1,0,-1 };
+int dy[] = { -1,0,1,0 };
+
+int main() {
+	int N, M; cin >> N >> M;
+	int x, y, dir; cin >> y >> x >> dir;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) cin >> arr[i][j];
+	}
+
+	int ans = 0;
+	while (1) {
+		if (!arr[y][x]) arr[y][x] = 2, ans++;
+		
+		bool f = false;
+		for (int i = 0; i < 4; i++) {
+			dir = (dir + 3) % 4;
+			int nx = x + dx[dir], ny = y + dy[dir];
+			if (!arr[ny][nx]) {
+				x += dx[dir];
+				y += dy[dir];
+				f = true;
+				break;
+			}
+		}
+		if (!f) {
+			x -= dx[dir];
+			y -= dy[dir];
+			if (arr[y][x] == 1) break;
+		}
+	}
+	cout << ans;
+}
