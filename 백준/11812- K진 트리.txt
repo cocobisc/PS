@@ -1,37 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
+long long n, k, q;
 
-ll getParent(long long a, int k) {
-	return (a + k - 2) / k;
+inline long long getP(long long n) {
+	return (n + k - 2) / k;
 }
 
 int main() {
-	ll n;
-	int k, q;
-	scanf("%lld %d %d", &n, &k, &q);
-
-	while (q--) {
-		ll left, right;
-		scanf("%lld %lld", &left, &right);
-
-		int len = 0;
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	cin >> n >> k >> q;
+	while(q--) {
+		long long a, b, ans = 0; cin >> a >> b;
 		if (k == 1) {
-			printf("%lld\n", abs(left - right));
+			cout << abs(a - b) << '\n';
 			continue;
 		}
-		while (left != right) {
-			while (left > right) {
-				len++;
-				left = getParent(left, k);
-			}
-			while (right > left) {
-				len++;
-				right = getParent(right, k);
-			}
+		while (a != b) {
+			if (a > b) a = getP(a), ans++;
+			else b = getP(b), ans++;
 		}
-		printf("%d\n", len);
+		cout << ans << '\n';
 	}
-	return 0;
 }

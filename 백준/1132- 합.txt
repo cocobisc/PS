@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+map<char, long long> ma, ma2;
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+	int N; cin >> N;
+	string arr[51];
+	set<char> se, se2;
+
+	for (int i = 0; i < N; i++) {
+		cin >> arr[i];
+		for (int j = 0; j < arr[i].size(); j++) {
+			char c = arr[i][j];
+			se.insert(c);
+			if (!j) se2.insert(c);
+			ma[c] += pow((ll)10, (arr[i].size() - j - 1));
+		}
+	}
+	vector<char> v;
+	for (auto it = se.begin(); it != se.end(); it++)
+		v.push_back(*it);
+
+	sort(v.begin(), v.end(), [](const char &a, const char &b) {
+		return ma[a] > ma[b];
+	});
+
+	for (int i = 0, k = 9; i < v.size(); i++) 
+		ma2[v[i]] = k--;
+
+	if (v.size() == 10) {
+		for (int i = 9; i > 0; i--) {
+			if (se2.find(v[i]) != se2.end()) 
+				swap(ma2[v[i]], ma2[v[i - 1]]);
+			else break;
+			
+		}
+	}
+	ll ans = 0;
+	for (int i = 0; i < v.size(); i++) 
+		ans += ma[v[i]] * ma2[v[i]];
+
+	cout << ans;
+}
