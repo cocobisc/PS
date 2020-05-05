@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int INF = 2e9;
+int dp[100];
+
+int main() {
+
+	for (int i = 1; i < 100; i++) {
+		dp[i] = i;
+		if (i - 10 >= 0) dp[i] = min(dp[i], dp[i - 10] + 1);
+		if (i - 25 >= 0) dp[i] = min(dp[i], dp[i - 25] + 1);
+	}
+
+	int T; cin >> T;
+	while (T--) {
+		int ans = 0;
+		long long n; cin >> n;
+
+		while (n) {
+			ans += dp[n % 100];
+			n /= 100;
+		}
+		cout << ans << '\n';
+	}
+
+	return 0;
+}

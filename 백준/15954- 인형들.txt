@@ -1,0 +1,31 @@
+	#include <bits/stdc++.h>
+	using namespace std;
+
+	typedef long double ld;
+
+	int main() {
+		int N, K; cin >> N >> K;
+		long long arr[501], sum[501], sqsum[501];
+		for (int i = 1; i <= N; i++) {
+			cin >> arr[i];
+			sum[i] = sum[i - 1] + arr[i];
+			sqsum[i] = sqsum[i - 1] + arr[i] * arr[i];
+		}
+		ld ans = 2e15;
+		for (int i = K; i <= N; i++) {
+			for (int j = i; j <= N; j++) {
+				ld psum = sum[j] - sum[j - i];
+				ld psqsum = sqsum[j] - sqsum[j - i];
+				ld mean = psum / i;
+
+				ld val = (psqsum - 2 * psum * mean + i * mean * mean) / i;
+				ans = min(ans, sqrt(val));
+			}
+		}
+
+		cout << fixed;
+		cout.precision(11);
+		cout << ans;
+
+		return 0;
+	}

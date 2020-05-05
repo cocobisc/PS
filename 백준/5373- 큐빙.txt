@@ -1,0 +1,151 @@
+#include <bits/stdc++.h>
+#define ccw for(int i=0;i<3;i++)
+using namespace std;
+
+char color[] = "wyrogb";
+char temp[3][3], cube[6][3][3];
+
+void cw(int idx) {
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) temp[i][j] = cube[idx][i][j];
+	}
+
+	cube[idx][0][0] = temp[2][0];
+	cube[idx][0][1] = temp[1][0];
+	cube[idx][0][2] = temp[0][0];
+	cube[idx][1][0] = temp[2][1];
+	cube[idx][1][2] = temp[0][1];
+	cube[idx][2][0] = temp[2][2];
+	cube[idx][2][1] = temp[1][2];
+	cube[idx][2][2] = temp[0][2];
+}
+
+int t[3];
+
+void rotateU(int k) {
+	for (int i = 0; i < 3; i++) t[i] = cube[4][k][i];
+	for (int i = 0; i < 3; i++) cube[4][k][i] = cube[2][k][i];
+	for (int i = 0; i < 3; i++) cube[2][k][i] = cube[5][k][i];
+	for (int i = 0; i < 3; i++) cube[5][k][i] = cube[3][k][i];
+	for (int i = 0; i < 3; i++) cube[3][k][i] = t[i];
+}
+
+void rotateD(int k) {
+	for (int i = 0; i < 3; i++) t[i] = cube[4][k][i];
+	for (int i = 0; i < 3; i++) cube[4][k][i] = cube[3][k][i];
+	for (int i = 0; i < 3; i++) cube[3][k][i] = cube[5][k][i];
+	for (int i = 0; i < 3; i++) cube[5][k][i] = cube[2][k][i];
+	for (int i = 0; i < 3; i++) cube[2][k][i] = t[i];
+}
+
+void rotateL(int k) {
+	int j = k == 0 ? 2 : 0;
+	for (int i = 0; i < 3; i++) t[i] = cube[0][i][k];
+	for (int i = 0; i < 3; i++) cube[0][i][k] = cube[3][2 - i][j];
+	for (int i = 0; i < 3; i++) cube[3][i][j] = cube[1][2 - i][k];
+	for (int i = 0; i < 3; i++) cube[1][i][k] = cube[2][i][k];
+	for (int i = 0; i < 3; i++) cube[2][i][k] = t[i];
+}
+
+void rotateR(int k) {
+	int j = k == 0 ? 2 : 0;
+	for (int i = 0; i < 3; i++) t[i] = cube[0][i][k];
+	for (int i = 0; i < 3; i++) cube[0][i][k] = cube[2][i][k];
+	for (int i = 0; i < 3; i++) cube[2][i][k] = cube[1][i][k];
+	for (int i = 0; i < 3; i++) cube[1][i][k] = cube[3][2 - i][j];
+	for (int i = 0; i < 3; i++) cube[3][i][j] = t[2 - i];
+}
+
+void rotateF(int k) {
+	int j = k == 0 ? 2 : 0;
+	for (int i = 0; i < 3; i++) t[i] = cube[0][k][i];
+	for (int i = 0; i < 3; i++) cube[0][k][i] = cube[4][2 - i][k];
+	for (int i = 0; i < 3; i++) cube[4][i][k] = cube[1][j][i];
+	for (int i = 0; i < 3; i++) cube[1][j][i] = cube[5][2 - i][j];
+	for (int i = 0; i < 3; i++) cube[5][i][j] = t[i];
+}
+
+void rotateB(int k) {
+	int j = k == 0 ? 2 : 0;
+	for (int i = 0; i < 3; i++) t[i] = cube[0][k][i];
+	for (int i = 0; i < 3; i++) cube[0][k][i] = cube[5][i][j];
+	for (int i = 0; i < 3; i++) cube[5][i][j] = cube[1][j][2 - i];
+	for (int i = 0; i < 3; i++) cube[1][j][i] = cube[4][i][k];
+	for (int i = 0; i < 3; i++) cube[4][i][k] = t[2 - i];
+}
+
+void solve(string s) {
+	switch (s[0]) {
+	case 'U':
+		if (s[1] == '+') {
+			cw(0); rotateU(0);
+		}
+		else {
+			ccw{ cw(0); rotateU(0); }
+		}
+		break;
+	case 'D':
+		if (s[1] == '+') {
+			cw(1); rotateD(2);
+		}
+		else {
+			ccw{ cw(1); rotateD(2); }
+		}
+		break;
+	case 'L':
+		if (s[1] == '+') {
+			cw(4); rotateL(0);
+		}
+		else {
+			ccw{ cw(4); rotateL(0); }
+		}
+		break;
+	case 'R':
+		if (s[1] == '+') {
+			cw(5); rotateR(2);
+		}
+		else {
+			ccw{ cw(5); rotateR(2); }
+		}
+		break;
+	case 'F':
+		if (s[1] == '+') {
+			cw(2); rotateF(2);
+		}
+		else {
+			ccw{ cw(2); rotateF(2); }
+		}
+		break;
+	case 'B':
+		if (s[1] == '+') {
+			cw(3); rotateB(0);
+		}
+		else {
+			ccw{ cw(3); rotateB(0); }
+		}
+		break;
+	default: break;
+	}
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int n; cin >> n;
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 3; j++) {
+				for (int k = 0; k < 3; k++) cube[i][j][k] = color[i];
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			string s; cin >> s;
+			solve(s);
+		}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) cout << cube[0][i][j];
+			cout << '\n';
+		}
+
+	}
+	return 0;
+}

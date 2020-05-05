@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef pair<int, int> pii;
+
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+int arr[100][100], n;
+int mi = 201, ma;
+
+bool bfs(int val) {
+
+	for (int i = mi; i + val <= ma; i++) {
+
+		if (arr[0][0] < i || arr[0][0] > i + val) continue;
+		int check[100][100] = { 0 };
+
+		queue<pii> q;
+		q.push({ 0,0 });
+		check[0][0] = 1;
+
+		while (q.size()) {
+			int x, y;
+			tie(x, y) = q.front(); q.pop();
+
+			if (x == n - 1 && y == n - 1) return true;
+
+			for (int j = 0; j < 4; j++) {
+				int nx = x + dx[j], ny = y + dy[j];
+				if (nx >= 0 && ny >= 0 && nx < n && ny < n) {
+					if (!check[ny][nx]) {
+						if (arr[ny][nx] < i || arr[ny][nx] > i + val) continue;
+
+						check[ny][nx] = 1;
+						q.push({ nx,ny });
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> arr[i][j];
+			mi = min(mi, arr[i][j]);
+			ma = max(ma, arr[i][j]);
+		}
+	}
+	int le = 0, ri = ma - mi;
+	while (le <= ri) {
+		int mid = le + ri >> 1;
+		if (bfs(mid)) ri = mid - 1;
+		else le = mid + 1;
+	}
+	cout << le;
+
+	return 0;
+}
