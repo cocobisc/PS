@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 101;
+
+vector<int> v;
+char arr[MAX][MAX];
+int V, E, idx, dfsn[MAX];
+vector<int> adj[MAX];
+bool finished[MAX];
+stack<int> S;
+vector<vector<int>> SCC;
+int ans;
+
+int dfs(int curr) {
+	dfsn[curr] = ++idx;
+	S.push(curr);
+
+	int result = dfsn[curr];
+	for (int next : adj[curr]) {
+		if (dfsn[next] == 0) result = min(result, dfs(next));
+		else if (!finished[next]) result = min(result, dfsn[next]);
+	}
+
+	if (result == dfsn[curr]) {
+		int mi = 2e9;
+		while (1) {
+			int t = S.top(); S.pop();
+			finished[t] = true;
+			mi = min(mi, v[t]);
+			if (t == curr) break;
+		}
+		ans += mi;
+	}
+
+	return result;
+}
+
+int main() {
+	int N; cin >> N;
+	v.resize(N);
+	for (int i = 0; i < N; i++) cin >> v[i];
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cin >> arr[i][j];
+			if (arr[i][j] == '1') adj[i].push_back(j);
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		if (dfsn[i] == 0) dfs(i);
+	}
+
+	cout << ans;
+
+	return 0;
+}

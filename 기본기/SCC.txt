@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 1e4 + 1;
+
+// SN: SCC 개수, sn[i]: i가 속한 SCC의 번호
+int V, E, idx, dfsn[MAX], SN, sn[MAX];
+vector<int> adj[MAX];
+bool finished[MAX];
+stack<int> S;
+vector<vector<int>> SCC;
+
+int dfs(int curr) {
+	dfsn[curr] = ++idx;
+	S.push(curr);
+
+	int result = dfsn[curr];
+	for (int next : adj[curr]) {
+		if (dfsn[next] == 0) result = min(result, dfs(next));
+		else if (!finished[next]) result = min(result, dfsn[next]);
+	}
+
+	if (result == dfsn[curr]) {
+		vector<int> currSCC;
+		while (1) {
+			int t = S.top(); S.pop();
+			currSCC.push_back(t);
+			finished[t] = true;
+			sn[t] = SN;
+			if (t == curr) break;
+		}
+		SN++;
+	}
+
+	return result;
+}
+
+int main() {
+	cin >> V >> E;
+	for (int i = 0; i < E; i++) {
+		int A, B; cin >> A >> B;
+		adj[A].push_back(B);
+	}
+
+	for (int i = 1; i <= V; i++) {
+		if (dfsn[i] == 0) dfs(i);
+	}
+
+	cout << SN;
+
+	return 0;
+}

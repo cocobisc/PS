@@ -1,0 +1,21 @@
+def dfs(tickets, start, cnt, check, ans = []):
+    ans.append(start)
+    if cnt == len(tickets):
+        return ans
+
+    for i in range(len(tickets)):
+        if check[i] == 0 and tickets[i][0] == start:
+            check[i] = 1
+            t = dfs(tickets, tickets[i][1], cnt + 1, check, ans)
+            if len(t) == len(tickets) + 1:
+                return t
+            check[i] = 0
+    ans.pop()
+    return ans
+
+def solution(tickets):
+    tickets.sort()
+    check = [0] * len(tickets)
+    ans = dfs(tickets, "ICN", 0, check)
+
+    return ans

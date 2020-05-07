@@ -1,0 +1,15 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n, m, k, i; cin >> n >> m >> k;
+
+	for (i = 1; i <= n; i++) {
+		int d = m % (n - i + 1) ? m % (n - i + 1) : n - i + 1;
+		if (d == k) break;
+		k = k > d ? k - d : n - i + k - d + 1;
+	}
+	cout << i;
+
+	return 0;
+}

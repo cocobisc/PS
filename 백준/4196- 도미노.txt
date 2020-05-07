@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 1e5 + 1;
+
+vector<int> v;
+int N, M, idx, dfsn[MAX], SN, sn[MAX], indegree[MAX];
+vector<int> adj[MAX];
+bool finished[MAX];
+stack<int> S;
+
+int dfs(int curr) {
+	dfsn[curr] = ++idx;
+	S.push(curr);
+
+	int result = dfsn[curr];
+	for (int next : adj[curr]) {
+		if (dfsn[next] == 0) result = min(result, dfs(next));
+		else if (!finished[next]) result = min(result, dfsn[next]);
+	}
+
+	if (result == dfsn[curr]) {
+		while (1) {
+			int t = S.top(); S.pop();
+			finished[t] = true;
+			sn[t] = SN;
+			if (t == curr) break;
+		}
+		SN++;
+	}
+
+	return result;
+}
+
+void init() {
+	for (int i = 1; i <= N; i++) adj[i].clear();
+	idx = SN = 0;
+	memset(dfsn, 0, sizeof(dfsn));
+	memset(sn, 0, sizeof(sn));
+	memset(finished, 0, sizeof(finished));
+	memset(indegree, 0, sizeof(indegree));
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		cin >> N >> M;
+		
+		init();
+		for (int i = 0; i < M; i++) {
+			int u, v; cin >> u >> v;
+			adj[u].push_back(v);
+		}
+		for (int i = 1; i <= N; i++) {
+			if (dfsn[i] == 0) dfs(i);
+		}
+
+		for (int i = 1; i <= N; i++) {
+			for (int next : adj[i]) {
+				if (sn[i] != sn[next]) indegree[sn[next]]++;
+			}
+		}
+
+		int ans = 0;
+		for (int i = 0; i < SN; i++) if (!indegree[i]) ans++;
+
+		cout << ans << '\n';
+	}
+
+	return 0;
+}
