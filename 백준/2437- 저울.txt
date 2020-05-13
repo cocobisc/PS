@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int arr[1001], s[1001];
+
+int main() {
+	int n; cin >> n;
+	for (int i = 1; i <= n; i++) cin >> arr[i];
+	sort(arr, arr + n + 1);
+	if (arr[1] > 1) return cout << 1, 0;
+	for (int i = 1; i <= n; i++) {
+		s[i] = s[i - 1] + arr[i];
+		if (s[i - 1] + 1 < arr[i]) return cout << s[i - 1] + 1, 0;
+	}
+	cout << s[n] + 1;
+}

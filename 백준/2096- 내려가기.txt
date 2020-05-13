@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int amax[3], amin[3], bmax[3], bmin[3];
+
+int main() {
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < 3; j++) {
+			cin >> bmax[j];
+			bmin[j] = bmax[j];
+			if (j == 1) {
+				bmax[j] += max({ amax[0], amax[1], amax[2] });
+				bmin[j] += min({ amin[0], amin[1], amin[2] });
+			}
+			else {
+				bmax[j] += max(amax[j], amax[1]);
+				bmin[j] += min(amin[j], amin[1]);
+			}
+		}
+		memcpy(amax, bmax, 12);
+		memcpy(amin, bmin, 12);
+	}
+	sort(amax, amax + 3);
+	sort(amin, amin + 3);
+	cout << amax[2] << " " << amin[0];
+}
