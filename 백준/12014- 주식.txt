@@ -1,0 +1,22 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int T; cin >> T;
+	for (int t = 1; t <= T; t++) {
+		cout << "Case #" << t << '\n';
+		int N, K; cin >> N >> K;
+		vector<int> v;
+		int flag = 0;
+
+		for (int i = 0; i < N; i++) {
+			int a; cin >> a;
+			int idx = lower_bound(v.begin(), v.end(), a) - v.begin();
+			if (idx == v.size()) v.push_back(a);
+			else v[idx] = a;
+
+			if (v.size() == K) flag = 1;
+		}
+		cout << (flag ? 1 : 0) << '\n';
+	}
+}
