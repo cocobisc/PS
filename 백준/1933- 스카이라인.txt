@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct loc {
+	int s, h, e, type;
+};
+
+int main() {
+	int n; cin >> n;
+	vector<loc> v;
+
+	for (int i = 0; i < n; i++) {
+		int s, h, e; cin >> s >> h >> e;
+		v.push_back({ s,h,e,0 });
+		v.push_back({ e,h,s,1 });
+	}
+	sort(v.begin(), v.end(), [](const loc &a, const loc &b) {
+		return a.s < b.s;
+	});
+
+	int curH = 0;
+	map<pair<int, int>, int> ma;
+	vector<pair<int, int>> ans, t;
+	for (int i = 0; i < v.size(); i++) {
+		if (v[i].type == 0) {
+			ma[{ v[i].s,v[i].e }] = v[i].h;
+			if (curH < v[i].h) {
+				ans.push_back({ v[i].s, v[i].h });
+				curH = v[i].h;
+			}
+		}
+		else {
+			int eraseH = v[i].h;
+			ma.erase({ v[i].e, v[i].s });
+			if (ma.empty()) {
+				ans.push_back({ v[i].s,0 });
+				curH = 0;
+			}
+			else if (eraseH == curH) {
+				int newH = -1;
+				for(auto it = ma.begin();it!=ma.end();it++) {
+					newH = max(newH, it->second);
+				}
+				ans.push_back({ v[i].s, newH});
+				curH = newH;
+			}
+		}
+	}
+	for (auto k : ans) {
+		if (t.empty()) t.push_back(k);
+		else{
+			if (t.back().first == k.first) t.pop_back();
+			if (t.size() && t.back().second == k.second) continue;
+			t.push_back(k);
+		}
+	}
+	for (auto k : t) cout << k.first << " " << k.second << " ";
+
+	return 0;
+}
+
+
+/*
+TC
+
+2
+1 10 3
+3 10 5
+
+
+2
+1 10 3
+3 5 5
+
+*/
