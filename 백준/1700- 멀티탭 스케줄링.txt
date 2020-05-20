@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n, k; cin >> n >> k;
+	int ob[100], next[100] = { 0 };
+	vector<pair<int, int>> v;
+	for (int i = 0; i < k; i++) cin >> ob[i];
+	for (int i = 0; i < k; i++) {
+		int cnt = 0;
+		for (int j = i + 1; j < k; j++) {
+			if (ob[i] == ob[j]) {
+				next[i] = j; break;
+			}
+		}
+		if (next[i] == 0) next[i] = k;
+	}
+	int cnt = 0;
+	for (int i = 0; i < k; i++) {
+		for (int j = 0; j < v.size(); j++)
+			if (ob[i] == v[j].second) {
+				v[j].first = next[i];
+				goto RE;
+			}
+		if (v.size() < n) v.push_back({ next[i],ob[i] });
+		else {
+			sort(v.begin(), v.end());
+			v[n - 1] = { next[i], ob[i] };
+			cnt++;
+		}
+	RE: {}
+	}
+	cout << cnt;
+}

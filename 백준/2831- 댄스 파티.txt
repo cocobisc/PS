@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int cnt;
+priority_queue<int, vector<int>, greater<int>> a, a2, b, b2;
+
+int main() {
+	int N; cin >> N;
+	for (int i = 0; i < N; i++) {
+		int t; cin >> t;
+		if (t > 0) a.push(t); 
+		else a2.push(-t); 
+	}
+	for (int i = 0; i < N; i++) {
+		int t; cin >> t;
+		if (t > 0) b.push(t);
+		else b2.push(-t);
+	}
+	while (a.size() && b2.size()) {
+		int m = a.top(), w = b2.top(); b2.pop();
+		if (m < w) cnt++, a.pop();
+	}
+	while (b.size() && a2.size()) {
+		int m = a2.top(), w = b.top(); a2.pop();
+		if (w < m) cnt++, b.pop();
+	}
+
+	cout << cnt;
+
+	return 0;
+}

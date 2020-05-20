@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int arr[11][11];
+int ans;
+
+void dfs(int bits, int i, int cnt, int val) {
+	if (cnt == 11) {
+		ans = max(ans, val);
+		return;
+	}
+	for (int j = 0; j < 11; j++) {
+		if (!arr[i][j] || bits & (1 << j)) continue;
+		dfs(bits | (1 << j), i + 1, cnt + 1, val + arr[i][j]);
+	}
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		ans = 0;
+		for (int i = 0; i < 11; i++) {
+			for (int j = 0; j < 11; j++) cin >> arr[i][j];
+		}
+		dfs(0, 0, 0, 0);
+		cout << ans << '\n';
+	}
+
+	return 0;
+}

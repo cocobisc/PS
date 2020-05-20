@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 32001;
+vector<int> ans, adj[MAX];
+int visited[MAX];
+
+void dfs(int x) {
+	if (visited[x]) return;
+	visited[x] = 1;
+	for (auto i : adj[x]) dfs(i);
+	ans.push_back(x);
+}
+
+int main() {
+	int n, m; cin >> n >> m;
+
+	for (int i = 0; i < m; i++) {
+		int a, b; cin >> a >> b;
+		adj[a].push_back(b);
+	}
+	for (int i = 1; i <= n; i++) dfs(i);
+	
+	reverse(ans.begin(), ans.end());
+	for (int a : ans) cout << a << " ";
+}
