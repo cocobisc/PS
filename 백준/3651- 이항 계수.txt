@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+ll m, le, ri;
+
+ll cal(ll n, int k) {
+	double res = n - k + 1;
+	for (int i = 2; i <= k; ++i)
+		res = res * (n - k + i) / i;
+	if (res > pow(10, 16))
+		return ((long long)pow(10, 16));
+	return (long long)res;
+}
+
+int main() {
+	cin >> m;
+	ri = m;
+	vector<pair<ll, ll>> v;
+	for (int k = 1;; k++) {
+		ll le = 2 * k;
+		while (le <= ri) {
+			ll mid = le + ri >> 1;
+			ll res = cal(mid, k);
+
+			if (res == m) {
+				if (mid == 2 * k) v.push_back({ mid, k });
+				else {
+					v.push_back({ mid, k });
+					v.push_back({ mid, mid - k });
+				}
+				ri = mid;
+				break;
+			}
+			if (res > m) ri = mid - 1;
+			else le = mid + 1;
+		}
+		if (ri < 2 * k) break;
+	}
+	sort(v.begin(), v.end());
+	cout << v.size() << '\n';
+	for (auto p : v) cout << p.first << " " << p.second << '\n';
+
+	return 0;
+}
