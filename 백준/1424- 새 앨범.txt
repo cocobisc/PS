@@ -1,0 +1,18 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n, l, c, ans, k, rest;
+
+int main() {
+	cin >> n >> l >> c;
+	k = (c - l) / (l + 1) + 1;
+	if (k % 13 == 0) k--;
+	rest = n % k;
+
+	ans = n / k;
+	if (rest) {
+		ans++;
+		if (rest % 13 == 0 && (k - 1) % 13 == 0) ans++;
+	}
+	cout << ans;
+}

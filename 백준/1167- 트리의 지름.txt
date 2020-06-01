@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 1e6 + 1;
+vector<pair<int, int>> adj[MAX];
+int n, visited[MAX], ma, idx;
+
+void dfs(int curr, int cost) {
+	visited[curr] = true;
+	if (ma < cost) {
+		idx = curr;
+		ma = cost;
+	}
+	for (auto next : adj[curr]) {
+		int v, w; tie(v, w) = next;
+		if (visited[v]) continue;
+		dfs(v, cost + w);
+	}
+}
+
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		int a, b, w; cin >> a;
+		while (1) {
+			cin >> b;
+			if (b == -1) break;
+			cin >> w;
+			adj[a].push_back({ b,w });
+			adj[b].push_back({ a,w });
+		}
+	}
+	dfs(1, 0);
+	memset(visited, 0, sizeof(visited));
+	ma = 0;
+	dfs(idx, 0);
+	cout << ma;
+}

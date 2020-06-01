@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int NONE = 2e9;
+int N, M, T;
+vector<int> arr[51];
+int X, D, K;
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+
+void change() {
+	double avg = 0;
+	int cnt = 0;
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < M; j++) {
+			if (arr[i][j] != NONE) avg += arr[i][j], cnt++;
+		}
+	}
+	if(cnt) avg /= cnt;
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < M; j++) {
+			if (arr[i][j] != NONE) {
+				if ((double)arr[i][j] > avg) arr[i][j]--;
+				else if ((double)arr[i][j] < avg) arr[i][j]++;
+			}
+		}
+	}
+}
+
+void check() {
+	bool f = false;
+
+	int vi[51][51] = { 0 };
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < M; j++) {
+			if (arr[i][j] == NONE) continue;
+			bool flag = false;
+			for (int k = 0; k < 4; k++) {
+				int nx = j + dx[k], ny = i + dy[k];
+				if (nx == -1) nx = M - 1;
+				if (nx == M) nx = 0;
+				if (nx >= 0 && ny >= 1 && nx < M && ny <= N) {
+					if (arr[ny][nx] != NONE && arr[i][j] == arr[ny][nx]) {
+						f = flag = true;
+						vi[i][j] = 1;
+					}
+				}
+			}
+			if (flag) vi[i][j] = 1;
+		}
+	}
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < M; j++) {
+			if (vi[i][j]) arr[i][j] = NONE;
+		}
+	}
+	
+	if (!f) change();
+}
+
+
+void rotate() {
+	if (!D) K = M - K;
+	for (int i = 1; i <= N; i++) {
+		if (i % X) continue;
+		vector<int> temp;
+		for (int j = K; j < K + M; j++) temp.push_back(arr[i][j%M]);
+		arr[i] = temp;
+	}
+}
+
+
+int main() {
+	cin >> N >> M >> T;
+	for (int i = 1; i <= N; i++) arr[i].resize(M);
+	for (int i = 1; i <= N; i++) {
+		for (int j = 0; j < M; j++) cin >> arr[i][j];
+	}
+
+	while (T--) {
+		cin >> X >> D >> K;
+		rotate();
+		check();
+	}
+
+	int ans = 0;
+	for (int i = N; i >= 1; i--) {
+		for (int j = 0; j < M; j++) {
+			if (arr[i][j] != NONE) ans += arr[i][j];
+		}
+	}
+	cout << ans;
+}
