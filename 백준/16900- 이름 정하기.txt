@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 5e5;
+int fail[MAX];
+
+int main() {
+	string s; int n;
+	cin >> s >> n;
+
+	for (int i = 1, j = 0; i < s.size(); i++) {
+		while (j > 0 && s[i] != s[j]) j = fail[j - 1];
+		if (s[i] == s[j]) fail[i] = ++j;
+	}
+
+	cout << s.size() + (n - 1) * (long long)(s.size() - fail[s.size() - 1]);
+}
