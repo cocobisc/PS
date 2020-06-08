@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXT = 2e6;
+int dx[] = { 0, -1, 0, 1, 1, 1, 0, -1, -1 };
+int dy[] = { 0, 1, 1, 1, 0, -1, -1, -1, 0 };
+
+struct bac {
+	int x, y, d;
+}b[5000];
+
+int collision(int i, int j) {
+	int d1 = max(abs(b[i].x - b[j].x), abs(b[i].y - b[j].y));
+	int d2 = max(abs(b[i].x + dx[b[i].d] - (b[j].x + dx[b[j].d])),
+		abs(b[i].y + dy[b[i].d] - (b[j].y + dy[b[j].d])));
+	if (d2 >= d1 || d1 % (d1 - d2)) return 0;
+
+	int t = d1 / (d1 - d2);
+	if (b[i].x + t * dx[b[i].d] == b[j].x + t * dx[b[j].d] &&
+		b[i].y + t * dy[b[i].d] == b[j].y + t * dy[b[j].d]) return t;
+	
+	return 0;
+}
+
+int ra[MAXT], check[5000];
+int max_bac, min_t = 2e9;
+
+int main() {
+	int n; cin >> n;
+	for (int i = 0; i < n; i++) cin >> b[i].x >> b[i].y >> b[i].d;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (i == j) continue;
+			int t = collision(i, j);
+			if (!t) continue;
+
+			if (check[t] != i) check[t] = i, ra[t] = 2;
+			else ra[t]++;
+
+			if (max_bac < ra[t]) max_bac = ra[t];
+			else if (max_bac == ra[t] && t < min_t) min_t = t;
+		}
+	}
+
+	cout << max_bac << '\n' << min_t;
+
+	return 0;
+}
