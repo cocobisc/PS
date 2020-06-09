@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef pair<int, int> pii;
+int dx[] = { 1,-1,0,0 };
+int dy[] = { 0,0,1,-1 };
+int n, m;
+
+bool isbound(int x, int y) {
+	return x >= 0 && y >= 0 && x < m && y < n;
+}
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+
+		char arr[50][50];
+		cin >> n >> m;
+		vector<pii> v;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) cin >> arr[i][j];
+		}
+		int cnt = 0;
+		bool flag = true;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (arr[i][j] == 'B') {
+					for (int k = 0; k < 4; k++) {
+						int nx = j + dx[k], ny = i + dy[k];
+						if (isbound(nx, ny)) {
+							if (arr[ny][nx] == '.') arr[ny][nx] = '#';
+							if (arr[ny][nx] == 'G') flag = false;
+						}
+					}
+				}
+			}
+		}
+
+		int visited[50][50] = { 0 };
+		queue<pii> q;
+		if(arr[n - 1][m - 1] != '#') q.push({ m - 1,n - 1 });
+		visited[n - 1][m - 1] = 1;
+
+		while (q.size()) {
+			int x, y; tie(x, y) = q.front(); q.pop();
+			for (int k = 0; k < 4; k++) {
+				int nx = x + dx[k], ny = y + dy[k];
+				if (isbound(nx, ny) && !visited[ny][nx] && arr[ny][nx] != '#') {
+					q.push({ nx,ny });
+					visited[ny][nx] = 1;
+				}
+			}
+		}
+		
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (arr[i][j] == 'G' && !visited[i][j]) flag = false;
+			}
+		}
+		cout << (flag ? "YES" : "NO") << '\n';
+	}
+}
