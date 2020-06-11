@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+set<string> se;
+string a;
+int siz;
+
+void dfs(string s, int l, int r) {
+	int len = r - l + 2;
+	if (s.size() == siz) {
+		se.insert(s);
+		return;
+	}
+	if (l > 0) dfs(s + a.substr(l - 1, len), l - 1, r);
+	if (r + 1 < a.size()) dfs(s + a.substr(l, len), l, r + 1);
+}
+
+int main() {
+	cin >> a;
+	siz = a.size() * (a.size() + 1) / 2;
+	string s;
+	for (int i = 0; i < a.size(); i++) {
+		s = a[i];
+		dfs(s, i, i);
+	}
+	
+	cout << se.size();
+
+	return 0;
+}
