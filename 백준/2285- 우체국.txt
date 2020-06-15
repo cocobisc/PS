@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n;
+long long sum, t;
+
+int main() {
+	cin >> n;
+	vector<pair<long long, long long>> v;
+	for (int i = 0; i < n; i++) {
+		long long a, b; cin >> a >> b;
+		v.push_back({ a,b });
+		sum += b;
+	}
+	sort(v.begin(), v.end());
+	for (int i = 0; i < n; i++) {
+		t += v[i].second;
+		if (sum % 2) {
+			if (t > sum / 2) 
+				return cout << v[i].first, 0;
+		}
+		else {
+			if (t >= sum / 2)
+				return cout << v[i].first, 0;
+		}
+	}
+}
