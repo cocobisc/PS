@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int x[40],y[40],w[40];
+set<int> sx, sy;
+int ans = 2e9;
+
+int main() {
+  int n;cin>>n;
+  for(int i=0;i<n;i++) {
+    cin>>x[i]>>y[i]>>w[i];
+    sx.insert(x[i]);
+    sy.insert(y[i]);
+  }
+
+  for(auto x_le = sx.begin();x_le!=sx.end();x_le++) 
+  for(auto x_ri = x_le; x_ri != sx.end();x_ri++) 
+  for(auto y_le = sy.begin();y_le!=sy.end();y_le++) 
+    for(auto y_ri = y_le; y_ri!=sy.end();y_ri++) {
+
+      priority_queue<int> pq;
+      int cnt = 0;
+      int len = 2 * (*x_ri - *x_le + *y_ri - *y_le);
+
+      for(int i=0;i<n;i++) {
+        if(*x_le <= x[i] && x[i] <= *x_ri && *y_le <= y[i] && y[i] <= *y_ri) pq.push(w[i]);
+        else {
+          len -= w[i];
+          cnt++;
+        }
+      }
+      while(len > 0 && pq.size()) {
+        len -= pq.top();
+        pq.pop();
+        cnt++;
+      }
+      ans = min(ans, cnt);
+    }
+  cout << ans;
+
+  return 0;
+}
