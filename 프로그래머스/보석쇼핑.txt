@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> solution(vector<string> gems) {
+	vector<int> v(2);
+	set<string> se;
+	map<string, int> ma;
+	int start, end, cnt, size;
+	int mi = 2e9;
+
+	start = end = cnt = 0;
+	for (auto s : gems) se.insert(s);
+	size = se.size();
+	se.clear();
+
+	for (int i = 0; i < gems.size(); i++) {
+		ma[gems[i]]++;
+		se.insert(gems[i]);
+		if (se.size() == size) {
+			end = i;
+			while (start < end) {
+				ma[gems[start]]--;
+				if (!ma[gems[start]]) {
+					if (mi > end - start + 1) {
+						mi = end - start + 1;
+						v[0] = start + 1;
+						v[1] = end + 1;
+					}
+					se.erase(gems[start]);
+					start++;
+					break;
+				}
+				start++;
+			}
+		}
+	}
+	return v;
+}
+
+int main() {
+	vector<string> v = { "DIA", "RUBY", "RUBY", "DIA", "DIA", "EMERALD", "SAPPHIRE", "DIA" };
+	vector<int> ans = solution(v);
+
+	cout << ans[0] << ", " << ans[1] << endl;
+}
