@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+#define INF 2e9
+using namespace std;
+
+struct edge {
+	int idx, dst;
+
+	bool operator < (edge a) const {
+		return dst > a.dst;
+	}
+};
+
+int main() {
+	int T; cin >> T;
+	while (T--) {
+		int n, d, c; cin >> n >> d >> c;
+		priority_queue<edge> pq;
+		vector<vector<edge>> adj(n + 1);
+		vector<int> dst(n + 1, INF);
+
+		for (int i = 0, u, v, w; i < d; i++) {
+			cin >> u >> v >> w;
+			adj[v].push_back({ u,w });
+		}
+		dst[c] = 0;
+		pq.push({ c, 0 });
+		while (pq.size()) {
+			edge curr = pq.top(); pq.pop();
+
+			for (edge next : adj[curr.idx]) {
+				if (dst[next.idx] > dst[curr.idx] + next.dst) {
+					dst[next.idx] = dst[curr.idx] + next.dst;
+					pq.push({ next.idx, dst[next.idx] });
+				}
+			}
+		}
+		int ma = 0, cnt = 0;
+		for (int i = 1; i <= n; i++) {
+			if (dst[i] != (int)2e9)
+				cnt++, ma = max(ma, dst[i]);
+		}
+		cout << cnt << " " << ma << '\n';
+	}
+}
