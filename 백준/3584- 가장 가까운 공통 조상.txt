@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAX = 1e4 + 1, MAH = 14;
+vector<int> adj[MAX];
+int level[MAX], parent[MAX][MAH];
+
+void set_depth(int curr) {
+	for (auto next : adj[curr]) {
+		if (!level[next]) {
+			level[next] = level[curr] + 1;
+			set_depth(next);
+		}
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+
+	int T; cin >> T;
+	while (T--) {
+		int root, a, b;
+		memset(level, 0, sizeof(level));
+		memset(parent, 0, sizeof(parent));
+		int N; cin >> N;
+		for (int i = 1; i <= N; i++) adj[i].clear();
+		for (int i = 0; i < N - 1; i++) {
+			cin >> a >> b;
+			adj[a].push_back(b);
+
+			parent[b][0] = a;
+		}
+		for (int i = 1; i <= N; i++) {
+			if (!parent[i][0]) {
+				root = i; break;
+			}
+		}
+		set_depth(root);
+
+		for (int j = 0; j < MAH; j++) {
+			for (int i = 1; i <= N; i++) {
+				if (parent[i][j]) parent[i][j + 1] = parent[parent[i][j]][j];
+			}
+		}
+		cin >> a >> b;
+		if (level[a] < level[b]) swap(a, b);
+		int diff = level[a] - level[b];
+
+		for (int i = 0; diff; i++) {
+			if (diff % 2) a = parent[a][i];
+			diff /= 2;
+		}
+
+		if (a != b) {
+			for (int i = MAH - 1; i >= 0; i--) {
+				if (parent[a][i] && parent[a][i] != parent[b][i]) {
+					a = parent[a][i];
+					b = parent[b][i];
+				}
+			}
+			a = parent[a][0];
+		}
+		cout << a << '\n';
+	}
+}

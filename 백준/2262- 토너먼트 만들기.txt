@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 257;
+int minl[MAX][MAX];
+int arr[MAX];
+int dp[MAX][MAX];
+
+int go(int s, int e) {
+	int &ret = dp[s][e];
+	if (ret != -1) return ret;
+	if (s == e) return 0;
+	ret = 2e9;
+
+	for (int i = s; i < e; i++)
+		ret = min(ret, go(s, i) + go(i + 1, e) + abs(minl[s][i] - minl[i + 1][e]));
+
+	return ret;
+}
+
+int main() {
+	int n; cin >> n;
+	for (int i = 1; i <= n; i++) cin >> arr[i];
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = i; j <= n; j++) {
+			minl[i][j] = arr[i];
+			for (int k = i + 1; k <= j; k++) {
+				minl[i][j] = min(minl[i][j], arr[k]);
+			}
+		}
+	}
+	memset(dp, -1, sizeof(dp));
+	cout << go(1, n);
+}
