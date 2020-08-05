@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 int arr[11][11], n, f;
 
 int main() {
@@ -17,4 +18,5 @@ int main() {
 			break;
 		}
 	} while (next_permutation(arr[1] + 1, arr[1] + n + 1));
+    
 }
