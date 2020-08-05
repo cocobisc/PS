@@ -26,9 +26,9 @@ int bfs(int x, int y, int k, int n, int m, vector<vector<int>> &picture) {
 }
 
 vector<int> solution(int n, int m, vector<vector<int>> picture) {
-    memset(visited, 0, sizeof(visited));
     int ans = 0;
     int cnt = 0;
+	
     for(int i=0;i<n;i++) {
         for(int j=0;j<m;j++) {
             if(!visited[i][j] && picture[i][j]) {
