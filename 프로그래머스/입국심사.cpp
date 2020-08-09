@@ -2,7 +2,8 @@
 using namespace std;
 
 long long solution(int n, vector<int> times) {
-    long long le = 0, ri = *max_element(times.begin(),times.end()) * (long long)n;
+    long long le = 0;
+    long long ri = *max_element(times.begin(),times.end()) * (long long)n;
 
     while (le <= ri) {
         long long sum = 0, mid = le + ri >> 1;
