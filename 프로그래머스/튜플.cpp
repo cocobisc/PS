@@ -11,24 +11,16 @@ bool cmp(const vector<int> &a, const vector<int> &b) {
 vector<int> solution(string s) {
     vector<vector<int>> v;
     vector<int> temp, ans;
-    int num = 0;
-    bool start = 0;
-    
-    for (int i = 1; i < s.size() - 1; i++) {
-        if (s[i] == '{') start = 1;
-        if (start) {
-            if (s[i] >= '0' && s[i] <= '9')
-                num = num * 10 + s[i] - '0';
-            else if (s[i] == ',') {
-                temp.push_back(num);
-                num = 0;
-            } else if (s[i] == '}') {
-                temp.push_back(num);
-                v.push_back(temp);
-                temp.clear();
-                num = 0;
-                start = 0;
-            }
+    string num;
+
+    for (auto c : s) {
+        if(c >= '0' && c <= '9') num += c;
+        else {
+            if(num.size()) 
+                temp.push_back(stoi(num));
+            num = "";
+            if(c == '}')
+                v.push_back(temp), temp.clear();
         }
     }
     sort(v.begin(), v.end(), cmp);
