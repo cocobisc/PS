@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 const int MAX = 1e5;
 int go[MAX][10];
 bool goExist[MAX], isEnd[MAX];
@@ -8,10 +9,10 @@ int cnt;
 bool insert(string &s, int idx, int node) {
 	if (idx == s.size()) {
 		isEnd[node] = true;
-		return !goExist[node];
+		return goExist[node];
 	}
 	else {
-		if (isEnd[node]) return false;
+		if (isEnd[node]) return true;
 		
 		int next = s[idx] - '0';
 		goExist[node] = true;
@@ -32,7 +33,7 @@ int main() {
 		bool flag = true;
 		for (int i = 0; i < N; i++) {
 			string s; cin >> s;
-			if (flag && !insert(s, 0, 0))
+			if (flag && insert(s, 0, 0))
 				flag = false;
 		}
 		cout << (flag ? "YES" : "NO") << '\n';
