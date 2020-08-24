@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[11][11], n;
+
+int go(int y) {
+	for (int i = 1; i < arr[y + 1][1]; i++) {
+		arr[y][1] = i;
+
+		int j = 2;
+		for (; j <= n - y + 1; j++) {
+			if (arr[y][j - 1] >= arr[y + 1][j - 1])
+				break;
+			arr[y][j] = arr[y + 1][j - 1] - arr[y][j - 1];
+		}
+		if (j == n - y + 1) {
+			if (y == 1) {
+				for (int i = 1; i <= n; i++) cout << arr[1][i] << " ";
+				exit(0);
+			}
+			go(y - 1);
+		}
+	}
+}
+
+int main() {
+	cin >> n;
+	cin >> arr[n][1];
+	go(n - 1);
+}

@@ -30,7 +30,3 @@ vector<int> solution(string s) {
     
     return ans;
 }
-
-int main() {
-    solution("{{20,111},{111}}");
-}
