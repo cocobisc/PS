@@ -12,15 +12,15 @@ int dy[] = {0, 0, 1, -1};
 int visited[MAX][MAX];
 
 int getSize(int x, int y) {
-	int check[MAX * MAX] = {0};
+	set<int> se;
     int cnt = 0;
 
     for (int i = 0; i < 4; i++) {
         int nx = x + dx[i], ny = y + dy[i];
         if (nx >= 0 && ny >= 0 && nx < m && ny < n && area[ny][nx]) {
 			int a = area[ny][nx];
-			if(!check[a]) {
-				check[a] = 1;
+			if(se.find(a) == se.end()) {
+				se.insert(a);
 				cnt += asize[a];
 			} 
         }
