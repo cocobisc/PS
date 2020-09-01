@@ -1,39 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MAX = 3e5 + 1;
-vector<int> adj[MAX];
-long long a, b;
+const int MAX = 1e5 + 1;
+int arr[MAX];
+map<int, int> sp, ep;
 
 int main() {
-    int n;
+    int n, ans = 1;
     cin >> n;
-    for (int i = 0; i < n - 1; i++) {
-        int u, v;
-        cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
+
+    for (int i = 1; i <= n; i++) cin >> arr[i];
+    for (int i = 1; i <= n; i++)
+        if (arr[i] && !sp[arr[i]]) sp[arr[i]] = i;
+    for (int i = n; i > 0; i--)
+        if (arr[i] && !ep[arr[i]]) ep[arr[i]] = i;
+
+    vector<int> v;
     for (int i = 1; i <= n; i++) {
-        if (adj[i].size() >= 2) {
-            for (int next : adj[i]) {
-                if (adj[next].size() >= 2)
-                    a += (adj[i].size() - 1) * (adj[next].size() - 1);
-            }
-        }
-        if (adj[i].size() >= 3) {
-            long long k = 1;
-			
-            for (int j = adj[i].size() - 2; j < adj[i].size() + 1; j++)
-                k *= j;
-            b += k / 6;
+        if (arr[i]) {
+            if (sp[arr[i]] == i)
+                v.push_back(arr[i]);
+            ans = max(ans, (int)v.size());
+            if (v.empty() || v.back() != arr[i])
+                return cout << -1, 0;
+            if (ep[arr[i]] == i) 
+                v.pop_back();
         }
     }
-    a /= 2;
-    if (a > 3 * b)
-        cout << "D";
-    else if (a < 3 * b)
-        cout << "G";
-    else
-        cout << "DUDUDUNGA";
+    cout << ans;
 }
