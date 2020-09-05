@@ -1,31 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int solution(int N, vector<vector<int>> simulation_data) {
-    priority_queue<int, vector<int>, greater<int>> pq;
-    vector<int> line;
-    int i;
+int dx[] = {1, -1, 0, 0};
+int dy[] = {0, 0, 1, -1};
+typedef pair<int, int> pii;
+typedef long long ll;
 
-    for (i = 0; i < N; i++) {
-        pq.push(simulation_data[i][0] + simulation_data[i][1]);
-    }
-   
-    for (i = N; i < simulation_data.size(); i++) {
-        int k = pq.top(); pq.pop();
-        if (k <= simulation_data[i][0]) {
-            k = simulation_data[i][0] + simulation_data[i][1];
-            pq.push(k);
-        }
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int n, x, y;
+        cin >> n >> x >> y;
+        if (n == 2)
+            cout << x << " " << y;
         else {
-            answer += k - simulation_data[i][0];
-            k += simulation_data[i][1];
-            pq.push(k);
+            int diff = y - x;
+            int cnt = n - 1;
+            for (int i = cnt; i > 0; i--) {
+                if (diff % i == 0) {
+                    int k = diff / i;
+                    int a = n - i - 1;
+                    while (x - k * a > 1) a++;
+                    if (x - k * a < 1) a--;
+                    while ((x - k * a) * (n - 2) < y) a--;
+                    int q = 0;
+                    for (int j = x - k * a; q < n; j += k, q++) {
+                        cout << j << " ";
+                    }
+                    break;
+                }
+            }
         }
+        cout << '\n';
     }
-    return answer;
-}
-
-int main(void) {
-    vector<vector<int>> simulation_data = {{0, 3}, {2, 5}, {4, 2}, {5, 3}};
-    cout << solution(1, simulation_data);
 }
