@@ -2,9 +2,11 @@
 using namespace std;
 
 const int MAX = 2e5 + 1;
+
 vector<int> adj[MAX];
 int visited[MAX];
 map<int, int> ma, marev;
+
 
 bool check(int n) {
     for (int i = 1; i <= n; i++) {

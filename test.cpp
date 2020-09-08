@@ -1,52 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MAX = 2e5 + 1;
-vector<int> adj[MAX];
-int visited[MAX];
-map<int, int> ma, revma;
+typedef long long ll;
 
-bool solution(int n, vector<vector<int>> path, vector<vector<int>> order) {
-    for (auto v : path) {
-        adj[v[0] + 1].push_back(v[1] + 1);
-        adj[v[1] + 1].push_back(v[0] + 1);
+int getsum(ll n) {
+    int sum = 0;
+    while (n) {
+        sum += n % 10;
+        n /= 10;
     }
-    for (auto v : order) {
-        ma[v[1] + 1] = v[0] + 1;
-		revma[v[0] + 1] = v[1] + 1;
-	}
+    return sum;
+}
 
-    queue<int> q, q2;
-    q.push(1);
-    visited[1] = 1;
-    while (q.size()) {
-        int curr = q.front();
-        q.pop();
+int getlen(ll n) {
+    int cnt = 0;
+    while (n) {
+        cnt++;
+        n /= 10;
+    }
+    return cnt;
+}
 
-		if(revma[curr] && visited[revma[curr]] == 2)
-			visited[revma[curr]] = 0;
-		
-		int flag = 0;
-        for (int next : adj[curr]) {
-            if (visited[next]) continue;
-            if (ma[next]) {
-                if (visited[ma[next]]) {
-                    q.push(next);
-                    visited[next] = 1;
-                } else 
-					flag = 1;
-            } else {
-                q.push(next);
-                visited[next] = 1;
-            }
+ll fpow(ll a, ll b) {
+    int ans = 1;
+    while (b) {
+        if (b & 1)
+            ans = (ans * a);
+
+        b >>= 1;
+        a = (a * a);
+    }
+    return ans;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        long long n, s;
+        cin >> n >> s;
+        long long ans = 0;
+        long long mul = 1;
+
+        for (int i = 0; i < 18; i++) {
+            if(getsum(n) <= s) break;
+            ll d = n / mul;
+            d = (10 - (d % 10)) % 10;
+            n += d * mul;
+            ans += d * mul;
+            mul *= 10;
         }
-		if(flag) q2.push(curr);
-		if(!q.size()) {
-			while(q2.size()) {
-				q.push(q2.front());
-				q2.pop();
-			}
-		}
+
+        cout << ans;
+        cout << '\n';
     }
-    return true;
 }
