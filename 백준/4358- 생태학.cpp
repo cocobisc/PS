@@ -12,6 +12,6 @@ int main() {
 	cout << fixed;
 	cout.precision(4);
 	for (auto it = ma.begin(); it != ma.end(); it++) {
-		cout << it->first << " " << it->second * 100 / (double)cnt << '\n';
+		cout << it->first << " " << it->second * 100.0 / cnt << '\n';
 	}
 }

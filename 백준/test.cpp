@@ -1,37 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
-typedef pair<int, int> pii;
-typedef long long ll;
+string change(string s) {
+    string ans, ans2;
+    int i = 0;
+
+    for (i = 0; i < s.size(); i++) {
+        char c = s[i];
+
+        if (!isalpha(c) && !isdigit(c) && !(c == '.' || c == '_' || c == '-')) continue;
+        if (s[i] >= 'A' && s[i] <= 'Z') c = c - 'A' + 'a';
+        if (i < s.size() - 1 && c == '.' && s[i + 1] == '.') continue;
+
+        ans += c;
+    }
+
+    for (i = 0; i < ans.size(); i++) {
+        if (ans[i] == '.') continue;
+        ans = ans.substr(i);
+        break;
+    }
+    while (ans.size() && ans.back() == '.') ans.pop_back();
+
+    for(i = 0;i<ans.size();i++) {
+        char c = ans[i];
+        if (i < ans.size() - 1 && c == '.' && ans[i + 1] == '.') continue;
+        ans2 += c;
+    }
+    ans = ans2;
+
+    if (ans.empty()) return "aaa";
+    if (ans.size() > 15) {
+        while(ans.size() > 15) ans.pop_back();
+        while (ans.size() && ans.back() == '.') ans.pop_back();
+    }
+    if (ans.empty()) return "aaa";
+    while (ans.size() < 3) ans += ans.back();
+
+    return ans;
+}
+
+string solution(string new_id) {
+    return change(new_id);
+}
 
 int main() {
-    int T;
-    cin >> T;
-    while (T--) {
-        int n, x, y;
-        cin >> n >> x >> y;
-        if (n == 2)
-            cout << x << " " << y;
-        else {
-            int diff = y - x;
-            int cnt = n - 1;
-            for (int i = cnt; i > 0; i--) {
-                if (diff % i == 0) {
-                    int k = diff / i;
-                    int a = n - i - 1;
-                    while (x - k * a > 1) a++;
-                    if (x - k * a < 1) a--;
-                    while ((x - k * a) * (n - 2) < y) a--;
-                    int q = 0;
-                    for (int j = x - k * a; q < n; j += k, q++) {
-                        cout << j << " ";
-                    }
-                    break;
-                }
-            }
-        }
-        cout << '\n';
-    }
+    cout << solution(".#.#.#BaT#*..#.abcdefghijklm.");
 }
