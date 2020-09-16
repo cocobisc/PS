@@ -54,15 +54,17 @@ int main() {
 		int d;
         for (int i = 0; i < M; i++) {
             if (check[i]) continue;
-            d = bfs(sx, sy, person[i].first, person[i].second);
+			int px, py, dx, dy;
+			tie(px, py) = person[i], tie(dx, dy) = dest[i];
+            d = bfs(sx, sy, px, py);
 			if(d == -1 || K < d) continue;
 			
 			if(d <= min_dist) {
 				if(d == min_dist) {
-					if(person[idx].second < person[i].second)
+					if(person[idx].second < py)
 						continue;
-					if(person[idx].second == person[i].second) {
-						if(person[idx].first < person[i].first)
+					if(person[idx].second == py) {
+						if(person[idx].first < px)
 							continue;
 					}
 				}
