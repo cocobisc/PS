@@ -1,49 +1,53 @@
-#include <bits/stdc++.h>
+#include <cstdio>
+#include <algorithm>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <map>
+#include <set>
+#include <unordered_set>
+#include <unordered_map>
+#include <cassert>
+#include <iostream>
+#include <string>
+#define ll long long
+#define pii pair<int,int>
+#define pli pair<ll,int>
+#define pll pair<ll,ll>
+#define mod 1000000000
+#define mod1 1000000009
+#define mod2 1000000021
+#define MAX 1000000000
 using namespace std;
 
-string change(string s) {
-    string ans, ans2;
-    int i = 0;
-
-    for (i = 0; i < s.size(); i++) {
-        char c = s[i];
-
-        if (!isalpha(c) && !isdigit(c) && !(c == '.' || c == '_' || c == '-')) continue;
-        if (s[i] >= 'A' && s[i] <= 'Z') c = c - 'A' + 'a';
-        if (i < s.size() - 1 && c == '.' && s[i + 1] == '.') continue;
-
-        ans += c;
-    }
-
-    for (i = 0; i < ans.size(); i++) {
-        if (ans[i] == '.') continue;
-        ans = ans.substr(i);
-        break;
-    }
-    while (ans.size() && ans.back() == '.') ans.pop_back();
-
-    for(i = 0;i<ans.size();i++) {
-        char c = ans[i];
-        if (i < ans.size() - 1 && c == '.' && ans[i + 1] == '.') continue;
-        ans2 += c;
-    }
-    ans = ans2;
-
-    if (ans.empty()) return "aaa";
-    if (ans.size() > 15) {
-        while(ans.size() > 15) ans.pop_back();
-        while (ans.size() && ans.back() == '.') ans.pop_back();
-    }
-    if (ans.empty()) return "aaa";
-    while (ans.size() < 3) ans += ans.back();
-
-    return ans;
-}
-
-string solution(string new_id) {
-    return change(new_id);
-}
-
+/* ?? */
+int arr[50], dp[2501][2501];
 int main() {
-    cout << solution(".#.#.#BaT#*..#.abcdefghijklm.");
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+	memset(dp, -1, sizeof(dp));
+	dp[0][0] = 0;
+	int ans = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 2500; j >= 0; j--) {
+			for (int k = 2500; k >= 0; k--) {
+				if (dp[j][k] == -1) continue;
+                cout << j << ", " << k << endl;
+				if(j + arr[i] <= 2500)
+					dp[j + arr[i]][k] = max(dp[j + arr[i]][k], dp[j][k]);
+				if(k + arr[i] <= 2500)
+					dp[j][k + arr[i]] = max(dp[j][k + arr[i]], dp[j][k]);
+				dp[j][k] += arr[i];
+			}
+		}
+	}
+	for (int j = 2500; j >= 0; j--) {
+		for (int k = 2500; k >= 0; k--) {
+			if (j <= dp[j][k] && j <= k) ans = max(ans, j);
+		}
+	}
+	printf("%d", ans);
 }
