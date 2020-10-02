@@ -4,16 +4,16 @@ using namespace std;
 int main() {
 	string op, ans, s; cin >> s;
 
-	for (int i = 0; s[i]; i++) {
-		if ('A' <= s[i] && s[i] <= 'Z') ans += s[i];
+	for (char c : s) {
+		if ('A' <= c && c <= 'Z') ans += c;
 		else {
-			if (s[i] == '(') op.push_back(s[i]);
-			else if (s[i] == ')') {
+			if (c == '(') op.push_back(c);
+			else if (c == ')') {
 				while (op.back() != '(') ans += op.back(), op.pop_back();
 				op.pop_back();
 			}
 			else {
-				if (s[i] == '*' || s[i] == '/') {
+				if (c == '*' || c == '/') {
 					while (op.size() && (op.back() == '*' || op.back() == '/'))
 						ans += op.back(), op.pop_back();
 				}
@@ -21,10 +21,10 @@ int main() {
 					while (op.size() && op.back() != '(')
 						ans += op.back(), op.pop_back();
 				}
-				op.push_back(s[i]);
+				op.push_back(c);
 			}
 		}
 	}
-	while (op.size()) ans += op.back(), op.pop_back();
-	cout << ans;
+	reverse(op.begin(), op.end());
+	cout << ans + op;
 }

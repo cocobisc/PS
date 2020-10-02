@@ -52,7 +52,7 @@ void rotate(int m[5][5]) {
 
 void dfs(int m[5][5][5], int idx) {
 	if (idx == 5) {
-		if (m[0][0][0] && m[4][4][4]) 
+		if (m[0][0][0] && m[4][4][4])
 			ans = min(ans, find_road(m));
 		return;
 	}
