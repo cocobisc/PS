@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 vector<int> adj[41];
 int check[41];
 
@@ -13,7 +12,7 @@ bool ispal(string a) {
 
 int go(int idx, int cnt, int siz, vector<string> &P) {
     if (cnt == siz) return 1;
-    
+
     for (int i = idx; i < siz; i++) {
         if (check[i]) continue;
         check[i] = 1;

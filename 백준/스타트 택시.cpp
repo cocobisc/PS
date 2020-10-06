@@ -12,7 +12,7 @@ vector<pii> person, dest;
 int bfs(int x, int y, int ex, int ey) {
     int visited[21][21] = {0};
 	int cnt = 0;
-
+	
     visited[y][x] = 1;
     queue<pii> q;
     q.push({x, y});
@@ -58,7 +58,7 @@ int main() {
 			tie(px, py) = person[i], tie(dx, dy) = dest[i];
             d = bfs(sx, sy, px, py);
 			if(d == -1 || K < d) continue;
-			
+
 			if(d <= min_dist) {
 				if(d == min_dist) {
 					if(person[idx].second < py)
