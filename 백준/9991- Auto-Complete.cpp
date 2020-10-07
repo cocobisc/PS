@@ -2,37 +2,31 @@
 using namespace std;
 
 const int MAX = 1e6;
-map<string, vector<int>> ma;
 pair<string, int> si[MAX];
+string v[MAX];
 
 int main() {
-    int w, n;
-    cin >> w >> n;
-    string s;
-    for (int i = 0; i < w; i++) {
-        cin >> s;
-        si[i] = {s, i};
-    }
-    sort(si, si + w);
+	int w, n;
+	cin >> w >> n;
+	string s, s2;
+	for (int i = 0; i < w; i++) {
+		cin >> s;
+		si[i] = { s, i };
+		v[i] = s;
+	}
+	sort(si, si + w);
+	sort(v, v + w);
 
-    for (int i = 0; i < w; i++) {
-        string temp;
-        int idx;
+	for (int i = 0; i < n; i++) {
+		int k;
+		cin >> k >> s;
+		s2 = s;
+		s2.back()++;
+		int le = lower_bound(v, v + w, s) - v;
+		int ri = lower_bound(v, v + w, s2) - v;
 
-        tie(s, idx) = si[i];
-        for (char c : s) {
-            temp += c;
-            ma[temp].push_back(idx);
-        }
-    }
-
-    for (int i = 0; i < n; i++) {
-        int k;
-        cin >> k >> s;
-        if (k > ma[s].size())
-            cout << -1;
-        else
-            cout << ma[s][k - 1] + 1;
-        cout << '\n';
-    }
+		if (k > ri - le) cout << -1;
+		else cout << si[le + k - 1].second + 1;
+		cout << '\n';
+	}
 }
