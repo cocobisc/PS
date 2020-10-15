@@ -13,7 +13,7 @@ int main() {
 			if (j - w[i] >= 0) dp[i][j] = max(dp[i][j], dp[i - 1][j - w[i]] + v[i]);
 		}
 	}
-	cout << dp[n][k] << '\n';
+	cout << dp[n][k];
 
 	return 0;
 }

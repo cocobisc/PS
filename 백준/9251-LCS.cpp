@@ -1,11 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <iostream>
-#include <queue>
-#include <cmath>
-#include <algorithm>
-#include <string>
-#define MOD 123456789
-#define swap(a,b) {int t = a; a = b; b = t;}
+#include <bits/stdc++.h>
 using namespace std;
 int dp[1001][1001];
 
@@ -18,6 +11,7 @@ int main() {
 			else dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
 		}
 	}
-	cout << dp[a.size()][b.size()] << endl;
+	cout << dp[a.size()][b.size()];
+
 	return 0;
 }

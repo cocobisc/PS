@@ -6,10 +6,13 @@ const int MAX = 1e6;
 int dp[MAX];
 
 int main() {
-	int n; cin>>n;
-	dp[1] = 1;
-	for(int i=2;i<=n;i++) {
-		int t = dp[i - 1] * 2 - 2;
-		d += dp[i - 2] * 2 - 2;
-	}
+    int n;
+    cin >> n;
+    dp[1] = 1;
+    dp[2] = 2;
+    for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+        dp[i] %= MOD;
+    }
+    cout << dp[n];
 }
