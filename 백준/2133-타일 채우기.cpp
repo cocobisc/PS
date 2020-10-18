@@ -1,7 +1,8 @@
 #include <iostream>
 using namespace std;
 int n, dp[31];
-int main(void) {
+
+int main() {
 	cin >> n;
 	dp[0] = 1;
 	dp[2] = 3;

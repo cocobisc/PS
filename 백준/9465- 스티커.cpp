@@ -1,17 +1,12 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
-int num;
 int arr[2][100001];
 int dp[2][100001];
 
 int main() {
-	cin >> num;
-	while (num--) {
+	int T; cin >> T;
+	while (T--) {
 		int n;
 		cin >> n;
 		for (int i = 1; i <= n; i++) cin >> arr[0][i];
@@ -22,7 +17,8 @@ int main() {
 			dp[0][i] = max(dp[1][i - 1], dp[1][i - 2]) + arr[0][i];
 			dp[1][i] = max(dp[0][i - 1], dp[0][i - 2]) + arr[1][i];
 		}
-		cout << max(dp[0][n], dp[1][n]) << endl;
+		cout << max(dp[0][n], dp[1][n]) << '\n';
 	}
+	
 	return 0;
 }

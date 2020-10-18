@@ -48,10 +48,6 @@ int main() {
 		for(int i=0;i<n;i++)
 			for(int j=0;j<n;j++)
 				if(ma[check[i][j]]) arr[i][j] = ma[check[i][j]];
-		for(int i=0;i<n;i++) {
-			for(int j=0;j<n;j++) cout << arr[i][j] << " ";
-			cout << endl;
-		}
 	}
 	cout << ans;
 }
