@@ -1,0 +1,7 @@
+n = int(input())
+s = input()
+s1=s.lstrip('R')
+s2=s.lstrip('B')
+s3=s.rstrip('R')
+s4=s.rstrip('B')
+print(min(s1.count('R'), s2.count('B'),s3.count('R'),s4.count('B')))

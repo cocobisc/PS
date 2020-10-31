@@ -19,7 +19,7 @@ int main() {
 			}
 			i++;
 		}
-		bool flag = false;
+		bool flag = 0;
 		for(string a : words) {
 			if(a.back() == '/')
 				continue;
@@ -30,14 +30,15 @@ int main() {
 				temp += c;
 			}
 			if(temp[0] == '/') {
-				if(v.empty() || v.back() != temp.substr(1)) {flag = true; break;}
+				if(v.empty() || v.back() != temp.substr(1)) {flag = 1; break;}
 				v.pop_back();
 			}
 			else v.push_back(temp);
 		}
-		if(v.size()) flag = true;
+		if(v.size()) flag = 1;
 
-		if(!flag) cout << "legal\n";
-		else cout << "illegal\n";
+		if(!flag) cout << "legal";
+		else cout << "illegal";
+		cout << '\n';
 	}
 }
